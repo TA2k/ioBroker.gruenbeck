@@ -1,0 +1,64 @@
+{
+  "name": "iobroker.gruenbeck",
+  "version": "0.0.1",
+  "description": "An ioBroker adapter for Grünbeck Wasseraufbereitung devices.",
+  "author": {
+    "name": "tombox",
+    "email": "tombox@nomail.de"
+  },
+  "homepage": "https://github.com/TA2k/ioBroker.gruenbeck",
+  "license": "MIT",
+  "keywords": [
+    "gruenbeck",
+    "grünbeck",
+    "wasseraufbereitung",
+    "softliQ",
+    "SC18",
+    "SC23"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TA2k/ioBroker.gruenbeck"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^1.0.3",
+    "regex": "^0.1.1",
+    "xml": "^1.0.1",
+    "xmldom": "^0.1.27",
+    "xmlhttprequest-ts": "^1.0.1"
+  },
+  "devDependencies": {
+    "@iobroker/testing": "^1.2.0",
+    "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/gulp": "^4.0.6",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^10.14.3",
+    "@types/proxyquire": "^1.3.28",
+    "@types/sinon": "^7.0.10",
+    "@types/sinon-chai": "^3.2.2",
+    "axios": "^0.18.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^5.15.3",
+    "gulp": "^4.0.0",
+    "mocha": "^6.0.2",
+    "proxyquire": "^2.1.0",
+    "sinon": "^7.3.0",
+    "sinon-chai": "^3.3.0"
+  },
+  "main": "main.js",
+  "scripts": {
+    "test:js": "mocha --opts test/mocha.custom.opts",
+    "test:package": "mocha test/package --exit",
+    "test:unit": "mocha test/unit --exit",
+    "test:integration": "mocha test/integration --exit",
+    "test": "npm run test:js && npm run test:package",
+    "lint": "npm run lint:js",
+    "lint:js": "eslint"
+  },
+  "bugs": {
+    "url": "https://github.com/TA2k/ioBroker.gruenbeck/issues"
+  },
+  "readmeFilename": "README.md"
+}
