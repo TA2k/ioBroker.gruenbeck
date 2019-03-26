@@ -23,8 +23,6 @@
   "dependencies": {
     "@iobroker/adapter-core": "^1.0.3",
     "regex": "^0.1.1",
-    "xml": "^1.0.1",
-    "xmldom": "^0.1.27",
     "xmlhttprequest-ts": "^1.0.1"
   },
   "devDependencies": {
