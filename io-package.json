@@ -207,7 +207,7 @@
 			}
 		  },
 		  {
-			"_id": "parameter.D_C_5_1",
+			"_id": "parameter.D_C_4_1",
 			"type": "state",
 			"common": {
 			  "name": "Regenerationszeitpunkt",
@@ -289,7 +289,7 @@
 			}
 		  },
 		  {
-			  "_id": "parameter.Regenerationsstart",
+			  "_id": "parameter.D_B_1",
 			  "type": "state",
 			  "common": {
 				  "role": "button",
@@ -343,6 +343,57 @@
 	
 		  }
 		},
+		{
+			"_id": "info.D_A_2_3",
+			"type": "state",
+			"common": {
+			  "name": "Salzreichweite (nur SC23)",
+			  "type": "number",
+			  "role": "value.days",
+			  "read": true,
+			  "write": false,
+			  "def": false,
+			  "desc": "Salzreichweite (nur SC23)",
+			  "unit": "Tage"
+			},
+			"native": {
+	  
+			}
+		  },
+		  {
+			"_id": "parameter.D_C_8_2",
+			"type": "state",
+			"common": {
+			  "name": "Led blinkt bei Salz-Vorwarnung (nur SC23)",
+			  "type": "number",
+			  "role": "number",
+			  "read": true,
+			  "write": false,
+			  "def": false,
+			  "desc": "Led blinkt bei Salz-Vorwarnung (nur SC23)",
+			  "unit": ""
+			},
+			"native": {
+	  
+			}
+		  },
+		  {
+			"_id": "parameter.D_C_8_1",
+			"type": "state",
+			"common": {
+			  "name": "LED Funktion (nur SC23)",
+			  "type": "number",
+			  "role": "number",
+			  "states": {"0": "deaktiviert", "1": "bei Störung", "2": "bei Bedienung, Störung", "3": "bei Wasserbehandlung, Bedienung, Störung", "4": "dauerhaftes Leuchten"},
+			  "read": true,
+			  "write": true,
+			  "desc": "LED Funktion (nur SC23)",
+			  "unit": ""
+			},
+			"native": {
+	  
+			}
+		  },
 		{
 			"_id": "info.D_Y_5",
 			"type": "state",
@@ -603,7 +654,7 @@
 			}
 		  },
 		  {
-			"_id": "error.D_K_10_01",
+			"_id": "error.D_K_10_1",
 			"type": "state",
 			"common": {
 			  "name": "error 1",
@@ -620,7 +671,7 @@
 			}
 		  },
 		  {
-			"_id": "error.D_K_10_02",
+			"_id": "error.D_K_10_2",
 			"type": "state",
 			"common": {
 			  "name": "error 2",
@@ -637,7 +688,7 @@
 			}
 		  },
 		  {
-			"_id": "error.D_K_10_03",
+			"_id": "error.D_K_10_3",
 			"type": "state",
 			"common": {
 			  "name": "error 3",
@@ -654,7 +705,7 @@
 			}
 		  },
 		  {
-			"_id": "error.D_K_10_04",
+			"_id": "error.D_K_10_4",
 			"type": "state",
 			"common": {
 			  "name": "error 4",
@@ -671,7 +722,7 @@
 			}
 		  },
 		  {
-			"_id": "error.D_K_10_05",
+			"_id": "error.D_K_10_5",
 			"type": "state",
 			"common": {
 			  "name": "error 5",
@@ -688,7 +739,7 @@
 			}
 		  },
 		  {
-			"_id": "error.D_K_10_06",
+			"_id": "error.D_K_10_6",
 			"type": "state",
 			"common": {
 			  "name": "error 6",
@@ -705,7 +756,7 @@
 			}
 		  },
 		  {
-			"_id": "error.D_K_10_07",
+			"_id": "error.D_K_10_7",
 			"type": "state",
 			"common": {
 			  "name": "error 7",
@@ -722,7 +773,7 @@
 			}
 		  },
 		  {
-			"_id": "error.D_K_10_08",
+			"_id": "error.D_K_10_8",
 			"type": "state",
 			"common": {
 			  "name": "error 8",
@@ -739,7 +790,7 @@
 			}
 		  },
 		  {
-			"_id": "error.D_K_10_09",
+			"_id": "error.D_K_10_9",
 			"type": "state",
 			"common": {
 			  "name": "error 9",
@@ -1056,7 +1107,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_2_01",
+			"_id": "info.D_Y_2_1",
 			"type": "state",
 			"common": {
 			  "name": "Wasserverbrauch vor 1 Tag",
@@ -1073,7 +1124,7 @@
 			}
 		  },
 		  {
-			"_id": "calculated.Verschnittwasser_01",
+			"_id": "calculated.Verschnittwasser_1",
 			"type": "state",
 			"common": {
 			  "name": "Verschnittwasserverbrauch vor 1 Tag",
@@ -1090,7 +1141,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_4_01",
+			"_id": "info.D_Y_4_1",
 			"type": "state",
 			"common": {
 			  "name": "Zeit letzte Regenereation 1 Tag vor aktueller",
@@ -1107,7 +1158,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_2_02",
+			"_id": "info.D_Y_2_2",
 			"type": "state",
 			"common": {
 			  "name": "Wasserverbrauch vor 2 Tagen",
@@ -1124,7 +1175,7 @@
 			}
 		  },
 		  {
-			"_id": "calculated.Verschnittwasser_02",
+			"_id": "calculated.Verschnittwasser_2",
 			"type": "state",
 			"common": {
 			  "name": "Verschnittwasserverbrauch vor 2 Tagen",
@@ -1141,7 +1192,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_4_02",
+			"_id": "info.D_Y_4_2",
 			"type": "state",
 			"common": {
 			  "name": "Zeit letzte Regenereation 2 Tage vor aktueller",
@@ -1158,7 +1209,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_2_03",
+			"_id": "info.D_Y_2_3",
 			"type": "state",
 			"common": {
 			  "name": "Wasserverbrauch vor 3 Tagen",
@@ -1175,7 +1226,7 @@
 			}
 		  },
 		  {
-			"_id": "calculated.Verschnittwasser_03",
+			"_id": "calculated.Verschnittwasser_3",
 			"type": "state",
 			"common": {
 			  "name": "Verschnittwasserverbrauch vor 3 Tagen",
@@ -1192,7 +1243,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_4_03",
+			"_id": "info.D_Y_4_3",
 			"type": "state",
 			"common": {
 			  "name": "Zeit letzte Regenereation 3 Tage vor aktueller",
@@ -1209,7 +1260,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_2_04",
+			"_id": "info.D_Y_2_4",
 			"type": "state",
 			"common": {
 			  "name": "Wasserverbrauch vor 4 Tagen",
@@ -1226,7 +1277,7 @@
 			}
 		  },
 		  {
-			"_id": "calculated.Verschnittwasser_04",
+			"_id": "calculated.Verschnittwasser_4",
 			"type": "state",
 			"common": {
 			  "name": "Verschnittwasserverbrauch vor 4 Tagen",
@@ -1243,7 +1294,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_4_04",
+			"_id": "info.D_Y_4_4",
 			"type": "state",
 			"common": {
 			  "name": "Zeit letzte Regenereation 4 Tage vor aktueller",
@@ -1260,7 +1311,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_2_05",
+			"_id": "info.D_Y_2_5",
 			"type": "state",
 			"common": {
 			  "name": "Wasserverbrauch vor 5 Tagen",
@@ -1277,7 +1328,7 @@
 			}
 		  },
 		  {
-			"_id": "calculated.Verschnittwasser_05",
+			"_id": "calculated.Verschnittwasser_5",
 			"type": "state",
 			"common": {
 			  "name": "Verschnittwasserverbrauch vor 5 Tagen",
@@ -1294,7 +1345,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_4_05",
+			"_id": "info.D_Y_4_5",
 			"type": "state",
 			"common": {
 			  "name": "Zeit letzte Regenereation 5 Tage vor aktueller",
@@ -1311,7 +1362,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_2_06",
+			"_id": "info.D_Y_2_6",
 			"type": "state",
 			"common": {
 			  "name": "Wasserverbrauch vor 6 Tagen",
@@ -1328,7 +1379,7 @@
 			}
 		  },
 		  {
-			"_id": "calculated.Verschnittwasser_06",
+			"_id": "calculated.Verschnittwasser_6",
 			"type": "state",
 			"common": {
 			  "name": "Verschnittwasserverbrauch vor 6 Tagen",
@@ -1345,7 +1396,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_4_06",
+			"_id": "info.D_Y_4_6",
 			"type": "state",
 			"common": {
 			  "name": "Zeit letzte Regenereation 6 Tage vor aktueller",
@@ -1362,7 +1413,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_2_07",
+			"_id": "info.D_Y_2_7",
 			"type": "state",
 			"common": {
 			  "name": "Wasserverbrauch vor 7 Tagen",
@@ -1379,7 +1430,7 @@
 			}
 		  },
 		  {
-			"_id": "calculated.Verschnittwasser_07",
+			"_id": "calculated.Verschnittwasser_7",
 			"type": "state",
 			"common": {
 			  "name": "Verschnittwasserverbrauch vor 7 Tagen",
@@ -1396,7 +1447,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_4_07",
+			"_id": "info.D_Y_4_7",
 			"type": "state",
 			"common": {
 			  "name": "Zeit letzte Regenereation 7 Tage vor aktueller",
@@ -1413,7 +1464,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_2_08",
+			"_id": "info.D_Y_2_8",
 			"type": "state",
 			"common": {
 			  "name": "Wasserverbrauch vor 8 Tagen",
@@ -1430,7 +1481,7 @@
 			}
 		  },
 		  {
-			"_id": "calculated.Verschnittwasser_08",
+			"_id": "calculated.Verschnittwasser_8",
 			"type": "state",
 			"common": {
 			  "name": "Verschnittwasserverbrauch vor 8 Tagen",
@@ -1447,7 +1498,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_4_08",
+			"_id": "info.D_Y_4_8",
 			"type": "state",
 			"common": {
 			  "name": "Zeit letzte Regenereation 8 Tage vor aktueller",
@@ -1464,7 +1515,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_2_09",
+			"_id": "info.D_Y_2_9",
 			"type": "state",
 			"common": {
 			  "name": "Wasserverbrauch vor 9 Tagen",
@@ -1481,7 +1532,7 @@
 			}
 		  },
 		  {
-			"_id": "calculated.Verschnittwasser_09",
+			"_id": "calculated.Verschnittwasser_9",
 			"type": "state",
 			"common": {
 			  "name": "Verschnittwasserverbrauch vor 9 Tagen",
@@ -1498,7 +1549,7 @@
 			}
 		  },
 		  {
-			"_id": "info.D_Y_4_09",
+			"_id": "info.D_Y_4_9",
 			"type": "state",
 			"common": {
 			  "name": "Zeit letzte Regenereation 9 Tage vor aktueller",
@@ -1875,14 +1926,48 @@
 			"_id": "info.D_K_9",
 			"type": "state",
 			"common": {
-			  "name": "Durchschnittsverbrauch",
+			  "name": "Durchschnittsverbrauch letzten 3 Tage",
 			  "type": "number",
 			  "role": "number",
 			  "read": true,
 			  "write": false,
 			  "def": false,
-			  "desc": "Durchschnittsverbrauch",
+			  "desc": "Durchschnittsverbrauch letzten 3 Tage",
 			  "unit": "m³"
+			},
+			"native": {
+	  
+			}
+		  }, 
+		  {
+			"_id": "info.D_F_5",
+			"type": "state",
+			"common": {
+			  "name": "Wasserzähler Weichwasser Impulsrate",
+			  "type": "number",
+			  "role": "number",
+			  "read": true,
+			  "write": false,
+			  "def": false,
+			  "desc": "Wasserzähler Weichwasser Impulsrate",
+			  "unit": "l/mp"
+			},
+			"native": {
+	  
+			}
+		  },
+		  {
+			"_id": "info.D_F_6",
+			"type": "state",
+			"common": {
+			  "name": "Wasserzähler Regeneration Impulsrate",
+			  "type": "number",
+			  "role": "number",
+			  "read": true,
+			  "write": false,
+			  "def": false,
+			  "desc": "Wasserzähler Weichwasser Impulsrate",
+			  "unit": "l/mp"
 			},
 			"native": {
 	  
