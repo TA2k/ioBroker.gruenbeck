@@ -11,7 +11,6 @@
 [![NPM](https://nodei.co/npm/iobroker.gruenbeck.png?downloads=true)](https://nodei.co/npm/iobroker.gruenbeck/)
 
 **Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/TA2k/ioBroker.gruenbeck/master.svg)](https://travis-ci.org/TA2k/ioBroker.gruenbeck)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/TA2k/ioBroker.gruenbeck?branch=master&svg=true)](https://ci.appveyor.com/project/TA2k/ioBroker-gruenbeck/)
 
 ## gruenbeck adapter for ioBroker
 
