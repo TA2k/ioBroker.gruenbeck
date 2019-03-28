@@ -115,9 +115,9 @@ class Gruenbeck extends utils.Adapter {
 					if (err) {
 					this.log.error(err);
 					} else {
-						if (states[adapterPrefix+".calculated.WasserverbrauchLC"]) {
+						if (states[adapterPrefix+".calculated.WVLC"]) {
 							
-							if (states[adapterPrefix + ".calculated.WasserverbrauchLC"].val === state.lc) {
+							if (states[adapterPrefix + ".calculated.WVLC"].val === state.lc) {
 								
 								return
 							}
@@ -141,7 +141,7 @@ class Gruenbeck extends utils.Adapter {
 
 						this.setState('calculated.Salzverbrauch', Salzverbrauch);
 						this.setState('calculated.SalzverbrauchGesamt', SalzverbrauchGesamt);
-						this.setState('calculated.WasserverbrauchLC', state.lc)
+						this.setState('calculated.WVLC', state.lc)
 
 						/* Formel: Verschnitthärte / (Rohwasserhärte-Verschnitthärte)= ErhÃ¶hungswert
 					 Beispiel: 5 °dH Verschnitthärte / ( 21° dH Rohwasserhärte- 5° dH Verschnitthärte)= 0.3125 ErhÃ¶hungswert
@@ -249,7 +249,7 @@ class Gruenbeck extends utils.Adapter {
 						
 
 						if (xhr.responseText.length === 0) {
-							this.log.warn("Device returns empty repsonse. Resend request.")
+							this.log.debug("Device returns empty repsonse. Resend request.")
 							queueArray.push(currentCommand)
 							return
 						

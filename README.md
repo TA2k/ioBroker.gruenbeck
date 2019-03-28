@@ -18,6 +18,8 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/TA2k/io
 An ioBroker adapter for Grünbeck Wasseraufbereitung devices.
 
 ## Changelog
+### 0.0.2
+* (tombox) Remove Warning, Fix Descriptions
 
 ### 0.0.1
 * (tombox) initial release

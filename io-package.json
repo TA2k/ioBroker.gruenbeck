@@ -1,2013 +1,1828 @@
 {
-	"common": {
-		"name": "gruenbeck",
-		"version": "0.0.1",
-		"news": {
-			"0.0.1": {
-				"en": "initial release",
-				"de": "Erstveröffentlichung",
-				"ru": "Начальная версия",
-				"pt": "lançamento inicial",
-				"nl": "Eerste uitgave",
-				"fr": "Première version",
-				"it": "Versione iniziale",
-				"es": "Versión inicial",
-				"pl": "Pierwsze wydanie",
-				"zh-cn": "首次出版"
-			}
-		},
-		"title": "Grünbeck",
-		"titleLang": {
-			"en": "Grünbeck",
-			"de": "Grünbeck",
-			"ru": "Grünbeck",
-			"pt": "Grünbeck",
-			"nl": "Grünbeck",
-			"fr": "Grünbeck",
-			"it": "Grünbeck",
-			"es": "Grünbeck",
-			"pl": "Grünbeck",
-			"zh-cn": "Grünbeck"
-		},
-		"desc": {
-			"en": "An ioBroker adapter for Grünbeck Wasseraufbereitung devices.",
-			"de": "Ein ioBroker-Adapter für Grünbeck Wasseraufbereitung Geräte.",
-			"ru": "Адаптер ioBroker для устройств Grünbeck Wasseraufbereitung.",
-			"pt": "Um adaptador ioBroker para dispositivos Grünbeck Wasseraufbereitung.",
-			"nl": "Een ioBroker-adapter voor apparaten van Grünbeck Wasseraufbereitung.",
-			"fr": "Un adaptateur ioBroker pour les appareils Grünbeck Wasseraufbereitung.",
-			"it": "Un adattatore ioBroker per dispositivi Grünbeck Wasseraufbereitung.",
-			"es": "Un adaptador ioBroker para dispositivos Grünbeck Wasseraufbereitung.",
-			"pl": "Adapter ioBroker do urządzeń Grünbeck Wasseraufbereitung.",
-			"zh-cn": "适用于GrünbeckWasseraufbereitung设备的ioBroker适配器。"
-		},
-		"authors": [
-			"tombox <tombox@nomail.de>"
-		],
-		"keywords": [
-			"gruenbeck",
-			"grünbeck",
-			"wasseraufbereitung",
-			"softliQ",
-			"SC18",
-			"SC23"
-		],
-		"license": "MIT",
-		"platform": "Javascript/Node.js",
-		"main": "main.js",
-		"icon": "gruenbeck.png",
-		"enabled": true,
-		"extIcon": "https://raw.githubusercontent.com/TA2k/ioBroker.gruenbeck/master/admin/gruenbeck.png",
-		"readme": "https://github.com/TA2k/ioBroker.gruenbeck/blob/master/README.md",
-		"loglevel": "info",
-		"mode": "daemon",
-		"type": "household",
-		"compact": true,
-		"materialize": true,
-		"dependencies": [
-			{
-				"admin": ">=3.0.0"
-			},
-			{
-				"js-controller": ">=1.4.2"
-			}
-		]
-	},
-	"native": {
-		"host": "",
-		"verschnitthaerte": 3,
-		"pollInterval": 15
-	},
-	"objects": [],
-	"instanceObjects": [
-
-		{
-		  "_id": "parameter",
-		  "type": "channel",
-		  "common": {
-			"name": "Parameter"
-		  },
-		  "native": {
-	
-		  }
-		},
-		{
-		  "_id": "parameter.D_D_1",
-		  "type": "state",
-		  "common": {
-			"name": "Rohwasserhärte",
-			"type": "number",
-			"role": "number",
-			"read": true,
-			"write": true,
-			"desc": "Rohwasserhärte",
-			"unit": "°dH"
-		  },
-		  "native": {
-	
-		  }
-		},
-		{
-		  "_id": "parameter.D_A_4_1",
-		  "type": "state",
-		  "common": {
-			"name": "Name Installateur",
-			"type": "string",
-			"role": "string",
-			"read": true,
-			"write": true,
-			"desc": "Name Installateur",
-			"unit": ""
-		  },
-		  "native": {
-	
-		  }
-		},
-		{
-		  "_id": "parameter.D_A_4_2",
-		  "type": "state",
-		  "common": {
-			"name": "Tel Installateur",
-			"type": "string",
-			"role": "string",
-			"read": true,
-			"write": true,
-			"desc": "Tel Installateur",
-			"unit": ""
-		  },
-		  "native": {
-	
-		  }
-		},
-		{
-		  "_id": "parameter.D_A_4_3",
-		  "type": "state",
-		  "common": {
-			"name": "E-Mail Installateur",
-			"type": "string",
-			"role": "string",
-			"read": true,
-			"write": true,
-			"desc": "E-Mail Installateur",
-			"unit": ""
-		  },
-		  "native": {
-	
-		  }
-		},
-		{
-		  "_id": "parameter.D_C_1_1",
-		  "type": "state",
-		  "common": {
-			"name": "Sprache",
-			"type": "number",
-			"role": "number",
-			"states": {"0": "De", "1": "En", "3": "Fr", "4": "Nl", "5": "Ru", "6": "Es", "7": "Zh" },
-			"read": true,
-			"write": true,
-			"desc": "Sprache",
-			"unit": ""
-		  },
-		  "native": {
-	
-		  }
-		},
-		{
-			"_id": "parameter.D_C_2_1",
-			"type": "state",
-			"common": {
-			  "name": "Härteeinheit",
-			  "type": "number",
-			  "role": "number",
-			  "states": {"0": "°dH", "1": "°f", "2": "°e", "3": "ppm", "4": "mol/m³"},
-			  "read": true,
-			  "write": true,
-			  "desc": "Härteeinheit",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "parameter.D_C_5_1",
-			"type": "state",
-			"common": {
-			  "name": "Power Modus",
-			  "type": "number",
-			  "role": "number",
-			  "states": {"0": "eco", "1": "Power"},
-			  "read": true,
-			  "write": true,
-			  "desc": "Power Modus",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "parameter.D_C_4_1",
-			"type": "state",
-			"common": {
-			  "name": "Regenerationszeitpunkt",
-			  "type": "number",
-			  "role": "number",
-			  "states": {"0": "Auto", "1": "Fest"},
-			  "read": true,
-			  "write": false,
-			  "desc": "Regenerationszeitpunkt",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "parameter.D_C_4_2",
-			"type": "state",
-			"common": {
-			  "name": "Uhrzeit",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": true,
-			  "desc": "Uhrzeit",
-			  "unit": "Uhr"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "parameter.D_C_4_3",
-			"type": "state",
-			"common": {
-			  "name": "Startzeit Regeneration",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": true,
-			  "desc": "Startzeit Regeneration",
-			  "unit": "Uhr"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "parameter.D_C_6_1",
-			"type": "state",
-			"common": {
-			  "name": "Aktives Display im Standby",
-			  "type": "number",
-			  "role": "number",
-			  "states": {"0": "deaktiviert", "1": "aktiviert"},
-			  "read": true,
-			  "write": false,
-			  "desc": "Aktives Display im Standby",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "parameter.D_C_7_1",
-			"type": "state",
-			"common": {
-			  "name": "Soll Service Intervalldauer",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": true,
-			  "desc": "Soll Service Intervalldauer",
-			  "unit": "Tage"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			  "_id": "parameter.D_B_1",
-			  "type": "state",
-			  "common": {
-				  "role": "button",
-				  "name": "Starten der Regeneration",
-				  "type": "boolean",
-				  "write": true
-			  },
-			  "native": {}
-		  },
-		
-		{
-		  "_id": "info.connection",
-		  "type": "state",
-		  "common": {
-			"name": "gruenbeck connected",
-			"type": "boolean",
-			"role": "indicator.connected",
-			"read": true,
-			"write": false,
-			"def": false,
-			"desc": "Is gruenbeck connected?"
-		  },
-		  "native": {
-	
-		  }
-		},
-		{
-		  "_id": "info",
-		  "type": "channel",
-		  "common": {
-			"name": "info"
-		  },
-		  "native": {
-	
-		  }
-		},
-		{
-		  "_id": "info.D_A_2_2",
-		  "type": "state",
-		  "common": {
-			"name": "Tage bis zur nächsten Wartung",
-			"type": "number",
-			"role": "value.days",
-			"read": true,
-			"write": false,
-			"def": false,
-			"desc": "Tage bis zur nächsten Wartung",
-			"unit": "Tage"
-		  },
-		  "native": {
-	
-		  }
-		},
-		{
-			"_id": "info.D_A_2_3",
-			"type": "state",
-			"common": {
-			  "name": "Salzreichweite (nur SC23)",
-			  "type": "number",
-			  "role": "value.days",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Salzreichweite (nur SC23)",
-			  "unit": "Tage"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "parameter.D_C_8_2",
-			"type": "state",
-			"common": {
-			  "name": "Led blinkt bei Salz-Vorwarnung (nur SC23)",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Led blinkt bei Salz-Vorwarnung (nur SC23)",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "parameter.D_C_8_1",
-			"type": "state",
-			"common": {
-			  "name": "LED Funktion (nur SC23)",
-			  "type": "number",
-			  "role": "number",
-			  "states": {"0": "deaktiviert", "1": "bei Störung", "2": "bei Bedienung, Störung", "3": "bei Wasserbehandlung, Bedienung, Störung", "4": "dauerhaftes Leuchten"},
-			  "read": true,
-			  "write": true,
-			  "desc": "LED Funktion (nur SC23)",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		{
-			"_id": "info.D_Y_5",
-			"type": "state",
-			"common": {
-			  "name": "Aktueller Regenerationsschritt",
-			  "type": "number",
-			  "role": "number",
-			  "states": {"0": "keine Regeneration", "1": "Soletank füllen", "2": "Besalzen", "3": "Verdrängung", "4": "Rückspülen", "5": "Erstfiltrat"},
-			  "read": true,
-			  "write": true,
-			  "desc": "Aktueller Regenerationsschritt",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_7",
-			"type": "state",
-			"common": {
-			  "name": "Inbetriebnahme-Datum",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Inbetriebnahme-Datum",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_6",
-			"type": "state",
-			"common": {
-			  "name": "Software-Version",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Software-Version",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_8_11",
-			"type": "state",
-			"common": {
-			  "name": "Ergebnis letzter E-Mail Versand",
-			  "type": "number",
-			  "role": "number",
-			  "states": {"0": "keine Mail versandt", "1": "Mail erfolgreich versandt", "2": "Benutzerdaten fehlerhaft", "3": "kein Internetzugang/Server nicht bereit"},
-			  "read": true,
-			  "write": true,
-			  "desc": "Ergebnis letzter E-Mail Versand",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_10_1",
-			"type": "state",
-			"common": {
-			  "name": "Aktuelle Restkapazität Austauscher",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Aktuelle Restkapazität Austauscher",
-			  "unit": "%"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_B_1",
-			"type": "state",
-			"common": {
-			  "name": "Regeneration aktiv",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Regeneration aktiv",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-
-		  {
-			"_id": "network",
-			"type": "channel",
-			"common": {
-			  "name": "network"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "network.D_C_3_6_1",
-			"type": "state",
-			"common": {
-			  "name": "IP-Adresse WLAN",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "IP-Adresse WLAN",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "network.D_C_3_6_2",
-			"type": "state",
-			"common": {
-			  "name": "Default Gateway WLAN",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Default Gateway WLAN",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "network.D_C_3_6_3",
-			"type": "state",
-			"common": {
-			  "name": "Primary DNS WLAN",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Primary DNS WLAN",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "network.D_C_3_6_4",
-			"type": "state",
-			"common": {
-			  "name": "Secondary DNS WLAN",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Secondary DNS WLAN",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "network.D_C_3_6_5",
-			"type": "state",
-			"common": {
-			  "name": "Status WLAN",
-			  "type": "number",
-			  "role": "number",
-			  "states": {"0": "nicht verbunden", "1": "verbunden"},
-			  "read": true,
-			  "write": true,
-			  "desc": "Status WLAN",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "network.D_C_3_7_1",
-			"type": "state",
-			"common": {
-			  "name": "IP-Adresse Access Point",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "IP-Adresse Access Point",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "network.D_C_3_7_2",
-			"type": "state",
-			"common": {
-			  "name": "SSID Access Point",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "SSID Access Point",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "network.D_C_3_7_3",
-			"type": "state",
-			"common": {
-			  "name": "Status Access Point",
-			  "type": "number",
-			  "role": "number",
-			  "states": {"0": "nicht verbunden", "1": "verbunden"},
-			  "read": true,
-			  "write": true,
-			  "desc": "Status Access Point",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error",
-			"type": "channel",
-			"common": {
-			  "name": "error"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_1",
-			"type": "state",
-			"common": {
-			  "name": "error 1",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 1",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_2",
-			"type": "state",
-			"common": {
-			  "name": "error 2",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 2",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_3",
-			"type": "state",
-			"common": {
-			  "name": "error 3",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 3",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_4",
-			"type": "state",
-			"common": {
-			  "name": "error 4",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 4",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_5",
-			"type": "state",
-			"common": {
-			  "name": "error 5",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 5",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_6",
-			"type": "state",
-			"common": {
-			  "name": "error 6",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 6",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_7",
-			"type": "state",
-			"common": {
-			  "name": "error 7",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 7",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_8",
-			"type": "state",
-			"common": {
-			  "name": "error 8",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 8",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_9",
-			"type": "state",
-			"common": {
-			  "name": "error 9",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 9",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_10",
-			"type": "state",
-			"common": {
-			  "name": "error 10",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 10",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_11",
-			"type": "state",
-			"common": {
-			  "name": "error 11",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 11",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_12",
-			"type": "state",
-			"common": {
-			  "name": "error 12",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 12",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_13",
-			"type": "state",
-			"common": {
-			  "name": "error 13",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 13",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_14",
-			"type": "state",
-			"common": {
-			  "name": "error 14",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 14",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_15",
-			"type": "state",
-			"common": {
-			  "name": "error 15",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 15",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "error.D_K_10_16",
-			"type": "state",
-			"common": {
-			  "name": "error 16",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "error 16",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		 
-		  {
-			"_id": "info.D_A_1_1",
-			"type": "state",
-			"common": {
-			  "name": "Aktueller Durchfluss",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Aktueller Durchfluss",
-			  "unit": "m³/h"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_A_1_2",
-			"type": "state",
-			"common": {
-			  "name": "Restkapazität",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Restkapazität",
-			  "unit": "m³*°dH"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_A_1_3",
-			"type": "state",
-			"common": {
-			  "name": "Kapazitätszahl",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Kapazitätszahl'",
-			  "unit": "m³*°dH"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_A_2_1",
-			"type": "state",
-			"common": {
-			  "name": "Restzeit/-menge Reg.Schritt",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Restzeit/-menge Reg.Schritt",
-			  "unit": "l/min"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_A_3_1",
-			"type": "state",
-			"common": {
-			  "name": "Letzte Regeneration",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Letzte Regeneration",
-			  "unit": "h"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_A_3_2",
-			"type": "state",
-			"common": {
-			  "name": "Letzte Regeneration übrig",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Letzte Regeneration übrig",
-			  "unit": "%"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated",
-			"type": "channel",
-			"common": {
-			  "name": "calculated"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Salzverbrauch",
-			"type": "state",
-			"common": {
-			  "name": "Salzverbrauch",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Salzverbrauch",
-			  "unit": "kg"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.WasserverbrauchLC",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch LastChanged",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch LastChanged",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.SalzverbrauchGesamt",
-			"type": "state",
-			"common": {
-			  "name": "Salzverbrauch gesamt",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Salzverbrauch gesamt",
-			  "unit": "kg"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.DatumSalzverbrauch",
-			"type": "state",
-			"common": {
-			  "name": "Start Datum Gesamtwasserverbrauch",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Start Datum Gesamtwasserverbrauch",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_1",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 1 Tag",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 1 Tag",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_1",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 1 Tag",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 1 Tag",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_1",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 1 Tag vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 1 Tag vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_2",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 2 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 2 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_2",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 2 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 2 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_2",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 2 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 2 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_3",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 3 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 3 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_3",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 3 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 3 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_3",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 3 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 3 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_4",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 4 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 4 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_4",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 4 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 4 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_4",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 4 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 4 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_5",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 5 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 5 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_5",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 5 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 5 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_5",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 5 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 5 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_6",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 6 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 6 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_6",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 6 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 6 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_6",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 6 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 6 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_7",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 7 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 7 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_7",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 7 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 7 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_7",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 7 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 7 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_8",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 8 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 8 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_8",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 8 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 8 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_8",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 8 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 8 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_9",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 9 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 9 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_9",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 9 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 9 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_9",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 9 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 9 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_10",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 10 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 10 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_10",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 10 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 10 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_10",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 10 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 10 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_11",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 11 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 11 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_11",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 11 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 11 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_11",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 11 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 11 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_12",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 12 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 12 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_12",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 12 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 12 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_12",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 12 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 12 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_13",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 13 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 13 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_13",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 13 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 13 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_13",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 13 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 13 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_2_14",
-			"type": "state",
-			"common": {
-			  "name": "Wasserverbrauch vor 14 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserverbrauch vor 14 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Verschnittwasser_14",
-			"type": "state",
-			"common": {
-			  "name": "Verschnittwasserverbrauch vor 14 Tagen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verschnittwasserverbrauch vor 14 Tagen",
-			  "unit": "Liter"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_Y_4_14",
-			"type": "state",
-			"common": {
-			  "name": "Zeit letzte Regenereation 14 Tage vor aktueller",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeit letzte Regenereation 14 Tage vor aktueller",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_K_1",
-			"type": "state",
-			"common": {
-			  "name": "Zähler Regenerationen",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zähler Regenerationen",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_K_2",
-			"type": "state",
-			"common": {
-			  "name": "Zähler Weichwassermenge",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zähler Weichwassermenge",
-			  "unit": "m³"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_K_3",
-			"type": "state",
-			"common": {
-			  "name": "Durchfluss Spitzenwert",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Durchfluss Spitzenwert",
-			  "unit": "m³/h"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_K_4",
-			"type": "state",
-			"common": {
-			  "name": "Zeitzähler Nenndurchfluss überschrittten",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Zeitzähler Nenndurchfluss überschrittten",
-			  "unit": "h"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_K_7",
-			"type": "state",
-			"common": {
-			  "name": "Schrittanzeige Regenerationsventil",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Schrittanzeige Regenerationsventil",
-			  "unit": "Steps"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_K_8",
-			"type": "state",
-			"common": {
-			  "name": "Verbrauchskapazitätszahl",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Verbrauchskapazitätszahl",
-			  "unit": "m³x°dH"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_K_9",
-			"type": "state",
-			"common": {
-			  "name": "Durchschnittsverbrauch letzten 3 Tage",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Durchschnittsverbrauch letzten 3 Tage",
-			  "unit": "m³"
-			},
-			"native": {
-	  
-			}
-		  }, 
-		  {
-			"_id": "info.D_F_5",
-			"type": "state",
-			"common": {
-			  "name": "Wasserzähler Weichwasser Impulsrate",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserzähler Weichwasser Impulsrate",
-			  "unit": "l/mp"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "info.D_F_6",
-			"type": "state",
-			"common": {
-			  "name": "Wasserzähler Regeneration Impulsrate",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Wasserzähler Weichwasser Impulsrate",
-			  "unit": "l/mp"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.Wasserzaehler",
-			"type": "state",
-			"common": {
-			  "name": "Gesamtwasserverbrauch",
-			  "type": "number",
-			  "role": "number",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Gesamtwasserverbrauch",
-			  "unit": "m³"
-			},
-			"native": {
-	  
-			}
-		  },
-		  {
-			"_id": "calculated.DatumWasserzaehler",
-			"type": "state",
-			"common": {
-			  "name": "Start Datum Gesamtwasserverbrauch",
-			  "type": "string",
-			  "role": "string",
-			  "read": true,
-			  "write": false,
-			  "def": false,
-			  "desc": "Start Datum Gesamtwasserverbrauch",
-			  "unit": ""
-			},
-			"native": {
-	  
-			}
-		  }
-
-		  
-	  ]
+    "common": {
+        "name": "gruenbeck",
+        "version": "0.0.2",
+        "news": {
+            "0.0.2": {
+                "en": "Remove Warning, Fix Descriptions",
+                "de": "Warnung entfernt und Beschreibung verbessert"
+            },
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "Grünbeck",
+        "titleLang": {
+            "en": "Grünbeck",
+            "de": "Grünbeck",
+            "ru": "Grünbeck",
+            "pt": "Grünbeck",
+            "nl": "Grünbeck",
+            "fr": "Grünbeck",
+            "it": "Grünbeck",
+            "es": "Grünbeck",
+            "pl": "Grünbeck",
+            "zh-cn": "Grünbeck"
+        },
+        "desc": {
+            "en": "An ioBroker adapter for Grünbeck Wasseraufbereitung devices.",
+            "de": "Ein ioBroker-Adapter für Grünbeck Wasseraufbereitungsanlagen.",
+            "ru": "Адаптер ioBroker для устройств Grünbeck Wasseraufbereitung.",
+            "pt": "Um adaptador ioBroker para dispositivos Grünbeck Wasseraufbereitung.",
+            "nl": "Een ioBroker-adapter voor apparaten van Grünbeck Wasseraufbereitung.",
+            "fr": "Un adaptateur ioBroker pour les appareils Grünbeck Wasseraufbereitung.",
+            "it": "Un adattatore ioBroker per dispositivi Grünbeck Wasseraufbereitung.",
+            "es": "Un adaptador ioBroker para dispositivos Grünbeck Wasseraufbereitung.",
+            "pl": "Adapter ioBroker do urządzeń Grünbeck Wasseraufbereitung.",
+            "zh-cn": "适用于GrünbeckWasseraufbereitung设备的ioBroker适配器。"
+        },
+        "authors": [
+            "tombox <tombox@nomail.de>"
+        ],
+        "keywords": [
+            "gruenbeck",
+            "grünbeck",
+            "wasseraufbereitung",
+            "softliQ",
+            "SC18",
+            "SC23"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "gruenbeck.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/TA2k/ioBroker.gruenbeck/master/admin/gruenbeck.png",
+        "readme": "https://github.com/TA2k/ioBroker.gruenbeck/blob/master/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "household",
+        "compact": true,
+        "materialize": true,
+        "dependencies": [
+            {
+                "admin": ">=3.0.0"
+            },
+            {
+                "js-controller": ">=1.4.2"
+            }
+        ]
+    },
+    "native": {
+        "host": "",
+        "verschnitthaerte": 3,
+        "pollInterval": 15
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "parameter",
+            "type": "channel",
+            "common": {
+                "name": "Parameter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_D_1",
+            "type": "state",
+            "common": {
+                "name": "Rohwasserhärte",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": true,
+                "desc": "Rohwasserhärte",
+                "unit": "°dH"
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_A_4_1",
+            "type": "state",
+            "common": {
+                "name": "Name Installateur",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": true,
+                "desc": "Name Installateur",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_A_4_2",
+            "type": "state",
+            "common": {
+                "name": "Tel Installateur",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": true,
+                "desc": "Tel Installateur",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_A_4_3",
+            "type": "state",
+            "common": {
+                "name": "E-Mail Installateur",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": true,
+                "desc": "E-Mail Installateur",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_C_1_1",
+            "type": "state",
+            "common": {
+                "name": "Sprache",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "De",
+                    "1": "En",
+                    "3": "Fr",
+                    "4": "Nl",
+                    "5": "Ru",
+                    "6": "Es",
+                    "7": "Zh"
+                },
+                "read": true,
+                "write": true,
+                "desc": "Sprache",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_C_2_1",
+            "type": "state",
+            "common": {
+                "name": "Härteeinheit",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "°dH",
+                    "1": "°f",
+                    "2": "°e",
+                    "3": "ppm",
+                    "4": "mol/m³"
+                },
+                "read": true,
+                "write": true,
+                "desc": "Härteeinheit",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_C_5_1",
+            "type": "state",
+            "common": {
+                "name": "Power Modus",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "eco",
+                    "1": "Power"
+                },
+                "read": true,
+                "write": true,
+                "desc": "Power Modus",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_C_4_1",
+            "type": "state",
+            "common": {
+                "name": "Regenerationszeitpunkt",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "Auto",
+                    "1": "Fest"
+                },
+                "read": true,
+                "write": false,
+                "desc": "Regenerationszeitpunkt",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_C_4_2",
+            "type": "state",
+            "common": {
+                "name": "Uhrzeit",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": true,
+                "desc": "Uhrzeit",
+                "unit": "Uhr"
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_C_4_3",
+            "type": "state",
+            "common": {
+                "name": "Startzeit Regeneration",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": true,
+                "desc": "Startzeit Regeneration",
+                "unit": "Uhr"
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_C_6_1",
+            "type": "state",
+            "common": {
+                "name": "Aktives Display im Standby",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "deaktiviert",
+                    "1": "aktiviert"
+                },
+                "read": true,
+                "write": false,
+                "desc": "Aktives Display im Standby",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_C_7_1",
+            "type": "state",
+            "common": {
+                "name": "Soll Service Intervalldauer",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": true,
+                "desc": "Soll Service Intervalldauer",
+                "unit": "Tage"
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_B_1",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Starten der Regeneration",
+                "type": "boolean",
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "name": "gruenbeck connected",
+                "type": "boolean",
+                "role": "indicator.connected",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Is gruenbeck connected?"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "info"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_A_2_2",
+            "type": "state",
+            "common": {
+                "name": "Tage bis zur nächsten Wartung",
+                "type": "number",
+                "role": "value.days",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Tage bis zur nächsten Wartung",
+                "unit": "Tage"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_A_2_3",
+            "type": "state",
+            "common": {
+                "name": "Salzreichweite (nur SC23)",
+                "type": "number",
+                "role": "value.days",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Salzreichweite (nur SC23)",
+                "unit": "Tage"
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_C_8_2",
+            "type": "state",
+            "common": {
+                "name": "Led blinkt bei Salz-Vorwarnung (nur SC23)",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Led blinkt bei Salz-Vorwarnung (nur SC23)",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.D_C_8_1",
+            "type": "state",
+            "common": {
+                "name": "LED Funktion (nur SC23)",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "deaktiviert",
+                    "1": "bei Störung",
+                    "2": "bei Bedienung, Störung",
+                    "3": "bei Wasserbehandlung, Bedienung, Störung",
+                    "4": "dauerhaftes Leuchten"
+                },
+                "read": true,
+                "write": true,
+                "desc": "LED Funktion (nur SC23)",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_5",
+            "type": "state",
+            "common": {
+                "name": "Aktueller Regenerationsschritt",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "keine Regeneration",
+                    "1": "Soletank füllen",
+                    "2": "Besalzen",
+                    "3": "Verdrängung",
+                    "4": "Rückspülen",
+                    "5": "Erstfiltrat"
+                },
+                "read": true,
+                "write": true,
+                "desc": "Aktueller Regenerationsschritt",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_7",
+            "type": "state",
+            "common": {
+                "name": "Inbetriebnahme-Datum",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Inbetriebnahme-Datum",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_6",
+            "type": "state",
+            "common": {
+                "name": "Software-Version",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Software-Version",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_8_11",
+            "type": "state",
+            "common": {
+                "name": "Ergebnis letzter E-Mail Versand",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "keine Mail versandt",
+                    "1": "Mail erfolgreich versandt",
+                    "2": "Benutzerdaten fehlerhaft",
+                    "3": "kein Internetzugang/Server nicht bereit"
+                },
+                "read": true,
+                "write": true,
+                "desc": "Ergebnis letzter E-Mail Versand",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_10_1",
+            "type": "state",
+            "common": {
+                "name": "Aktuelle Restkapazität Austauscher",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Aktuelle Restkapazität Austauscher",
+                "unit": "%"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_B_1",
+            "type": "state",
+            "common": {
+                "name": "Regeneration aktiv",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Regeneration aktiv",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "network",
+            "type": "channel",
+            "common": {
+                "name": "network"
+            },
+            "native": {}
+        },
+        {
+            "_id": "network.D_C_3_6_1",
+            "type": "state",
+            "common": {
+                "name": "IP-Adresse WLAN",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "IP-Adresse WLAN",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "network.D_C_3_6_2",
+            "type": "state",
+            "common": {
+                "name": "Default Gateway WLAN",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Default Gateway WLAN",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "network.D_C_3_6_3",
+            "type": "state",
+            "common": {
+                "name": "Primary DNS WLAN",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Primary DNS WLAN",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "network.D_C_3_6_4",
+            "type": "state",
+            "common": {
+                "name": "Secondary DNS WLAN",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Secondary DNS WLAN",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "network.D_C_3_6_5",
+            "type": "state",
+            "common": {
+                "name": "Status WLAN",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "nicht verbunden",
+                    "1": "verbunden"
+                },
+                "read": true,
+                "write": true,
+                "desc": "Status WLAN",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "network.D_C_3_7_1",
+            "type": "state",
+            "common": {
+                "name": "IP-Adresse Access Point",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "IP-Adresse Access Point",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "network.D_C_3_7_2",
+            "type": "state",
+            "common": {
+                "name": "SSID Access Point",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "SSID Access Point",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "network.D_C_3_7_3",
+            "type": "state",
+            "common": {
+                "name": "Status Access Point",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "nicht verbunden",
+                    "1": "verbunden"
+                },
+                "read": true,
+                "write": true,
+                "desc": "Status Access Point",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error",
+            "type": "channel",
+            "common": {
+                "name": "error"
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_1",
+            "type": "state",
+            "common": {
+                "name": "error 1",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 1",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_2",
+            "type": "state",
+            "common": {
+                "name": "error 2",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 2",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_3",
+            "type": "state",
+            "common": {
+                "name": "error 3",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 3",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_4",
+            "type": "state",
+            "common": {
+                "name": "error 4",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 4",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_5",
+            "type": "state",
+            "common": {
+                "name": "error 5",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 5",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_6",
+            "type": "state",
+            "common": {
+                "name": "error 6",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 6",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_7",
+            "type": "state",
+            "common": {
+                "name": "error 7",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 7",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_8",
+            "type": "state",
+            "common": {
+                "name": "error 8",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 8",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_9",
+            "type": "state",
+            "common": {
+                "name": "error 9",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 9",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_10",
+            "type": "state",
+            "common": {
+                "name": "error 10",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 10",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_11",
+            "type": "state",
+            "common": {
+                "name": "error 11",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 11",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_12",
+            "type": "state",
+            "common": {
+                "name": "error 12",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 12",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_13",
+            "type": "state",
+            "common": {
+                "name": "error 13",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 13",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_14",
+            "type": "state",
+            "common": {
+                "name": "error 14",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 14",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_15",
+            "type": "state",
+            "common": {
+                "name": "error 15",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 15",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "error.D_K_10_16",
+            "type": "state",
+            "common": {
+                "name": "error 16",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "error 16",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_A_1_1",
+            "type": "state",
+            "common": {
+                "name": "Aktueller Durchfluss",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Aktueller Durchfluss",
+                "unit": "m³/h"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_A_1_2",
+            "type": "state",
+            "common": {
+                "name": "Restkapazität",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Restkapazität",
+                "unit": "m³*°dH"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_A_1_3",
+            "type": "state",
+            "common": {
+                "name": "Kapazitätszahl",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Kapazitätszahl'",
+                "unit": "m³*°dH"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_A_2_1",
+            "type": "state",
+            "common": {
+                "name": "Restzeit/-menge Reg.Schritt",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Restzeit/-menge Reg.Schritt",
+                "unit": "l/min"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_A_3_1",
+            "type": "state",
+            "common": {
+                "name": "Letzte Regeneration",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Letzte Regeneration",
+                "unit": "h"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_A_3_2",
+            "type": "state",
+            "common": {
+                "name": "Letzte Regeneration übrig",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Letzte Regeneration übrig",
+                "unit": "%"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated",
+            "type": "channel",
+            "common": {
+                "name": "calculated"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Salzverbrauch",
+            "type": "state",
+            "common": {
+                "name": "Salzverbrauch",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Salzverbrauch",
+                "unit": "kg"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.WVLC",
+            "type": "state",
+            "common": {
+                "name": "WV Zeitstempel der letzten Änderung",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "WV Zeitstempel der letzten Änderung",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.SalzverbrauchGesamt",
+            "type": "state",
+            "common": {
+                "name": "Salzverbrauch gesamt",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Salzverbrauch gesamt",
+                "unit": "kg"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.DatumSalzverbrauch",
+            "type": "state",
+            "common": {
+                "name": "Start Datum Gesamtsalzverbrauch",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Start Datum Gesamtsalzverbrauch",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_1",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 01 Tag",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 01 Tag",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_1",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 01 Tag",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 01 Tag",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_1",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 01 Tag vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 01 Tag vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_2",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 02 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 02 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_2",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 02 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 02 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_2",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 02 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 02 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_3",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 03 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 03 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_3",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 03 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 03 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_3",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 03 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 03 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_4",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 04 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 04 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_4",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 04 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 04 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_4",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 04 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 04 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_5",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 05 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 05 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_5",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 05 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 05 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_5",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 05 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 05 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_6",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 06 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 06 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_6",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 06 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 06 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_6",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 06 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 06 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_7",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 07 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 07 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_7",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 07 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 07 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_7",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 07 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 07 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_8",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 08 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 08 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_8",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 08 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 08 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_8",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 08 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 08 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_9",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 09 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 09 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_9",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 09 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 09 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_9",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 09 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 09 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_10",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 10 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 10 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_10",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 10 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 10 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_10",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 10 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 10 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_11",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 11 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 11 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_11",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 11 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 11 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_11",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 11 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 11 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_12",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 12 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 12 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_12",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 12 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 12 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_12",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 12 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 12 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_13",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 13 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 13 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_13",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 13 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 13 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_13",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 13 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 13 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_2_14",
+            "type": "state",
+            "common": {
+                "name": "Wasserverbrauch vor 14 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserverbrauch vor 14 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Verschnittwasser_14",
+            "type": "state",
+            "common": {
+                "name": "Verschnittwasserverbrauch vor 14 Tagen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verschnittwasserverbrauch vor 14 Tagen",
+                "unit": "Liter"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_Y_4_14",
+            "type": "state",
+            "common": {
+                "name": "Zeit letzte Regenereation 14 Tage vor aktueller",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeit letzte Regenereation 14 Tage vor aktueller",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_K_1",
+            "type": "state",
+            "common": {
+                "name": "Zähler Regenerationen",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zähler Regenerationen",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_K_2",
+            "type": "state",
+            "common": {
+                "name": "Zähler Weichwassermenge",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zähler Weichwassermenge",
+                "unit": "m³"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_K_3",
+            "type": "state",
+            "common": {
+                "name": "Durchfluss Spitzenwert",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Durchfluss Spitzenwert",
+                "unit": "m³/h"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_K_4",
+            "type": "state",
+            "common": {
+                "name": "Zeitzähler Nenndurchfluss überschrittten",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Zeitzähler Nenndurchfluss überschrittten",
+                "unit": "h"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_K_7",
+            "type": "state",
+            "common": {
+                "name": "Schrittanzeige Regenerationsventil",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Schrittanzeige Regenerationsventil",
+                "unit": "Steps"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_K_8",
+            "type": "state",
+            "common": {
+                "name": "Verbrauchskapazitätszahl",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Verbrauchskapazitätszahl",
+                "unit": "m³x°dH"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_K_9",
+            "type": "state",
+            "common": {
+                "name": "Durchschnittsverbrauch letzten 03 Tage",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Durchschnittsverbrauch letzten 03 Tage",
+                "unit": "m³"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_F_5",
+            "type": "state",
+            "common": {
+                "name": "Wasserzähler Weichwasser Impulsrate",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserzähler Weichwasser Impulsrate",
+                "unit": "l/mp"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.D_F_6",
+            "type": "state",
+            "common": {
+                "name": "Wasserzähler Regeneration Impulsrate",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Wasserzähler Weichwasser Impulsrate",
+                "unit": "l/mp"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Wasserzaehler",
+            "type": "state",
+            "common": {
+                "name": "Gesamtwasserverbrauch",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Gesamtwasserverbrauch",
+                "unit": "m³"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.DatumWasserzaehler",
+            "type": "state",
+            "common": {
+                "name": "Start Datum Gesamtwasserverbrauch",
+                "type": "string",
+                "role": "string",
+                "read": true,
+                "write": false,
+                "def": false,
+                "desc": "Start Datum Gesamtwasserverbrauch",
+                "unit": ""
+            },
+            "native": {}
+        }
+    ]
 }
