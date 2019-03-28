@@ -17,6 +17,9 @@
 An ioBroker adapter for Grünbeck Wasseraufbereitung devices.
 
 ## Changelog
+### 0.0.3
+* (tombox) Add new Error state, add JSON History for Wasserverbrauch
+
 ### 0.0.2
 * (tombox) Remove Warning, Fix Descriptions
 
