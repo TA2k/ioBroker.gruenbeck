@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "news": {
+            "0.0.3": {
+                "en": "Add new Error state, add JSON History for Wasserverbrauch",
+                "de": "Neuer State wenn ein neuer Fehler eingelesen wird, JSON hinzugefügt für eine komplette Historie des Wasserverbrauchs"
+            },
             "0.0.2": {
                 "en": "Remove Warning, Fix Descriptions",
                 "de": "Warnung entfernt und Beschreibung verbessert"
@@ -222,7 +226,7 @@
                     "1": "Fest"
                 },
                 "read": true,
-                "write": false,
+                "write": true,
                 "desc": "Regenerationszeitpunkt",
                 "unit": ""
             },
@@ -268,7 +272,7 @@
                     "1": "aktiviert"
                 },
                 "read": true,
-                "write": false,
+                "write": true,
                 "desc": "Aktives Display im Standby",
                 "unit": ""
             },
@@ -359,7 +363,7 @@
                 "type": "number",
                 "role": "number",
                 "read": true,
-                "write": false,
+                "write": true,
                 "def": false,
                 "desc": "Led blinkt bei Salz-Vorwarnung (nur SC23)",
                 "unit": ""
@@ -635,13 +639,13 @@
             "_id": "error.D_K_10_1",
             "type": "state",
             "common": {
-                "name": "error 1",
+                "name": "error 01",
                 "type": "string",
                 "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
-                "desc": "error 1",
+                "desc": "error 01",
                 "unit": ""
             },
             "native": {}
@@ -650,13 +654,13 @@
             "_id": "error.D_K_10_2",
             "type": "state",
             "common": {
-                "name": "error 2",
+                "name": "error 02",
                 "type": "string",
                 "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
-                "desc": "error 2",
+                "desc": "error 02",
                 "unit": ""
             },
             "native": {}
@@ -665,13 +669,13 @@
             "_id": "error.D_K_10_3",
             "type": "state",
             "common": {
-                "name": "error 3",
+                "name": "error 03",
                 "type": "string",
                 "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
-                "desc": "error 3",
+                "desc": "error 03",
                 "unit": ""
             },
             "native": {}
@@ -680,13 +684,13 @@
             "_id": "error.D_K_10_4",
             "type": "state",
             "common": {
-                "name": "error 4",
+                "name": "error 04",
                 "type": "string",
                 "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
-                "desc": "error 4",
+                "desc": "error 04",
                 "unit": ""
             },
             "native": {}
@@ -695,13 +699,13 @@
             "_id": "error.D_K_10_5",
             "type": "state",
             "common": {
-                "name": "error 5",
+                "name": "error 05",
                 "type": "string",
                 "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
-                "desc": "error 5",
+                "desc": "error 05",
                 "unit": ""
             },
             "native": {}
@@ -710,13 +714,13 @@
             "_id": "error.D_K_10_6",
             "type": "state",
             "common": {
-                "name": "error 6",
+                "name": "error 06",
                 "type": "string",
                 "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
-                "desc": "error 6",
+                "desc": "error 06",
                 "unit": ""
             },
             "native": {}
@@ -725,13 +729,13 @@
             "_id": "error.D_K_10_7",
             "type": "state",
             "common": {
-                "name": "error 7",
+                "name": "error 07",
                 "type": "string",
                 "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
-                "desc": "error 7",
+                "desc": "error 07",
                 "unit": ""
             },
             "native": {}
@@ -740,13 +744,13 @@
             "_id": "error.D_K_10_8",
             "type": "state",
             "common": {
-                "name": "error 8",
+                "name": "error 08",
                 "type": "string",
                 "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
-                "desc": "error 8",
+                "desc": "error 08",
                 "unit": ""
             },
             "native": {}
@@ -755,13 +759,13 @@
             "_id": "error.D_K_10_9",
             "type": "state",
             "common": {
-                "name": "error 9",
+                "name": "error 09",
                 "type": "string",
                 "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
-                "desc": "error 9",
+                "desc": "error 09",
                 "unit": ""
             },
             "native": {}
@@ -970,6 +974,36 @@
             "native": {}
         },
         {
+            "_id": "calculated.newError",
+            "type": "state",
+            "common": {
+                "name": "Status wenn ein neuer Fehler festgestellt wird (manuell zurücksetzen)",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "kein Fehler",
+                    "1": "Fehler"
+                },
+                "read": true,
+                "write": true,
+                "desc": "Status wenn ein neuer Fehler festgestellt wird (manuell zurücksetzen)",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.allTableJSON",
+            "type": "state",
+            "common": {
+                "name": "Historie des Wasserverbrauchs als JSON",
+                "type": "object",
+                "role": "history",
+                "read": true,
+                "desc": "Historie des Wasserverbrauchs als JSON"
+            },
+            "native": {}
+        },
+        {
             "_id": "calculated.Salzverbrauch",
             "type": "state",
             "common": {
@@ -981,21 +1015,6 @@
                 "def": false,
                 "desc": "Salzverbrauch",
                 "unit": "kg"
-            },
-            "native": {}
-        },
-        {
-            "_id": "calculated.WVLC",
-            "type": "state",
-            "common": {
-                "name": "WV Zeitstempel der letzten Änderung",
-                "type": "number",
-                "role": "number",
-                "read": true,
-                "write": false,
-                "def": false,
-                "desc": "WV Zeitstempel der letzten Änderung",
-                "unit": ""
             },
             "native": {}
         },

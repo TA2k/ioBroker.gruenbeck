@@ -103,7 +103,11 @@ class Gruenbeck extends utils.Adapter {
 			var adapterPrefix = this.name+"."+this.instance;
 			
 			// The state was changed
-			if (id === (adapterPrefix + ".info.D_Y_2_1") ) {
+			if (id === (adapterPrefix + ".error.D_K_10_1") && state.lc && state.lc === state.ts ) {
+				this.setState("calculated.newError", 1, true)
+			}
+			
+			if (id === (adapterPrefix + ".info.D_Y_2_1") && state.lc === state.ts ) {
 				/*Formel Grünbeck bei Kapazitätszahl 8 m³x°dH und einem Härteunterschied von Rohwasser zu Brauchwasser 
 				von 12 °dH  : 0,0285 kg x 12 °dH x 100 m³ = 34,2 kg Regeneriersalz
 				Bei der min. Kapazitätszahl 6 m³x°dH entspricht der Salzverbrauch 0.025 kg
@@ -115,13 +119,7 @@ class Gruenbeck extends utils.Adapter {
 					if (err) {
 					this.log.error(err);
 					} else {
-						if (states[adapterPrefix+".calculated.WVLC"]) {
-							
-							if (states[adapterPrefix + ".calculated.WVLC"].val === state.lc) {
-								
-								return
-							}
-						} 
+						
 						var Rohwasserhaerte = states[adapterPrefix+".parameter.D_D_1"].val;
 						var KapZahl = states[adapterPrefix+".info.D_A_1_3"].val;
 						var Wasserverbrauch = states[adapterPrefix+".info.D_Y_2_1"].val;
@@ -141,7 +139,6 @@ class Gruenbeck extends utils.Adapter {
 
 						this.setState('calculated.Salzverbrauch', Salzverbrauch);
 						this.setState('calculated.SalzverbrauchGesamt', SalzverbrauchGesamt);
-						this.setState('calculated.WVLC', state.lc)
 
 						/* Formel: Verschnitthärte / (Rohwasserhärte-Verschnitthärte)= ErhÃ¶hungswert
 					 Beispiel: 5 °dH Verschnitthärte / ( 21° dH Rohwasserhärte- 5° dH Verschnitthärte)= 0.3125 ErhÃ¶hungswert
@@ -172,13 +169,42 @@ class Gruenbeck extends utils.Adapter {
 						
 						}
 
+						//calc json history
+						this.log.debug("calc JSON")
+						var newWaterLog = [];
+						for(var i = 14; i>= 1; i--) {
+							var d = new Date();
+							d.setDate(d.getDate()-i);
+							akkWasser = states[adapterPrefix + '.info.D_Y_2_' + i].val
+							newWaterLog.push({date: this.getCurrentDate(d),value:akkWasser})
+						}
+						var currentWaterLogState = states[adapterPrefix + '.calculated.allTableJSON']
+						var currentWaterLog = []
+						if (currentWaterLogState) {
+							currentWaterLog = JSON.parse(currentWaterLogState.val)
+						} 
+
+						var waterLog = [];
+						for(var k in newWaterLog){
+						var shared = false;
+						for (var j in currentWaterLog)
+							if (currentWaterLog[j].date == newWaterLog[k].date) {
+								shared = true;
+								break;
+							}
+						if(!shared) waterLog.push(newWaterLog[k])
+						}
+						waterLog = waterLog.concat(currentWaterLog);
+						
+						this.setState('calculated.allTableJSON', JSON.stringify(waterLog), true);
+
 
 					}
 				})					
 
 			} else if (id.indexOf("parameter") != -1 && state.ack === false) {
 				this.setParameter(id, state.val)
-			}
+			} 
 
 
 		} else {
@@ -187,8 +213,11 @@ class Gruenbeck extends utils.Adapter {
 		}
 	}
 
-	getCurrentDate() {
-		var today = new Date();
+	getCurrentDate(date) {
+		if (!date) {
+			date = new Date();
+		}
+		var today = date;
 		var dd = today.getDate();
 		var mm = today.getMonth() + 1; //January is 0!
 
