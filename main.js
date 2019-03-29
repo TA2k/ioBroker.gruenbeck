@@ -14,7 +14,7 @@ const { XMLHttpRequest } = require("xmlhttprequest-ts");
 var DOMParser = require('xmldom').DOMParser;
 var domParser = new DOMParser()
 var requestAllCommand = "id=0000&code=245&show=D_D_1|D_A_4_1|D_A_4_2|D_A_4_3|D_C_1_1|D_C_2_1|D_C_5_1|D_C_4_1|D_C_4_2|D_C_4_3|D_C_6_1|D_C_7_1|D_A_2_2|D_A_2_3|D_C_3_6_1|D_C_8_1|D_C_8_2|D_C_3_6_2|D_C_3_6_3|D_C_3_6_4|D_C_3_6_5|D_C_3_7_1|D_C_3_7_2|D_C_3_7_3|D_Y_5|D_Y_7|D_Y_6|D_Y_8_11|D_Y_10_1|D_B_1|D_A_1_1|D_A_1_2|D_A_1_3|D_A_2_1|D_A_3_1|D_A_3_2|D_K_1|D_K_2|D_K_3|D_K_4|D_K_7|D_K_8|D_K_9|D_Y_2_1|D_Y_4_1|D_Y_2_2|D_Y_4_2|D_Y_2_3|D_Y_4_3|D_Y_2_4|D_Y_4_4|D_Y_2_5|D_Y_4_5|D_Y_2_6|D_Y_4_6|D_Y_2_7|D_Y_4_7|D_Y_2_8|D_Y_4_8|D_Y_2_9|D_Y_4_9|D_Y_2_10|D_Y_4_10|D_Y_2_11|D_Y_4_11|D_Y_2_12|D_Y_4_12|D_Y_2_13|D_Y_4_13|D_Y_2_14|D_Y_4_14~"
-var requestActualsCommand = "id=0000&show=D_A_1_1|D_A_1_2|D_A_2_2|D_A_3_1|D_A_3_2|D_Y_1|D_A_1_3|D_A_2_3|D_Y_5|D_A_2_1|D_C_4_1|D_C_4_3|D_C_1_1|D_C_4_2|D_C_5_1|D_C_6_1|D_C_8_1|D_C_8_2|D_D_1|D_E_1|D_Y_9|D_Y_9_8|D_Y_9_24|D_C_7_1~"
+var requestActualsCommand = "id=0000&show=D_A_1_1|D_A_1_2|D_A_2_2|D_A_3_1|D_A_3_2|D_Y_1|D_A_1_3|D_A_2_3|D_Y_5|D_A_2_1|D_C_4_1|D_C_4_3|D_C_1_1|D_C_4_2|D_C_5_1|D_C_6_1|D_C_8_1|D_C_8_2|D_D_1|D_E_1|D_Y_9|D_Y_9_8|D_Y_9_24|D_C_7_1|D_Y_10_1~"
 let requestErrorsCommand =  "id=0000&code=245&show=D_K_10_1|D_K_10_2|D_K_10_3|D_K_10_4|D_K_10_5|D_K_10_6|D_K_10_7|D_K_10_8|D_K_10_9|D_K_10_10|D_K_10_11|D_K_10_12|D_K_10_13|D_K_10_14|D_K_10_15|D_K_10_16~"
 let requestImpulsCommand =  "id=0000&code=290&show=D_F_5|D_F_6~"
 let pollingInterval
@@ -104,7 +104,9 @@ class Gruenbeck extends utils.Adapter {
 			
 			// The state was changed
 			if (id === (adapterPrefix + ".error.D_K_10_1") && state.lc && state.lc === state.ts ) {
-				this.setState("calculated.newError", 1, true)
+				if (state.val != "0") {
+					this.setState("calculated.newError", state.val.split("_")[0], true)
+				}
 			}
 			
 			if (id === (adapterPrefix + ".info.D_Y_2_1") && state.lc === state.ts ) {
@@ -139,6 +141,8 @@ class Gruenbeck extends utils.Adapter {
 
 						this.setState('calculated.Salzverbrauch', Salzverbrauch);
 						this.setState('calculated.SalzverbrauchGesamt', SalzverbrauchGesamt);
+						this.setState('calculated.Salzstand', parseInt((35.0 - Salzverbrauch) * 100 / 35));
+						
 
 						/* Formel: Verschnitthärte / (Rohwasserhärte-Verschnitthärte)= ErhÃ¶hungswert
 					 Beispiel: 5 °dH Verschnitthärte / ( 21° dH Rohwasserhärte- 5° dH Verschnitthärte)= 0.3125 ErhÃ¶hungswert
@@ -154,21 +158,25 @@ class Gruenbeck extends utils.Adapter {
 						}
 						var Wasserverbrauch = states[adapterPrefix + '.info.D_Y_2_1'].val;
 						var Rohwasserhaerte =  states[adapterPrefix + '.parameter.D_D_1'].val;
-						var Erhoehungswert = (Verschnitthaerte / (Rohwasserhaerte-Verschnitthaerte))+1;
-						var GesamtverbrauchNeu = Wasserverbrauch*Erhoehungswert;
-						var Gesamtverbrauch = (((GesamtverbrauchAlt*1000) + GesamtverbrauchNeu)/1000).toFixed(3);
-						this.setState('calculated.Wasserzaehler',parseFloat(Gesamtverbrauch));
-						this.log.debug("neuer Zählerstand Wasser= "+ Gesamtverbrauch)
-						var akkWasser=0;
-						var VerWasser=0;
-						for(var i = 1; i<= 14; i++) {
-			
-							akkWasser = states[adapterPrefix + '.info.D_Y_2_' + i].val
-							VerWasser = akkWasser*Erhoehungswert
-							this.setState('calculated.Verschnittwasser_' + i,VerWasser.toFixed(0))
-						
-						}
 
+						if (Rohwasserhaerte-Verschnitthaerte <= 0) {
+							this.log.error ("Verschnitthärte kleiner gleich Rohwasserhärte: " + Rohwasserhaerte + " " + Verschnitthaerte)
+						} else {
+							var Erhoehungswert = (Verschnitthaerte / (Rohwasserhaerte-Verschnitthaerte))+1;
+							var GesamtverbrauchNeu = Wasserverbrauch*Erhoehungswert;
+							var Gesamtverbrauch = (((GesamtverbrauchAlt*1000) + GesamtverbrauchNeu)/1000).toFixed(3);
+							this.setState('calculated.Wasserzaehler',parseFloat(Gesamtverbrauch));
+							this.log.debug("neuer Zählerstand Wasser= "+ Gesamtverbrauch)
+							var akkWasser=0;
+							var VerWasser=0;
+							for(var i = 1; i<= 14; i++) {
+				
+								akkWasser = states[adapterPrefix + '.info.D_Y_2_' + i].val
+								VerWasser = akkWasser*Erhoehungswert
+								this.setState('calculated.Verschnittwasser_' + i,VerWasser.toFixed(0))
+							
+							}
+						}
 						//calc json history
 						this.log.debug("calc JSON")
 						var newWaterLog = [];
@@ -231,14 +239,24 @@ class Gruenbeck extends utils.Adapter {
 	 	return dd + '.' + mm + '.' + yyyy;
 	}
 	setParameter(id, val) {
-		
 		let idArray = id.split(".")
-		let code = idArray[idArray.length -1]
-		this.log.debug("edit="+code+">"+ val +"&id=0000&show=" + code + "~");
-		if (val === true) {
-			val = 1
+		let idOnly = idArray[idArray.length -1]
+		if (idOnly === "resetSalz") {
+			this.setState("calculated.Salzverbrauch", 0, true)
+			this.setState("calculated.Salzstand", 100, true)
+		} else { 
+			if (val === true) {
+				val = 1
+			}
+			var code = "";
+			if (idOnly === "D_M_3_3") {
+				code = "&code=189"
+				this.setState("calculated.newError", "0", true)
+			}
+			this.log.debug("edit="+idOnly+">"+ val +"&id=0000" + code + "&show=" + idOnly + "~");
+
+			queueArray.push("edit="+idOnly+">"+ val +"&id=0000" + code + "&show=" + idOnly + "~")
 		}
-		queueArray.push("edit="+code+">"+ val +"&id=0000&show=" + code + "~")
 	}
 	requestData(sParSend) {
 		if (blockConnection) {

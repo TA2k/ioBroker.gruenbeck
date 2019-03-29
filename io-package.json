@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "news": {
+            "0.0.4": {
+                "en": "Bugfixes \nadded Restkapazität Austauscher to refresh value\n added berechneter Salzstand and reset Salzstand\n added Fehlerspeicher reset",
+                "de": "Bugfixes \nadded Restkapazität Austauscher zu den refresh Werten hinzugefügt\n berechneter Salzstand und Salzverbrauch Reset hinzugefügt\n Fehlerspeicher zurücksetzen hinzugefügt."
+            },
             "0.0.3": {
                 "en": "Add new Error state, add JSON History for Wasserverbrauch",
                 "de": "Neuer State wenn ein neuer Fehler eingelesen wird, JSON hinzugefügt für eine komplette Historie des Wasserverbrauchs"
@@ -83,7 +87,7 @@
     },
     "native": {
         "host": "",
-        "verschnitthaerte": 3,
+        "verschnitthaerte": 5,
         "pollInterval": 15
     },
     "objects": [],
@@ -304,6 +308,28 @@
             "native": {}
         },
         {
+            "_id": "parameter.D_M_3_3",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Fehlerspeicher zurücksetzen",
+                "type": "boolean",
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "parameter.resetSalz",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Salzverbrauch reset (nach Befüllung)",
+                "type": "boolean",
+                "write": true
+            },
+            "native": {}
+        },
+        {
             "_id": "info.connection",
             "type": "state",
             "common": {
@@ -467,13 +493,13 @@
             "_id": "info.D_Y_10_1",
             "type": "state",
             "common": {
-                "name": "Aktuelle Restkapazität Austauscher",
+                "name": "Aktuelle Restkapazität Weichwasser",
                 "type": "number",
                 "role": "number",
                 "read": true,
                 "write": false,
                 "def": false,
-                "desc": "Aktuelle Restkapazität Austauscher",
+                "desc": "Aktuelle Restkapazität Weichwasser",
                 "unit": "%"
             },
             "native": {}
@@ -977,16 +1003,21 @@
             "_id": "calculated.newError",
             "type": "state",
             "common": {
-                "name": "Status wenn ein neuer Fehler festgestellt wird (manuell zurücksetzen)",
-                "type": "number",
-                "role": "number",
+                "name": "Status wenn ein neuer Fehler festgestellt wird (Fehlerspeicher zurücksetzen)",
+                "type": "string",
+                "role": "string",
                 "states": {
                     "0": "kein Fehler",
-                    "1": "Fehler"
+                    "E0": "Spannungsausfall",
+                    "E1": "Schrittzeitüberwachung Regenerationsmotor. Motorverbindungskabel oder Schalter defekt.",
+                    "E3": "Härtestopp.",
+                    "E4": "Salzmangelalarm oder Kohleelektroden verschlissen.",
+                    "E6": "Maximalkontakt bei Salztank füllen nicht erreicht.",
+                    "E7": "Minimalkontakt bei Besalzen nicht erreicht. Zu Viel Wasser im Salztank."
                 },
                 "read": true,
                 "write": true,
-                "desc": "Status wenn ein neuer Fehler festgestellt wird (manuell zurücksetzen)",
+                "desc": "Status wenn ein neuer Fehler festgestellt wird (Fehlerspeicher zurücksetzen)",
                 "unit": ""
             },
             "native": {}
@@ -1011,10 +1042,25 @@
                 "type": "number",
                 "role": "number",
                 "read": true,
-                "write": false,
+                "write": true,
                 "def": false,
                 "desc": "Salzverbrauch",
                 "unit": "kg"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.Salzstand",
+            "type": "state",
+            "common": {
+                "name": "berechneter Salzstand",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": true,
+                "def": false,
+                "desc": "berechneter Salzstand",
+                "unit": "%"
             },
             "native": {}
         },
@@ -1026,7 +1072,7 @@
                 "type": "number",
                 "role": "number",
                 "read": true,
-                "write": false,
+                "write": true,
                 "def": false,
                 "desc": "Salzverbrauch gesamt",
                 "unit": "kg"
@@ -1041,7 +1087,7 @@
                 "type": "string",
                 "role": "string",
                 "read": true,
-                "write": false,
+                "write": true,
                 "def": false,
                 "desc": "Start Datum Gesamtsalzverbrauch",
                 "unit": ""
@@ -1764,7 +1810,7 @@
                 "write": false,
                 "def": false,
                 "desc": "Verbrauchskapazitätszahl",
-                "unit": "m³x°dH"
+                "unit": "m³*°dH"
             },
             "native": {}
         },
@@ -1821,7 +1867,7 @@
                 "type": "number",
                 "role": "number",
                 "read": true,
-                "write": false,
+                "write": true,
                 "def": false,
                 "desc": "Gesamtwasserverbrauch",
                 "unit": "m³"
@@ -1836,7 +1882,7 @@
                 "type": "string",
                 "role": "string",
                 "read": true,
-                "write": false,
+                "write": true,
                 "def": false,
                 "desc": "Start Datum Gesamtwasserverbrauch",
                 "unit": ""

@@ -10,13 +10,19 @@
 
 [![NPM](https://nodei.co/npm/iobroker.gruenbeck.png?downloads=true)](https://nodei.co/npm/iobroker.gruenbeck/)
 
-**Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/TA2k/ioBroker.gruenbeck/master.svg)](https://travis-ci.org/TA2k/ioBroker.gruenbeck)
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/TA2k/ioBroker.gruenbeck/master.svg)](https://travis-ci.org/TA2k/ioBroker.gruenbeck)
 
 ## gruenbeck adapter for ioBroker
 
 An ioBroker adapter for Grünbeck Wasseraufbereitung devices.
 
 ## Changelog
+### 0.0.4
+* (tombox) 	Bugfixes, 
+			added Restkapazität Austauscher to refresh values
+			added berechneter Salzstand and reset Salzstand
+			added Fehlerspeicher reset
+
 ### 0.0.3
 * (tombox) Add new Error state, add JSON History for Wasserverbrauch
 
