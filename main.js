@@ -137,7 +137,11 @@ class Gruenbeck extends utils.Adapter {
 							if(!shared) currentErrorJSON.push(errorObject)
 							if (currentLength != currentErrorJSON.length) {
 								this.setState('calculated.allErrorJSON', JSON.stringify(currentErrorJSON), true);
-								this.setState("calculated.newError", state.val.split("_")[0], true)
+								var errorCode = state.val.split("_")[0][1]
+								if (errorCode === "0") {
+									errorCode = "10";
+								}
+								this.setState("calculated.newError", errorCode, true)
 
 							}
 							

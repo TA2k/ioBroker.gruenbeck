@@ -1009,16 +1009,16 @@
             "type": "state",
             "common": {
                 "name": "Status wenn ein neuer Fehler festgestellt wird (manuell zurücksetzen)",
-                "type": "string",
-                "role": "string",
+                "type": "number",
+                "role": "number",
                 "states": {
                     "0": "kein Fehler",
-                    "E0": "Spannungsausfall",
-                    "E1": "Schrittzeitüberwachung Regenerationsmotor. Motorverbindungskabel oder Schalter defekt.",
-                    "E3": "Härtestopp.",
-                    "E4": "Salzmangelalarm oder Kohleelektroden verschlissen.",
-                    "E6": "Maximalkontakt bei Salztank füllen nicht erreicht.",
-                    "E7": "Minimalkontakt bei Besalzen nicht erreicht. Zu Viel Wasser im Salztank."
+                    "10": "Spannungsausfall",
+                    "1": "Schrittzeitüberwachung Regenerationsmotor. Motorverbindungskabel oder Schalter defekt.",
+                    "3": "Härtestopp.",
+                    "4": "Salzmangelalarm oder Kohleelektroden verschlissen.",
+                    "6": "Maximalkontakt bei Salztank füllen nicht erreicht.",
+                    "7": "Minimalkontakt bei Besalzen nicht erreicht. Zu Viel Wasser im Salztank."
                 },
                 "read": true,
                 "write": true,
