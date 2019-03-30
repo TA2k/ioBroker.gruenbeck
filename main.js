@@ -122,7 +122,9 @@ class Gruenbeck extends utils.Adapter {
 							if (errorState) {
 								try {
 								currentErrorJSON = JSON.parse(errorState.val)
-							} catch {}
+							} catch {
+								currentErrorJSON = []
+							}
 							}
 							let currentLength = currentErrorJSON.length
 							var shared = false;
@@ -226,7 +228,9 @@ class Gruenbeck extends utils.Adapter {
 						if (currentWaterLogState) {
 							try {
 							currentWaterLog = JSON.parse(currentWaterLogState.val)
-							} catch{}
+							} catch{
+								currentWaterLog = []
+							}
 						} 
 
 						var waterLog = [];

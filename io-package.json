@@ -5,7 +5,7 @@
         "news": {
             "0.0.5": {
                
-                "de": "Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden."
+                "de": "Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden. \nAlle 4sek wird jetzt der aktuelle Durchfluss abgerufen."
               
             },
             "0.0.4": {
