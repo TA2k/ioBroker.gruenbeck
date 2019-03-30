@@ -17,6 +17,7 @@ var requestAllCommand = "id=0000&code=245&show=D_D_1|D_A_4_1|D_A_4_2|D_A_4_3|D_C
 var requestActualsCommand = "id=0000&show=D_A_1_1|D_A_1_2|D_A_2_2|D_A_3_1|D_A_3_2|D_Y_1|D_A_1_3|D_A_2_3|D_Y_5|D_A_2_1|D_C_4_1|D_C_4_3|D_C_1_1|D_C_4_2|D_C_5_1|D_C_6_1|D_C_8_1|D_C_8_2|D_D_1|D_E_1|D_Y_9|D_Y_9_8|D_Y_9_24|D_C_7_1|D_Y_10_1~"
 let requestErrorsCommand =  "id=0000&code=245&show=D_K_10_1|D_K_10_2|D_K_10_3|D_K_10_4|D_K_10_5|D_K_10_6|D_K_10_7|D_K_10_8|D_K_10_9|D_K_10_10|D_K_10_11|D_K_10_12|D_K_10_13|D_K_10_14|D_K_10_15|D_K_10_16~"
 let requestImpulsCommand =  "id=0000&code=290&show=D_F_5|D_F_6~"
+let durchflussCommand = "id=0000&show=D_A_1_1~"
 let pollingInterval
 var currentCommand = "";
 var blockTimeout;
@@ -46,12 +47,14 @@ class Gruenbeck extends utils.Adapter {
 	async onReady() {
 		if (this.config.host) {
 			this.log.debug('Starting gruenbeck adapter with:' + this.config.host);
-			const pollingTime = this.config.pollInterval * 1000 || 300000;
+			const pollingTime = this.config.pollInterval * 1000 || 30000;
 			this.log.debug('[INFO] Configured polling interval: ' + pollingTime);
 			this.requestData(requestAllCommand)
 			
 			if (!pollingInterval) {
-				pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
+				//pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
+				pollingInterval = setInterval(() => {this.requestData(durchflussCommand)}, 4000); ;
+				setInterval(() => {queueArray.push(requestActualsCommand)}, pollingTime); // 1hour
 				setInterval(() => {queueArray.push(requestAllCommand)}, 1*60*60*1000); // 1hour
 				setInterval(() => {queueArray.push(requestErrorsCommand)}, 10*60*1000); // 10min
 				setInterval(() => {queueArray.push(requestImpulsCommand)}, 4*60*60*1000); // 4hour
