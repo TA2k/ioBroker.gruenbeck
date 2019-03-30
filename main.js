@@ -53,7 +53,7 @@ class Gruenbeck extends utils.Adapter {
 			
 			if (!pollingInterval) {
 				//pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
-				pollingInterval = setInterval(() => {this.requestData(durchflussCommand)}, 4000); ;
+				pollingInterval = setInterval(() => {this.requestData(durchflussCommand)}, 5000); ;
 				setInterval(() => {queueArray.push(requestActualsCommand)}, pollingTime); // 1hour
 				setInterval(() => {queueArray.push(requestAllCommand)}, 1*60*60*1000); // 1hour
 				setInterval(() => {queueArray.push(requestErrorsCommand)}, 10*60*1000); // 10min
