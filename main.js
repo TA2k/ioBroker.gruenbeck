@@ -47,6 +47,7 @@ class Gruenbeck extends utils.Adapter {
 	async onReady() {
 		if (this.config.host) {
 			this.log.debug('Starting gruenbeck adapter with:' + this.config.host);
+			// @ts-ignore
 			const pollingTime = this.config.pollInterval * 1000 || 30000;
 			this.log.debug('[INFO] Configured polling interval: ' + pollingTime);
 			this.requestData(requestAllCommand)
@@ -106,6 +107,26 @@ class Gruenbeck extends utils.Adapter {
 			var adapterPrefix = this.name+"."+this.instance;
 			
 			// The state was changed
+			
+			if (id === (adapterPrefix + ".info.D_A_1_1") && state.lc && state.lc === state.ts ) {
+				this.getState(adapterPrefix + '.parameter.D_D_1',(err, rohwasserState) => {
+
+				var Verschnitthaerte = this.config.verschnitthaerte || 5
+				var Rohwasserhaerte
+				if (rohwasserState) {
+					Rohwasserhaerte =  rohwasserState.val;
+				}
+				if (Rohwasserhaerte-Verschnitthaerte <= 0) {
+					this.log.error ("Verschnitthärte kleiner gleich Rohwasserhärte: " + Rohwasserhaerte + " " + Verschnitthaerte)
+				} else {
+					var Erhoehungswert = (Verschnitthaerte / (Rohwasserhaerte-Verschnitthaerte))+1;
+					let wasserVerbrauch = state.val*Erhoehungswert * 1000 / 60;
+					this.setState("calculated.aktuellerWasserverbrauch", wasserVerbrauch, true)
+				}
+			
+				})
+			}
+
 			if (id === (adapterPrefix + ".error.D_K_10_1") && state.lc && state.lc === state.ts ) {
 				
 				if (state.val != "0") {

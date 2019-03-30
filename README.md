@@ -17,6 +17,10 @@
 An ioBroker adapter for Grünbeck Wasseraufbereitung devices.
 
 ## Changelog
+### 0.0.6 (2019-03-30)
+* add Wasserverbrauch l/min
+* fix newError States
+
 ### 0.0.5 (2019-03-30)
 * Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden.
 Alle 4sek wird jetzt der aktuelle Durchfluss abgerufen.

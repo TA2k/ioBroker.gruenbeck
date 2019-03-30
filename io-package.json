@@ -1,12 +1,15 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.5",
+        "version": "0.0.6",
         "news": {
+            "0.0.6": {
+                "de": "add Wasserverbrauch l/min \n fix newError State"
+            
+
+            },
             "0.0.5": {
-               
                 "de": "Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden. \nAlle 4sek wird jetzt der aktuelle Durchfluss abgerufen."
-              
             },
             "0.0.4": {
                 "en": "Bugfixes \nadded Restkapazität Austauscher to refresh value\n added berechneter Salzstand and reset Salzstand\n added Fehlerspeicher reset",
@@ -1013,12 +1016,12 @@
                 "role": "number",
                 "states": {
                     "0": "kein Fehler",
-                    "10": "Spannungsausfall",
                     "1": "Schrittzeitüberwachung Regenerationsmotor. Motorverbindungskabel oder Schalter defekt.",
                     "3": "Härtestopp.",
                     "4": "Salzmangelalarm oder Kohleelektroden verschlissen.",
                     "6": "Maximalkontakt bei Salztank füllen nicht erreicht.",
-                    "7": "Minimalkontakt bei Besalzen nicht erreicht. Zu Viel Wasser im Salztank."
+                    "7": "Minimalkontakt bei Besalzen nicht erreicht. Zu Viel Wasser im Salztank.",
+                    "10": "Spannungsausfall"
                 },
                 "read": true,
                 "write": true,
@@ -1050,6 +1053,21 @@
                 "read": true,
                 "write": true,
                 "desc": "Historie des Fehlercodes als JSON"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.aktuellerWasserverbrauch",
+            "type": "state",
+            "common": {
+                "name": "aktueller Wasserverbrauch",
+                "type": "number",
+                "role": "number",
+                "read": true,
+                "write": true,
+                "def": false,
+                "desc": "aktueller Wasserverbrauch",
+                "unit": "l/min"
             },
             "native": {}
         },
