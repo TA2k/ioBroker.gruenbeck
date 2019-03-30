@@ -1,6 +1,6 @@
 {
   "name": "iobroker.gruenbeck",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "An ioBroker adapter for Grünbeck Wasseraufbereitung devices.",
   "author": {
     "name": "tombox",

@@ -1,8 +1,13 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.4",
+        "version": "0.0.5",
         "news": {
+            "0.0.5": {
+               
+                "de": "Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden."
+              
+            },
             "0.0.4": {
                 "en": "Bugfixes \nadded Restkapazität Austauscher to refresh value\n added berechneter Salzstand and reset Salzstand\n added Fehlerspeicher reset",
                 "de": "Bugfixes \nadded Restkapazität Austauscher zu den refresh Werten hinzugefügt\n berechneter Salzstand und Salzverbrauch Reset hinzugefügt\n Fehlerspeicher zurücksetzen hinzugefügt."
@@ -669,7 +674,7 @@
                 "type": "string",
                 "role": "string",
                 "read": true,
-                "write": false,
+                "write": true,
                 "def": false,
                 "desc": "error 01",
                 "unit": ""
@@ -1003,7 +1008,7 @@
             "_id": "calculated.newError",
             "type": "state",
             "common": {
-                "name": "Status wenn ein neuer Fehler festgestellt wird (Fehlerspeicher zurücksetzen)",
+                "name": "Status wenn ein neuer Fehler festgestellt wird (manuell zurücksetzen)",
                 "type": "string",
                 "role": "string",
                 "states": {
@@ -1017,20 +1022,34 @@
                 },
                 "read": true,
                 "write": true,
-                "desc": "Status wenn ein neuer Fehler festgestellt wird (Fehlerspeicher zurücksetzen)",
+                "desc": "Status wenn ein neuer Fehler festgestellt wird (manuell zurücksetzen)",
                 "unit": ""
             },
             "native": {}
         },
         {
-            "_id": "calculated.allTableJSON",
+            "_id": "calculated.allWaterJSON",
             "type": "state",
             "common": {
                 "name": "Historie des Wasserverbrauchs als JSON",
                 "type": "object",
                 "role": "history",
                 "read": true,
+                "write": true,
                 "desc": "Historie des Wasserverbrauchs als JSON"
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.allErrorJSON",
+            "type": "state",
+            "common": {
+                "name": "Historie der Fehlercodes als JSON",
+                "type": "object",
+                "role": "history",
+                "read": true,
+                "write": true,
+                "desc": "Historie des Fehlercodes als JSON"
             },
             "native": {}
         },

@@ -104,8 +104,40 @@ class Gruenbeck extends utils.Adapter {
 			
 			// The state was changed
 			if (id === (adapterPrefix + ".error.D_K_10_1") && state.lc && state.lc === state.ts ) {
+				
 				if (state.val != "0") {
-					this.setState("calculated.newError", state.val.split("_")[0], true)
+					this.getState(adapterPrefix + '.calculated.allErrorJSON',(err, errorState) => {
+						if (err) {
+						this.log.error(err);
+						} else {
+							let errorID =  state.val.split("_")[0]
+							let errorHours =  state.val.split("_")[1]
+							var d = new Date();
+							d.setHours(d.getHours() - parseInt(errorHours));
+							let errorObject = {date:this.getCurrentDate(d,true), value: errorID}
+							var currentErrorJSON = []
+							if (errorState) {
+								try {
+								currentErrorJSON = JSON.parse(errorState.val)
+							} catch {}
+							}
+							let currentLength = currentErrorJSON.length
+							var shared = false;
+							for(var k in currentErrorJSON){
+								if (currentErrorJSON[k].date === errorObject.date && currentErrorJSON[k].value === errorObject.value) {
+									shared = true;
+									break;
+								}
+							}
+							if(!shared) currentErrorJSON.push(errorObject)
+							if (currentLength != currentErrorJSON.length) {
+								this.setState('calculated.allErrorJSON', JSON.stringify(currentErrorJSON), true);
+								this.setState("calculated.newError", state.val.split("_")[0], true)
+
+							}
+							
+						}
+					});
 				}
 			}
 			
@@ -186,10 +218,12 @@ class Gruenbeck extends utils.Adapter {
 							akkWasser = states[adapterPrefix + '.info.D_Y_2_' + i].val
 							newWaterLog.push({date: this.getCurrentDate(d),value:akkWasser})
 						}
-						var currentWaterLogState = states[adapterPrefix + '.calculated.allTableJSON']
+						var currentWaterLogState = states[adapterPrefix + '.calculated.allWaterJSON']
 						var currentWaterLog = []
 						if (currentWaterLogState) {
+							try {
 							currentWaterLog = JSON.parse(currentWaterLogState.val)
+							} catch{}
 						} 
 
 						var waterLog = [];
@@ -204,7 +238,7 @@ class Gruenbeck extends utils.Adapter {
 						}
 						waterLog = waterLog.concat(currentWaterLog);
 						
-						this.setState('calculated.allTableJSON', JSON.stringify(waterLog), true);
+						this.setState('calculated.allWaterJSON', JSON.stringify(waterLog), true);
 
 
 					}
@@ -221,7 +255,7 @@ class Gruenbeck extends utils.Adapter {
 		}
 	}
 
-	getCurrentDate(date) {
+	getCurrentDate(date, withHours) {
 		if (!date) {
 			date = new Date();
 		}
@@ -236,7 +270,11 @@ class Gruenbeck extends utils.Adapter {
 		if (mm < 10) {
 		mm = '0' + mm;
 		} 
-	 	return dd + '.' + mm + '.' + yyyy;
+		if (withHours) {
+			return dd + '.' + mm + '.' + yyyy + ' ' + today.getHours() + ':00';
+		} else {
+		 	return dd + '.' + mm + '.' + yyyy;
+		}
 	}
 	setParameter(id, val) {
 		let idArray = id.split(".")
