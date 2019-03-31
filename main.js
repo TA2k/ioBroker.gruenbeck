@@ -22,6 +22,7 @@ let pollingInterval
 var currentCommand = "";
 var blockTimeout;
 var queueArray = []
+var parameterQueueArray = []
 let blockConnection = false;
 
 class Gruenbeck extends utils.Adapter {
@@ -54,7 +55,7 @@ class Gruenbeck extends utils.Adapter {
 			
 			if (!pollingInterval) {
 				//pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
-				pollingInterval = setInterval(() => {this.requestData(durchflussCommand)}, 5000); ;
+				pollingInterval = setInterval(() => {this.requestData(durchflussCommand)}, 7000); ;
 				setInterval(() => {queueArray.push(requestActualsCommand)}, pollingTime); // 1hour
 				setInterval(() => {queueArray.push(requestAllCommand)}, 1*60*60*1000); // 1hour
 				setInterval(() => {queueArray.push(requestErrorsCommand)}, 10*60*1000); // 10min
@@ -134,8 +135,8 @@ class Gruenbeck extends utils.Adapter {
 						if (err) {
 						this.log.error(err);
 						} else {
-							let errorID =  state.val.split("_")[0]
-							let errorHours =  state.val.split("_")[1]
+							let errorID =  state.val.split("_h")[0]
+							let errorHours =  state.val.split("_h")[1]
 							var d = new Date();
 							d.setHours(d.getHours() - parseInt(errorHours));
 							let errorObject = {date:this.getCurrentDate(d,true), value: errorID}
@@ -158,7 +159,7 @@ class Gruenbeck extends utils.Adapter {
 							if(!shared) currentErrorJSON.push(errorObject)
 							if (currentLength != currentErrorJSON.length) {
 								this.setState('calculated.allErrorJSON', JSON.stringify(currentErrorJSON), true);
-								var errorCode = state.val.split("_")[0][1]
+								var errorCode = state.val.split("_h")[0][1]
 								if (errorCode === "0") {
 									errorCode = "10";
 								}
@@ -325,7 +326,7 @@ class Gruenbeck extends utils.Adapter {
 			}
 			this.log.debug("edit="+idOnly+">"+ val +"&id=0000" + code + "&show=" + idOnly + "~");
 
-			queueArray.push("edit="+idOnly+">"+ val +"&id=0000" + code + "&show=" + idOnly + "~")
+			parameterQueueArray.push("edit="+idOnly+">"+ val +"&id=0000" + code + "&show=" + idOnly + "~")
 		}
 	}
 	requestData(sParSend) {
@@ -334,7 +335,9 @@ class Gruenbeck extends utils.Adapter {
 		}
 		var xhr = new XMLHttpRequest()
 		currentCommand = sParSend;
-		if (queueArray.length != 0) {
+		if (parameterQueueArray.length != 0) {
+			currentCommand = parameterQueueArray.pop()
+		} else if (queueArray.length != 0) {
 			currentCommand = queueArray.pop()
 		}
 		this.log.debug(currentCommand)
