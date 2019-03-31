@@ -1,12 +1,14 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.6",
+        "version": "0.0.7",
         "news": {
+            "0.0.7": {
+                "de": "* automatisch Uhrzeit * Wasserverbrauchintervall in den Optionen * Schleichwassermesszeitraum in den Optionen"
+              
+            },
             "0.0.6": {
                 "de": "add Wasserverbrauch l/min \n fix newError State"
-            
-
             },
             "0.0.5": {
                 "de": "Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden. \nAlle 4sek wird jetzt der aktuelle Durchfluss abgerufen."
@@ -96,7 +98,10 @@
     "native": {
         "host": "",
         "verschnitthaerte": 5,
-        "pollInterval": 15
+        "pollInterval": 15,
+        "pollWasserverbrauchInterval": 7,
+        "schleichStart": 3,
+        "schleichEnd": 4
     },
     "objects": [],
     "instanceObjects": [
@@ -1026,6 +1031,24 @@
                 "read": true,
                 "write": true,
                 "desc": "Status wenn ein neuer Fehler festgestellt wird (manuell zurücksetzen)",
+                "unit": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "calculated.schleichWasserAlarm",
+            "type": "state",
+            "common": {
+                "name": "Status wenn Wasserverbrauch in der angegebenen Uhrzeit festgestellt wird",
+                "type": "number",
+                "role": "number",
+                "states": {
+                    "0": "kein Fehler",
+                    "1": "Schleichwasser erkannt"
+                },
+                "read": true,
+                "write": true,
+                "desc": "Status wenn Wasserverbrauch in der angegebenen Uhrzeit festgestellt wird",
                 "unit": ""
             },
             "native": {}

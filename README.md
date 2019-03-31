@@ -17,6 +17,11 @@
 An ioBroker adapter for Grünbeck Wasseraufbereitung devices.
 
 ## Changelog
+### 0.0.7 (2019-03-31)
+* automatisch Uhrzeit 
+* Wasserverbrauchintervall in den Optionen
+* Schleichwassermesszeitraum in den Optionen
+
 ### 0.0.6 (2019-03-30)
 * add Wasserverbrauch l/min
 * fix newError States

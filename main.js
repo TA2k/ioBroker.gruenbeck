@@ -50,16 +50,21 @@ class Gruenbeck extends utils.Adapter {
 			this.log.debug('Starting gruenbeck adapter with:' + this.config.host);
 			// @ts-ignore
 			const pollingTime = this.config.pollInterval * 1000 || 30000;
+			// @ts-ignore
+			const pollingDurchflussTime = this.config.pollWasserverbrauchInterval * 1000 || 7000;
 			this.log.debug('[INFO] Configured polling interval: ' + pollingTime);
 			this.requestData(requestAllCommand)
 			
 			if (!pollingInterval) {
 				//pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
-				pollingInterval = setInterval(() => {this.requestData(durchflussCommand)}, 7000); ;
-				setInterval(() => {queueArray.push(requestActualsCommand)}, pollingTime); // 1hour
+				pollingInterval = setInterval(() => {this.requestData(durchflussCommand)}, pollingDurchflussTime); ;
+				setInterval(() => {queueArray.push(requestActualsCommand)}, pollingTime); 
 				setInterval(() => {queueArray.push(requestAllCommand)}, 1*60*60*1000); // 1hour
 				setInterval(() => {queueArray.push(requestErrorsCommand)}, 10*60*1000); // 10min
 				setInterval(() => {queueArray.push(requestImpulsCommand)}, 4*60*60*1000); // 4hour
+				setInterval(() => {var d = new Date();queueArray.push("edit=D_C_4_2>" + d.getHours() +":" + d.getMinutes() + "&id=0000&show=D_C_4_2~")}, 1*60*60*1000); // 1hour
+				
+
 			}
 			
 			this.subscribeStates("*");
@@ -121,11 +126,16 @@ class Gruenbeck extends utils.Adapter {
 					this.log.error ("Verschnitthärte kleiner gleich Rohwasserhärte: " + Rohwasserhaerte + " " + Verschnitthaerte)
 				} else {
 					var Erhoehungswert = (Verschnitthaerte / (Rohwasserhaerte-Verschnitthaerte))+1;
-					let wasserVerbrauch = state.val*Erhoehungswert * 1000 / 60;
+					let wasserVerbrauch = (state.val*Erhoehungswert * 1000 / 60).toFixed(2);
 					this.setState("calculated.aktuellerWasserverbrauch", wasserVerbrauch, true)
 				}
 			
 				})
+				let d = new Date()
+				if (d.getHours() >= this.config.schleichStart && d.getHours() < this.config.schleichEnd) {
+					this.setState("calculated.schleichWasserAlarm", 1, true)
+
+				}
 			}
 
 			if (id === (adapterPrefix + ".error.D_K_10_1") && state.lc && state.lc === state.ts ) {
@@ -243,7 +253,7 @@ class Gruenbeck extends utils.Adapter {
 						//calc json history
 						this.log.debug("calc JSON")
 						var newWaterLog = [];
-						for(var i = 14; i>= 1; i--) {
+						for(var i = 1; i<= 14; i++) {
 							var d = new Date();
 							d.setDate(d.getDate()-i);
 							akkWasser = states[adapterPrefix + '.info.D_Y_2_' + i].val
@@ -345,7 +355,7 @@ class Gruenbeck extends utils.Adapter {
 			this.log.debug("sendRequest ")
             xhr.open("POST","http://" + this.config.host + "/mux_http", true);
 	        xhr.setRequestHeader("Content-type", "application/json");
-			xhr.timeout = (this.config.pollInterval - 2 > 7? this.config.pollInterval - 2 : 7) * 1000;
+			xhr.timeout = (this.config.pollInterval - 1 > 1? this.config.pollInterval - 1 : 1) * 1000;
 			xhr.send(currentCommand);
 			xhr.ontimeout = (error)=>
             {	
@@ -370,7 +380,12 @@ class Gruenbeck extends utils.Adapter {
 
 						if (xhr.responseText.length === 0) {
 							this.log.debug("Device returns empty repsonse. Resend request.")
-							queueArray.push(currentCommand)
+							if (currentCommand.indexOf("edit=") != -1) {
+								parameterQueueArray.push(currentCommand)
+							} else {
+								queueArray.push(currentCommand)
+							}
+						
 							return
 						
 						} else {
@@ -384,7 +399,11 @@ class Gruenbeck extends utils.Adapter {
 						blockTimeout = setTimeout(()=>{
 							blockConnection = false
 							this.log.debug("Resume connections.")
-							queueArray.push(currentCommand)
+							if (currentCommand.indexOf("edit=") != -1) {
+								parameterQueueArray.push(currentCommand)
+							} else {
+								queueArray.push(currentCommand)
+							}
 						},60 * 1000)
 						this.setState('info.connection', false, true);
 						//xhr.abort();
