@@ -86,22 +86,42 @@
 		  <div class="row">
 			<div class="input-field col col s3">
 			  <input class="value" id="verschnitthaerte" type="number" />
-			  <label for="port" class="translate">Verschnitthärte</label>
-			  <span class="translate">Verschnitthärte zum berechnen der Wasserverbrauch 0°dH und Verschnittwasser</span>
+			  <label for="port" class="translate">Verschnitthärte °dH</label>
+			  <span class="translate">Härte des enthärteten Wassers, zum Berechnen des Verschnittwasserverbrauchs</span>
 			</div>
 		  </div>
 		  <div class="row">
 			<div class="input-field col s12 m6 l4">
 			  <input type="number" class="value" id="pollInterval" min="10" />
-			  <label for="pollInterval" class="translate">pollInterval sec</label>
+			  <label for="pollInterval" class="translate">Abrufinterval Aktualwerte sec</label>
 			  <!-- Important: label must come directly after input. Label is important. -->
-			  <span class="translate">pollInterval sec</span>
+			  <span class="translate">Abrufinterval Aktualwerte sec</span>
+			</div>
+			<div class="input-field col s12 m6 l4">
+				<input type="number" class="value" id="pollWasserverbrauchInterval" min="5" />
+				<label for="pollWasserverbrauchInterval" class="translate">Abrufinterval Wasserverbrauch sec</label>
+				<!-- Important: label must come directly after input. Label is important. -->
+				<span class="translate">Abrufinterval Wasserverbrauch sec</span>
 			</div>
 		  </div>
 
+				<div class="row">
+					<div class="input-field col s12 m6 l4">
+						<input type="number" class="value" id="schleichStart" />
+						<label for="schleichStart" class="translate">Schleichwasseralarm Startuhrzeit</label>
+						<!-- Important: label must come directly after input. Label is important. -->
+						<span class="translate">Schleichwassererkennung Startuhrzeit wenn normalerweise kein Wasser verbraucht wird</span>
+					</div>
+					<div class="input-field col s12 m6 l4">
+						<input type="number" class="value" id="schleichEnd" />
+						<label for="schleichEnd" class="translate">Schleichwasseralarm Enduhrzeit</label>
+						<!-- Important: label must come directly after input. Label is important. -->
+						<span class="translate">Schleichwassererkennung Enduhrzeit wenn normalerweise kein Wasser verbraucht wird</span>
+					</div>
+					</div>
 		  <div class="row">
 			<div class="col s12">
-			  <p class="translate">on save adapter restarts with new config immediately</p>
+			  <p class="translate">Beim Speichern wird der Adapter automatisch neugestartet.</p>
 			</div>
 		  </div>
 		</div>
