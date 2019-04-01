@@ -23,7 +23,7 @@ var currentCommand = "";
 var blockTimeout;
 var queueArray = []
 var parameterQueueArray = []
-let blockConnection = false;
+var blockConnection = false;
 
 class Gruenbeck extends utils.Adapter {
 
@@ -54,7 +54,7 @@ class Gruenbeck extends utils.Adapter {
 			const pollingDurchflussTime = this.config.pollWasserverbrauchInterval * 1000 || 7000;
 			this.log.debug('[INFO] Configured polling interval: ' + pollingTime);
 			this.requestData(requestAllCommand)
-			
+			this.setClock()
 			if (!pollingInterval) {
 				//pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
 				pollingInterval = setInterval(() => {this.requestData(durchflussCommand)}, pollingDurchflussTime); ;
@@ -62,7 +62,7 @@ class Gruenbeck extends utils.Adapter {
 				setInterval(() => {queueArray.push(requestAllCommand)}, 1*60*60*1000); // 1hour
 				setInterval(() => {queueArray.push(requestErrorsCommand)}, 10*60*1000); // 10min
 				setInterval(() => {queueArray.push(requestImpulsCommand)}, 4*60*60*1000); // 4hour
-				setInterval(() => {var d = new Date();queueArray.push("edit=D_C_4_2>" + d.getHours() +":" + d.getMinutes() + "&id=0000&show=D_C_4_2~")}, 1*60*60*1000); // 1hour
+				setInterval(() => this.setClock(), 1*60*60*1000); // 1hour
 				
 
 			}
@@ -71,7 +71,10 @@ class Gruenbeck extends utils.Adapter {
 
 		  } else this.log.warn('[START] No IP-address set');
 	}
-
+	setClock() {
+		var d = new Date();
+		queueArray.push("edit=D_C_4_2>" + d.getHours() +":" + d.getMinutes() + "&id=0000&show=D_C_4_2~")
+	}
 	/**
 	 * Is called when adapter shuts down - callback has to be called under any circumstances!
 	 * @param {() => void} callback
@@ -204,7 +207,7 @@ class Gruenbeck extends utils.Adapter {
 						var Salzverbrauch = parseFloat(SalzverbrauchNeu)+parseFloat(SalzverbrauchAlt);
 
 						var SalzverbrauchGesamt
-						if (states[adapterPrefix+".calculated.SalzverbrauchGesamt"]){
+						if (states[adapterPrefix+".calculated.SalzverbrauchGesamt"] && states[adapterPrefix+".calculated.SalzverbrauchGesamt"].val > 0){
 							SalzverbrauchGesamt = parseFloat(states[adapterPrefix+".calculated.SalzverbrauchGesamt"].val) + parseFloat(SalzverbrauchNeu)
 						} else {
 							SalzverbrauchGesamt = SalzverbrauchNeu
@@ -222,7 +225,7 @@ class Gruenbeck extends utils.Adapter {
 						0°dH Wasserverbrauch 400l x 1.3125 ErhÃ¶ungswert = 525l Wasser 5°dH */
 						var Verschnitthaerte = this.config.verschnitthaerte
 						var GesamtverbrauchAlt
-						if (states[adapterPrefix + '.calculated.Wasserzaehler']) {
+						if (states[adapterPrefix + '.calculated.Wasserzaehler'] && states[adapterPrefix + '.calculated.Wasserzaehler'].val > 0) {
 							GesamtverbrauchAlt = states[adapterPrefix + '.calculated.Wasserzaehler'].val 
 						} else {
 							GesamtverbrauchAlt = 0;
@@ -360,7 +363,7 @@ class Gruenbeck extends utils.Adapter {
 			xhr.ontimeout = (error)=>
             {	
 				//xhr.abort();
-				this.log.error(error.message);
+				this.log.debug(error.message);
 				this.setState('info.connection', false, true);
             }
             xhr.onload = ()=>{
@@ -388,11 +391,8 @@ class Gruenbeck extends utils.Adapter {
 						
 							return
 						
-						} else {
-							this.log.warn("Device cannot handle new connections. Pause for 1min")
-							
 						}
-
+						this.log.warn("Device cannot handle new connections. Pause for 1min")
 						blockConnection = true
 						this.log.error(xhr.responseText);
 						clearTimeout(blockTimeout)
@@ -406,7 +406,7 @@ class Gruenbeck extends utils.Adapter {
 							}
 						},60 * 1000)
 						this.setState('info.connection', false, true);
-						//xhr.abort();
+						
 					}
 				}
 				
