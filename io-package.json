@@ -1,11 +1,13 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.7",
+        "version": "0.0.8",
         "news": {
+            "0.0.8": {
+                "de": "* Fix Info Values nicht als Zahlen geschrieben * Salzmenge als Option * PowerMode Zeitplan in den Option"
+            },
             "0.0.7": {
                 "de": "* automatisch Uhrzeit * Wasserverbrauchintervall in den Optionen * Schleichwassermesszeitraum in den Optionen"
-              
             },
             "0.0.6": {
                 "de": "add Wasserverbrauch l/min \n fix newError State"
@@ -101,7 +103,16 @@
         "pollInterval": 15,
         "pollWasserverbrauchInterval": 7,
         "schleichStart": 3,
-        "schleichEnd": 4
+        "schleichEnd": 4,
+        "salzkg": 35,
+        "powerActive": false,
+        "power1": false,
+        "power2": false,
+        "power3": false,
+        "power4": false,
+        "power5": false,
+        "power6": false,
+        "power7": false
     },
     "objects": [],
     "instanceObjects": [

@@ -2,9 +2,13 @@
 * {
 	box-sizing: border-box
 }
+
 .m {
 	/* Don't cut off dropdowns! */
 	overflow: initial;
 }
 
 /* Add your styles here */
+.margin-right {
+	margin-right: 45px;
+}

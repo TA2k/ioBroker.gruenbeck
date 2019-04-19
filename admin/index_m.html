@@ -28,14 +28,12 @@
 				if ($key.attr('type') === 'checkbox') {
 					// do not call onChange direct, because onChange could expect some arguments
 					$key.prop('checked', settings[id])
-						.on('change', () => onChange())
-						;
+						.on('change', () => onChange());
 				} else {
 					// do not call onChange direct, because onChange could expect some arguments
 					$key.val(settings[id])
 						.on('change', () => onChange())
-						.on('keyup', () => onChange())
-						;
+						.on('keyup', () => onChange());
 				}
 			});
 			onChange(false);
@@ -69,8 +67,8 @@
 			<div class="col s12 m4 l2">
 				<img src="gruenbeck.png" class="logo">
 			</div>
-			
-				
+
+
 		</div>
 
 		<!-- Put your content here -->
@@ -78,24 +76,29 @@
 		<!-- For example columns with settings: -->
 		<div class="row">
 			<div class="input-field col col s3">
-			  <input class="value" id="host" type="text" />
-			  <label for="host" class="translate">host</label>
-			  <span class="translate">host</span>
+				<input class="value" id="host" type="text" />
+				<label for="host" class="translate">host</label>
+				<span class="translate">host</span>
 			</div>
-		  </div>
-		  <div class="row">
-			<div class="input-field col col s3">
-			  <input class="value" id="verschnitthaerte" type="number" />
-			  <label for="port" class="translate">Verschnitthärte °dH</label>
-			  <span class="translate">Härte des enthärteten Wassers, zum Berechnen des Verschnittwasserverbrauchs</span>
+		</div>
+		<div class="row">
+			<div class="input-field col col s12 m6 l4">
+				<input class="value" id="verschnitthaerte" type="number" />
+				<label for="port" class="translate">Verschnitthärte °dH</label>
+				<span class="translate">Härte des enthärteten Wassers, zum Berechnen des Verschnittwasserverbrauchs</span>
 			</div>
-		  </div>
-		  <div class="row">
+			<div class="input-field col col s12 m6 l4">
+				<input class="value" id="salzkg" type="number" />
+				<label for="salzkg" class="translate">Salzmenge bei Neubefüllung</label>
+				<span class="translate">Salzmenge in kg die beim Neubefüllen der Anlage verwendet wird</span>
+			</div>
+		</div>
+		<div class="row">
 			<div class="input-field col s12 m6 l4">
-			  <input type="number" class="value" id="pollInterval" min="10" />
-			  <label for="pollInterval" class="translate">Abrufinterval Aktualwerte sec</label>
-			  <!-- Important: label must come directly after input. Label is important. -->
-			  <span class="translate">Abrufinterval Aktualwerte sec</span>
+				<input type="number" class="value" id="pollInterval" min="10" />
+				<label for="pollInterval" class="translate">Abrufinterval Aktualwerte sec</label>
+				<!-- Important: label must come directly after input. Label is important. -->
+				<span class="translate">Abrufinterval Aktualwerte sec</span>
 			</div>
 			<div class="input-field col s12 m6 l4">
 				<input type="number" class="value" id="pollWasserverbrauchInterval" min="5" />
@@ -103,28 +106,50 @@
 				<!-- Important: label must come directly after input. Label is important. -->
 				<span class="translate">Abrufinterval Wasserverbrauch sec</span>
 			</div>
-		  </div>
+		</div>
 
-				<div class="row">
-					<div class="input-field col s12 m6 l4">
-						<input type="number" class="value" id="schleichStart" />
-						<label for="schleichStart" class="translate">Schleichwasseralarm Startuhrzeit</label>
-						<!-- Important: label must come directly after input. Label is important. -->
-						<span class="translate">Schleichwassererkennung Startuhrzeit wenn normalerweise kein Wasser verbraucht wird</span>
-					</div>
-					<div class="input-field col s12 m6 l4">
-						<input type="number" class="value" id="schleichEnd" />
-						<label for="schleichEnd" class="translate">Schleichwasseralarm Enduhrzeit</label>
-						<!-- Important: label must come directly after input. Label is important. -->
-						<span class="translate">Schleichwassererkennung Enduhrzeit wenn normalerweise kein Wasser verbraucht wird</span>
-					</div>
-					</div>
-		  <div class="row">
-			<div class="col s12">
-			  <p class="translate">Beim Speichern wird der Adapter automatisch neugestartet.</p>
+		<div class="row">
+			<div class="input-field col s12 m6 l4">
+				<input type="number" class="value" id="schleichStart" />
+				<label for="schleichStart" class="translate">Schleichwasseralarm Startuhrzeit</label>
+				<!-- Important: label must come directly after input. Label is important. -->
+				<span class="translate">Schleichwassererkennung Startuhrzeit wenn normalerweise kein Wasser verbraucht
+					wird</span>
 			</div>
+			<div class="input-field col s12 m6 l4">
+				<input type="number" class="value" id="schleichEnd" />
+				<label for="schleichEnd" class="translate">Schleichwasseralarm Enduhrzeit</label>
+				<!-- Important: label must come directly after input. Label is important. -->
+				<span class="translate">Schleichwassererkennung Enduhrzeit wenn normalerweise kein Wasser verbraucht wird</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-fields col s12 m12 l12">
+				<div>Power Modus aktivieren</div><br/>
+				<input type="checkbox" id="powerActive" class="value" />
+			<span for="powerActive" class="margin-right">Zeitplan aktivieren</span>
+			<input type="checkbox" id="power1" class="value" />
+			<span for="power1" class="margin-right">Mon </span>
+			<input type="checkbox" id="power2" class="value" />
+			<span for="power2" class="margin-right">Tue </span>
+			<input type="checkbox" id="power3" class="value" />
+			<span for="power3" class="margin-right">Wed </span>
+			<input type="checkbox" id="power4" class="value" />
+			<span for="power4" class="margin-right">Thu </span>
+			<input type="checkbox" id="power5" class="value" />
+			<span for="power5" class="margin-right">Fri </span>
+			<input type="checkbox" id="power6" class="value" />
+			<span for="power6" class="margin-right">Sat </span>
+			<input type="checkbox" id="power7" class="value" />
+			<span for="power7" class="margin-right">Sun </span>
 		  </div>
 		</div>
+		<div class="row">
+			<div class="col s12">
+				<p class="translate">Beim Speichern wird der Adapter automatisch neugestartet</p>
+			</div>
+		</div>
+	</div>
 
 	</div>
 

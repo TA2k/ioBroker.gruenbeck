@@ -17,35 +17,50 @@
 An ioBroker adapter for Grünbeck Wasseraufbereitung devices.
 
 ## Changelog
+
+### 0.0.8 (2019-04-20)
+
+- Fix Info Values nicht als Zahlen geschrieben
+- Salzmenge als Option
+- PowerMode Zeitplan in den Option
+
 ### 0.0.7 (2019-03-31)
-* automatisch Uhrzeit 
-* Wasserverbrauchintervall in den Optionen
-* Schleichwassermesszeitraum in den Optionen
+
+- automatisch Uhrzeit
+- Wasserverbrauchintervall in den Optionen
+- Schleichwassermesszeitraum in den Optionen
 
 ### 0.0.6 (2019-03-30)
-* add Wasserverbrauch l/min
-* fix newError States
+
+- add Wasserverbrauch l/min
+- fix newError States
 
 ### 0.0.5 (2019-03-30)
-* Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden.
-Alle 4sek wird jetzt der aktuelle Durchfluss abgerufen.
+
+- Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden.
+  Alle 4sek wird jetzt der aktuelle Durchfluss abgerufen.
 
 ### 0.0.4
-* (tombox) 	Bugfixes, 
-			added Restkapazität Austauscher to refresh values
-			added berechneter Salzstand and reset Salzstand
-			added Fehlerspeicher reset
+
+- (tombox) Bugfixes,
+  added Restkapazität Austauscher to refresh values
+  added berechneter Salzstand and reset Salzstand
+  added Fehlerspeicher reset
 
 ### 0.0.3
-* (tombox) Add new Error state, add JSON History for Wasserverbrauch
+
+- (tombox) Add new Error state, add JSON History for Wasserverbrauch
 
 ### 0.0.2
-* (tombox) Remove Warning, Fix Descriptions
+
+- (tombox) Remove Warning, Fix Descriptions
 
 ### 0.0.1
-* (tombox) initial release
+
+- (tombox) initial release
 
 ## License
+
 MIT License
 
 Copyright (c) 2019 tombox
