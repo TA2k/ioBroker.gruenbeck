@@ -97,7 +97,9 @@ class Gruenbeck extends utils.Adapter {
 		const day = d.getDay();
 		const adapterPrefix = this.name + "." + this.instance;
 		this.getState(adapterPrefix + ".parameter.D_C_5_1", (err, powerMode) => {
-			this.log.debug(day + " " + powerMode.val);
+			if (!powerMode) {
+				return;
+			}
 			switch (day) {
 				case 1:
 					if (this.config.power1 && powerMode.val == 0) {
