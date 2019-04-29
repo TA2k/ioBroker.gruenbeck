@@ -90,12 +90,14 @@ class Gruenbeck extends utils.Adapter {
 	}
 	setPowerMode() {
 		if (!this.config.powerActive) {
+			this.log.debug("Powermode schedule not active");
 			return;
 		}
 		const d = new Date();
 		const day = d.getDay();
 		const adapterPrefix = this.name + "." + this.instance;
 		this.getState(adapterPrefix + ".parameter.D_C_5_1", (err, powerMode) => {
+			this.log.debug(day + " " + powerMode.val);
 			switch (day) {
 				case 1:
 					if (this.config.power1 && powerMode.val === "0") {
@@ -508,8 +510,10 @@ class Gruenbeck extends utils.Adapter {
 				prefix = "error.";
 			}
 			let value = children[i].childNodes[0].nodeValue;
+			if (value.indexOf(":") === -1) {
+				value = isNaN(parseFloat(value)) === true ? value : parseFloat(value);
+			}
 
-			value = isNaN(parseFloat(value)) === true ? value : parseFloat(value);
 			this.setState(prefix + nodeName, value, true);
 		}
 	}
