@@ -18,6 +18,11 @@ An ioBroker adapter for Grünbeck Wasseraufbereitung devices.
 
 ## Changelog
 
+### 0.0.9 (2019-04-29)
+
+- Fix Power Mode Zeitplan
+- Fix Uhrzeit Parsing
+
 ### 0.0.8 (2019-04-20)
 
 - Fix Info Values nicht als Zahlen geschrieben

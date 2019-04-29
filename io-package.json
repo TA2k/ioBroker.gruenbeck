@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.8",
+        "version": "0.0.9",
         "news": {
+            "0.0.9": {
+                "de": "* Fix Info Power State Zeitplan * Fix Uhrzeit parsing"
+            },
             "0.0.8": {
                 "de": "* Fix Info Values nicht als Zahlen geschrieben * Salzmenge als Option * PowerMode Zeitplan in den Option"
             },
@@ -88,8 +91,7 @@
         "type": "household",
         "compact": true,
         "materialize": true,
-        "dependencies": [
-            {
+        "dependencies": [{
                 "admin": ">=3.0.0"
             },
             {
@@ -115,8 +117,7 @@
         "power7": false
     },
     "objects": [],
-    "instanceObjects": [
-        {
+    "instanceObjects": [{
             "_id": "parameter",
             "type": "channel",
             "common": {
