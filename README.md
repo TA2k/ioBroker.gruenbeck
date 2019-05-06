@@ -14,7 +14,7 @@
 
 ## gruenbeck adapter for ioBroker
 
-An ioBroker adapter for Grünbeck Wasseraufbereitung devices.
+An ioBroker adapter for Grünbeck Wasseraufbereitung SC18, SC23 devices.
 
 ## Changelog
 

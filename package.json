@@ -1,10 +1,10 @@
 {
   "name": "iobroker.gruenbeck",
   "version": "0.0.9",
-  "description": "An ioBroker adapter for Grünbeck Wasseraufbereitung devices.",
+  "description": "An ioBroker adapter for Grünbeck Wasseraufbereitung SC18, SC23 devices.",
   "author": {
-    "name": "tombox",
-    "email": "tombox@nomail.de"
+    "name": "tomboxi",
+    "email": "tombox2020@gmail.com"
   },
   "homepage": "https://github.com/TA2k/ioBroker.gruenbeck",
   "license": "MIT",

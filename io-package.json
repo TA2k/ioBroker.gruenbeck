@@ -91,7 +91,8 @@
         "type": "household",
         "compact": true,
         "materialize": true,
-        "dependencies": [{
+        "dependencies": [
+            {
                 "admin": ">=3.0.0"
             },
             {
@@ -117,7 +118,8 @@
         "power7": false
     },
     "objects": [],
-    "instanceObjects": [{
+    "instanceObjects": [
+        {
             "_id": "parameter",
             "type": "channel",
             "common": {
