@@ -1,6 +1,6 @@
 {
   "name": "iobroker.gruenbeck",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "An ioBroker adapter for Grünbeck Wasseraufbereitung SC18, SC23 devices.",
   "author": {
     "name": "tomboxi",

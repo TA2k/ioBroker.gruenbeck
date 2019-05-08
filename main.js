@@ -24,6 +24,12 @@ const requestErrorsCommand =
 const requestImpulsCommand = "id=0000&code=290&show=D_F_5|D_F_6~";
 const durchflussCommand = "id=0000&show=D_A_1_1~";
 let pollingInterval;
+let actualInterval;
+let allInterval;
+let errorInterval;
+let impulsInterval;
+let clockInterval;
+let powerModeInterval;
 let currentCommand = "";
 let blockTimeout;
 const queueArray = [];
@@ -65,20 +71,22 @@ class Gruenbeck extends utils.Adapter {
 				pollingInterval = setInterval(() => {
 					this.requestData(durchflussCommand);
 				}, pollingDurchflussTime);
-				setInterval(() => {
-					queueArray.push(requestActualsCommand);
+				actualInterval = setInterval(() => {
+					if (queueArray[queueArray.length - 1] !== requestActualsCommand) {
+						queueArray.push(requestActualsCommand);
+					}
 				}, pollingTime);
-				setInterval(() => {
+				allInterval = setInterval(() => {
 					queueArray.push(requestAllCommand);
 				}, 1 * 60 * 60 * 1000); // 1hour
-				setInterval(() => {
+				errorInterval = setInterval(() => {
 					queueArray.push(requestErrorsCommand);
 				}, 10 * 60 * 1000); // 10min
-				setInterval(() => {
+				impulsInterval = setInterval(() => {
 					queueArray.push(requestImpulsCommand);
 				}, 4 * 60 * 60 * 1000); // 4hour
-				setInterval(() => this.setClock(), 1 * 60 * 60 * 1000); // 1hour
-				setInterval(() => this.setPowerMode(), 1 * 60 * 60 * 1000); // 1hour
+				clockInterval = setInterval(() => this.setClock(), 1 * 60 * 60 * 1000); // 1hour
+				powerModeInterval = setInterval(() => this.setPowerMode(), 1 * 60 * 60 * 1000); // 1hour
 			}
 
 			this.subscribeStates("*");
@@ -163,6 +171,13 @@ class Gruenbeck extends utils.Adapter {
 	onUnload(callback) {
 		try {
 			clearInterval(pollingInterval);
+			clearInterval(actualInterval);
+			clearInterval(allInterval);
+			clearInterval(errorInterval);
+			clearInterval(impulsInterval);
+			clearInterval(clockInterval);
+			clearInterval(clockInterval);
+
 			//xhr.abort()
 			this.log.debug("Stopping gruenbeck");
 			this.setState("info.connection", false, true);
