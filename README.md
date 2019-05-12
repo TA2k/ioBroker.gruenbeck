@@ -18,6 +18,10 @@ An ioBroker adapter for Grünbeck Wasseraufbereitung SC18, SC23 devices.
 
 ## Changelog
 
+### 0.0.11 (2019-05-12)
+
+- Fix IP parsing
+
 ### 0.0.10 (2019-05-08)
 
 - Prevent multiple acutal commands interval

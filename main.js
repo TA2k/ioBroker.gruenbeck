@@ -302,11 +302,11 @@ class Gruenbeck extends utils.Adapter {
 
 						const SalzverbrauchAlt = states[adapterPrefix + ".calculated.Salzverbrauch"] ? states[adapterPrefix + ".calculated.Salzverbrauch"].val : 0;
 						const SalzverbrauchNeu = (((KapZahl - 6) * 0.00175 + 0.025) * Rohwasserhaerte * (Wasserverbrauch / 1000)).toFixed(3);
-						const Salzverbrauch = parseFloat(SalzverbrauchNeu) + parseFloat(SalzverbrauchAlt);
+						const Salzverbrauch = (parseFloat(SalzverbrauchNeu) + parseFloat(SalzverbrauchAlt)).toFixed(3);
 
 						let SalzverbrauchGesamt;
 						if (states[adapterPrefix + ".calculated.SalzverbrauchGesamt"] && states[adapterPrefix + ".calculated.SalzverbrauchGesamt"].val > 0) {
-							SalzverbrauchGesamt = parseFloat(states[adapterPrefix + ".calculated.SalzverbrauchGesamt"].val) + parseFloat(SalzverbrauchNeu);
+							SalzverbrauchGesamt = (parseFloat(states[adapterPrefix + ".calculated.SalzverbrauchGesamt"].val) + parseFloat(SalzverbrauchNeu)).toFixed(3);
 						} else {
 							SalzverbrauchGesamt = SalzverbrauchNeu;
 
@@ -527,7 +527,7 @@ class Gruenbeck extends utils.Adapter {
 				prefix = "error.";
 			}
 			let value = children[i].childNodes[0].nodeValue;
-			if (value.indexOf(":") === -1) {
+			if (value.indexOf(":") === -1 && (value.match(/\./g) || []).length <= 1) {
 				value = isNaN(parseFloat(value)) === true ? value : parseFloat(value);
 			}
 
