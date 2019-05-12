@@ -3,6 +3,9 @@
         "name": "gruenbeck",
         "version": "0.0.10",
         "news": {
+            "0.0.11": {
+                "de": "* Fixed IP parsing"
+            },
             "0.0.10": {
                 "de": "* Prevent multiple acutal commands interval \n*Unload all intervals at unload"
             },
