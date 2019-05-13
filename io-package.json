@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.10",
+        "version": "0.0.12",
         "news": {
+            "0.0.12": {
+                "de": "* Fix Versioning"
+            },
             "0.0.11": {
                 "de": "* Fixed IP parsing"
             },
