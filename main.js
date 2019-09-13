@@ -225,6 +225,7 @@ class Gruenbeck extends utils.Adapter {
 													accessToken = response.data.access_token;
 													refreshToken = response.data.refresh_token;
 													setInterval(() => this.startRefreshToken(), 50 * 60 * 1000); //50min
+													this.setState("info.connection", true, true);
 													resolve();
 												}).catch((error) => {
 													// handle error
