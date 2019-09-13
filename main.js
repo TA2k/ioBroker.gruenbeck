@@ -885,9 +885,9 @@ class Gruenbeck extends utils.Adapter {
 
 							return;
 						}
-						this.log.warn("Device cannot handle new connections. Pause for 1min");
+						this.log.info("Device cannot handle new connections this is normal. Adapter pause all requests for 1min");
 						blockConnection = true;
-						this.log.error(xhr.responseText);
+						this.log.debug(xhr.responseText);
 						clearTimeout(blockTimeout);
 						blockTimeout = setTimeout(() => {
 							blockConnection = false;
