@@ -10,6 +10,10 @@ const utils = require("@iobroker/adapter-core");
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
+
+const axios = require("axios");
+const querystring = require("querystring");
+const crypto = require("crypto");
 const {
 	XMLHttpRequest
 } = require("xmlhttprequest-ts");
@@ -36,6 +40,9 @@ const queueArray = [];
 const parameterQueueArray = [];
 let blockConnection = false;
 
+let refreshToken = "";
+let accessToken = "";
+let mgDeviceId = "";
 class Gruenbeck extends utils.Adapter {
 	/**
 	 * @param {Partial<ioBroker.AdapterOptions>} [options={}]
@@ -90,8 +97,259 @@ class Gruenbeck extends utils.Adapter {
 			}
 
 			this.subscribeStates("*");
-		} else this.log.warn("[START] No IP-address set");
+		} else if (this.config.mgUser && this.config.mgPass) {
+			this.login().then(() => this.getMgDevices().then(() => {
+				this.parseMgInfos();
+				allInterval = setInterval(() => {
+					this.parseMgInfos();
+				}, 1 * 60 * 60 * 1000);//1hour
+			}));
+		} else {
+			this.log.warn("[START] No IP-address set");
+		}
 	}
+	login() {
+		return new Promise((resolve, reject) => {
+			const [code_verifier, codeChallange] = this.getCodeChallenge();
+			const axiosInitConfig = {
+				headers: {
+					"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+					"Accept-Encoding": "br, gzip, deflate",
+					"Connection": "keep-alive",
+					"Accept-Language": "de-de",
+					"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1"
+				},
+			};
+			axios.get("https://gruenbeckb2c.b2clogin.com/a50d35c1-202f-4da7-aa87-76e51a3098c6/b2c_1_signinup/oauth2/v2.0/authorize?state=NzZDNkNBRkMtOUYwOC00RTZBLUE5MkYtQTNFRDVGNTQ3MUNG&x-client-Ver=0.2.2&prompt=select_account&response_type=code&code_challenge_method=S256&x-client-OS=12.4.1&scope=https%3A%2F%2Fgruenbeckb2c.onmicrosoft.com%2Fiot%2Fuser_impersonation+openid+profile+offline_access&x-client-SKU=MSAL.iOS&code_challenge=" + codeChallange + "&x-client-CPU=64&client-request-id=FDCD0F73-B7CD-4219-A29B-EE51A60FEE3E&redirect_uri=msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8%3A%2F%2Fauth&client_id=5a83cc16-ffb1-42e9-9859-9fbf07f36df8&haschrome=1&return-client-request-id=true&x-client-DM=iPhone", axiosInitConfig)
+				.then((response) => {
+					// handle success
+					let start, end;
+					start = response.data.indexOf("csrf") + 7;
+					end = response.data.indexOf(",", start) - 1;
+					const csrf = response.data.substring(start, end);
+					start = response.data.indexOf("transId") + 10;
+					end = response.data.indexOf(",", start) - 1;
+					const transId = response.data.substring(start, end);
+					start = response.data.indexOf("policy") + 9;
+					end = response.data.indexOf(",", start) - 1;
+					const policy = response.data.substring(start, end);
+					start = response.data.indexOf("tenant") + 9;
+					end = response.data.indexOf(",", start) - 1;
+					const tenant = response.data.substring(start, end);
+					const filteredCookies = response.headers["set-cookie"].map(element => {
+						return element.split("; ")[0];
+					});
+					const cookie = filteredCookies.join("; ");
+					const axiosConfig = {
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+							"X-CSRF-TOKEN": csrf,
+							"Accept": "application/json, text/javascript, */*; q=0.01",
+							"X-Requested-With": "XMLHttpRequest",
+							"Origin": "https://gruenbeckb2c.b2clogin.com",
+							"Referer": "https://gruenbeckb2c.b2clogin.com/a50d35c1-202f-4da7-aa87-76e51a3098c6/b2c_1_signinup/oauth2/v2.0/authorize?state=NzZDNkNBRkMtOUYwOC00RTZBLUE5MkYtQTNFRDVGNTQ3MUNG&x-client-Ver=0.2.2&prompt=select_account&response_type=code&code_challenge_method=S256&x-client-OS=12.4.1&scope=https%3A%2F%2Fgruenbeckb2c.onmicrosoft.com%2Fiot%2Fuser_impersonation+openid+profile+offline_access&x-client-SKU=MSAL.iOS&code_challenge=PkCmkmlW_KomPNfBLYqzBAHWi10TxFJSJsoYbI2bfZE&x-client-CPU=64&client-request-id=FDCD0F73-B7CD-4219-A29B-EE51A60FEE3E&redirect_uri=msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8%3A%2F%2Fauth&client_id=5a83cc16-ffb1-42e9-9859-9fbf07f36df8&haschrome=1&return-client-request-id=true&x-client-DM=iPhone",
+							"Cookie": cookie,
+							"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1"
+						},
+					};
+					axios.post("https://gruenbeckb2c.b2clogin.com" + tenant + "/SelfAsserted?tx=" + transId + "&p=" + policy, querystring.stringify({
+							request_type: "RESPONSE",
+							logonIdentifier: this.config.mgUser,
+							password: this.config.mgPass,
+						}), axiosConfig)
+						.then((response) => {
+							const filteredCookies = response.headers["set-cookie"].map(element => {
+								return element.split("; ")[0];
+							});
+							let cookie = filteredCookies.join("; ");
+							cookie += "; x-ms-cpim-csrf=" + csrf;
+							const axiosGetConfig = {
+								maxRedirects: 0,
+								headers: {
+									"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+									"Accept-Encoding": "br, gzip, deflate",
+									"Connection": "keep-alive",
+									"Accept-Language": "de-de",
+									"Cookie": cookie,
+									"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1"
+								},
+							};
+							axios.get("https://gruenbeckb2c.b2clogin.com" + tenant + "/api/CombinedSigninAndSignup/confirmed?csrf_token=" + csrf + "&tx=" + transId + "&p=" + policy, axiosGetConfig)
+								.then((response) => {
+									this.log.warn(response);
+								}).catch((error) => {
+									// handle error
+									if (error.response && error.response.status === 302) {
+										if (error.response.data.indexOf("code") !== -1) {
+											start = error.response.data.indexOf("code%3d") + 7;
+											end = error.response.data.indexOf(">here") - 1;
+											const code = error.response.data.substring(start, end);
+											const axiosPostConfig = {
+												maxRedirects: 0,
+												headers: {
+													"Host": "gruenbeckb2c.b2clogin.com",
+													"x-client-SKU": "MSAL.iOS",
+													"Accept": "application/json",
+													"x-client-OS": "12.4.1",
+													"x-app-name": "Grünbeck myProduct",
+													"x-client-CPU": "64",
+													"x-app-ver": "1.0.4",
+													"Accept-Language": "de-de",
+													"Accept-Encoding": "br, gzip, deflate",
+													"client-request-id": "4719C1AF-93BC-4F7B-8B17-9F298FF2E9AB",
+													"User-Agent": "Gruenbeck/320 CFNetwork/978.0.7 Darwin/18.7.0",
+													"x-client-Ver": "0.2.2",
+													"x-client-DM": "iPhone",
+													"return-client-request-id": "true",
+													"cache-control": "no-cache",
+													"Connection": "keep-alive",
+													"Content-Type": "application/x-www-form-urlencoded"
+												},
+											};
+											axios.post("https://gruenbeckb2c.b2clogin.com/a50d35c1-202f-4da7-aa87-76e51a3098c6/b2c_1_signinup/oauth2/v2.0/token", querystring.stringify({
+													"client_info": "1",
+													"scope": "https://gruenbeckb2c.onmicrosoft.com/iot/user_impersonation openid profile offline_access",
+													"code": code,
+													"grant_type": "authorization_code",
+													"code_verifier": code_verifier,
+													"redirect_uri": "msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8://auth",
+													"client_id": "5a83cc16-ffb1-42e9-9859-9fbf07f36df8"
+												}), axiosPostConfig)
+												.then((response) => {
+													accessToken = response.data.access_token;
+													refreshToken = response.data.refresh_token;
+													setInterval(this.startRefreshToken, 50 * 60 * 1000); //50min
+													resolve();
+												}).catch((error) => {
+													// handle error
+													this.log.error(error);
+												});
+										}
+									} else {
+										this.log.error(error);
+									}
+								});
+						}).catch((error) => {
+							// handle error
+							this.log.error(error);
+						});
+				})
+				.catch((error) => {
+					// handle error
+					this.log.error(error);
+				});
+		});
+	}
+	getMgDevices() {
+		return new Promise((resolve, reject) => {
+			const axiosConfig = {
+				"headers": {
+					"Host": "prod-eu-gruenbeck-api.azurewebsites.net",
+					"Accept": "application/json, text/plain, */*",
+					"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+					"Authorization": "Bearer " + accessToken,
+					"Accept-Language": "de-de",
+					"cache-control": "no-cache"
+				}
+			};
+			axios.get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices", axiosConfig).then((response) => {
+				if (response.data && response.data.length > 0) {
+					try {
+						const device = response.data[0];
+						mgDeviceId = device.id;
+						this.setObjectNotExists(device.id, {
+							type: "state",
+							common: {
+								name: device.name,
+								role: "indicator",
+								type: "mixed",
+								write: false,
+								read: true
+							},
+							native: {}
+						});
+
+						resolve();
+
+					} catch (error) {
+						this.log.error(error);
+						this.log.debug(response.data);
+						reject();
+					}
+
+				}else {reject();}
+			});
+
+		});
+
+	}
+	parseMgInfos() {
+		return new Promise((resolve, reject) => {
+			const axiosConfig = {
+				"headers": {
+					"Host": "prod-eu-gruenbeck-api.azurewebsites.net",
+					"Accept": "application/json, text/plain, */*",
+					"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+					"Authorization": "Bearer " + accessToken,
+					"Accept-Language": "de-de",
+					"cache-control": "no-cache"
+				}
+			};
+			axios.get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId, axiosConfig).then((response) => {
+				if (response.data) {
+					try {
+
+						for (const key in response.data) {
+							this.setObjectNotExists(mgDeviceId + "." + key, {
+								type: "state",
+								common: {
+									name: key,
+									type: "mixed",
+									role: "indicator",
+									write: false,
+									read: true
+								},
+								native: {}
+							});
+							if (Array.isArray(response.data[key])) {
+								this.setState(mgDeviceId + "." + key, JSON.stringify(response.data[key]), true);
+							} else {
+								this.setState(mgDeviceId + "." + key, response.data[key], true);
+							}
+						}
+						resolve();
+
+					} catch (error) {
+						this.log.error(error);
+						this.log.debug(response.data);
+						reject();
+					}
+
+				}else {reject();}
+			});
+
+		});
+
+	}
+	startRefreshToken() {
+
+	}
+	getCodeChallenge() {
+		let hash = "";
+		let result = "";
+		while (hash === "" || hash.indexOf("+") !== -1 || hash.indexOf("/") !== -1 || hash.indexOf("=") !== -1 || result.indexOf("+") !== -1 || result.indexOf("/") !== -1) {
+			const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			result = "";
+			for (let i = 64; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+			result = Buffer.from(result).toString("base64");
+			result = result.replace(/=/g, "");
+			hash = crypto.createHash("sha256").update(result).digest("base64");
+			hash = hash.slice(0, hash.length - 1);
+
+		}
+		return [result, hash];
+	}
+
 	setClock() {
 		const d = new Date();
 		queueArray.push("edit=D_C_4_2>" + d.getHours() + ":" + d.getMinutes() + "&id=0000&show=D_C_4_2~");
@@ -160,7 +418,7 @@ class Gruenbeck extends utils.Adapter {
 					break;
 				default:
 			}
-		})
+		});
 
 
 	}
