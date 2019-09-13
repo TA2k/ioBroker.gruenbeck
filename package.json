@@ -37,6 +37,7 @@
     "crypto": "^1.0.1",
     "querystring": "^0.2.0",
     "regex": "^0.1.1",
+    "ws": "^7.1.2",
     "xmldom": "^0.1.27",
     "xmlhttprequest-ts": "^1.0.1"
   },
@@ -69,7 +70,10 @@
     "wasseraufbereitung",
     "softliQ",
     "SC18",
-    "SC23"
+    "SC23",
+    "SD18",
+    "SD23",
+    "SD21"
   ],
   "license": "MIT",
   "main": "main.js",
@@ -87,5 +91,5 @@
     "test:package": "mocha test/package --exit",
     "test:unit": "mocha test/unit --exit"
   },
-  "version": "0.0.12"
+  "version": "0.0.13"
 }

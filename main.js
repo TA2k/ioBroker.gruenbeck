@@ -14,6 +14,7 @@ const utils = require("@iobroker/adapter-core");
 const axios = require("axios");
 const querystring = require("querystring");
 const crypto = require("crypto");
+const WebSocket = require("ws");
 const {
 	XMLHttpRequest
 } = require("xmlhttprequest-ts");
@@ -42,6 +43,9 @@ let blockConnection = false;
 
 let refreshToken = "";
 let accessToken = "";
+let wsAccessToken = "";
+let wsUrl = "";
+let wsConnectionId = "";
 let mgDeviceId = "";
 let tenant = "";
 class Gruenbeck extends utils.Adapter {
@@ -220,7 +224,7 @@ class Gruenbeck extends utils.Adapter {
 												.then((response) => {
 													accessToken = response.data.access_token;
 													refreshToken = response.data.refresh_token;
-													setInterval(()=> this.startRefreshToken(), 50 * 60 * 1000); //50min
+													setInterval(() => this.startRefreshToken(), 50 * 60 * 1000); //50min
 													resolve();
 												}).catch((error) => {
 													// handle error
@@ -339,6 +343,104 @@ class Gruenbeck extends utils.Adapter {
 	}
 
 	connectMgWebSocket() {
+		const axiosConfig = {
+			"headers": {
+				"Content-Type": "text/plain;charset=UTF-8",
+				"Origin": "file://",
+				"Accept": "*/*",
+				"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+				"Authorization": "Bearer " + accessToken,
+				"Accept-Language": "de-de",
+				"cache-control": "no-cache"
+			}
+		};
+		axios.get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/realtime/negotiate", axiosConfig).then((response) => {
+			if (response.data) {
+
+				wsUrl = response.data.url;
+				wsAccessToken = response.data.accessToken;
+				const axiosPostConfig = {
+					"headers": {
+						"Content-Type": "text/plain;charset=UTF-8",
+						"Origin": "file://",
+						"Accept": "*/*",
+						"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+						"Authorization": "Bearer " + wsAccessToken,
+						"Accept-Language": "de-de",
+						"X-Requested-With": "XMLHttpRequest"
+					}
+				};
+				axios.post("https://prod-eu-gruenbeck-signalr.service.signalr.net/client/negotiate?hub=gruenbeck", {}, axiosPostConfig).then((response) => {
+					if (response.data) {
+						try {
+							wsConnectionId = response.data.connectionId;
+
+							const ws = new WebSocket("wss://prod-eu-gruenbeck-signalr.service.signalr.net/client/?hub=gruenbeck&id=" + wsConnectionId + "&access_token=" + wsAccessToken);
+
+							ws.on("open", () => {
+								this.log.debug("WS connected");
+								ws.send('{"protocol":"json","version":1}');
+								this.setObjectNotExists(mgDeviceId + ".Stream", {
+									type: "state",
+									common: {
+										name: "Streaminfromation via myGruenbeck",
+										role: "indicator",
+										type: "mixed",
+										write: false,
+										read: true
+									},
+									native: {}
+								});
+							});
+
+							ws.on("message", (data) => {
+								this.log.debug(data);
+								try {
+									const message = JSON.parse(data.replace("",""));
+									if (message.arguments) {
+										message.arguments.forEach(argument => {
+											for (const key in argument) {
+												this.setObjectNotExists(mgDeviceId + ".Stream." + key, {
+													type: "state",
+													common: {
+														name: key,
+														type: "mixed",
+														role: "indicator",
+														write: false,
+														read: true
+													},
+													native: {}
+												});
+												if (Array.isArray(response.data[key])) {
+													this.setState(mgDeviceId + ".Stream." + key, JSON.stringify(argument[key]), true);
+												} else {
+													this.setState(mgDeviceId + ".Stream." + key, argument[key], true);
+												}
+											}
+
+										});
+									}
+								} catch (error) {
+									this.log.error("Websocket parse error");
+									this.log.error(error);
+								}
+							});
+						} catch (error) {
+							this.log.error(error);
+							this.log.debug(response.data);
+						}
+					}
+				}).catch((error) => {
+					// handle error
+					this.log.error(error);
+				});
+
+			} else {}
+		}).catch((error) => {
+			// handle error
+			this.log.error(error);
+		});
+
 
 	}
 	startRefreshToken() {
@@ -371,11 +473,11 @@ class Gruenbeck extends utils.Adapter {
 			.then((response) => {
 				accessToken = response.data.access_token;
 				refreshToken = response.data.refresh_token;
-				
+
 			}).catch((error) => {
 				this.log.error("Refreshtoken error");
 				this.log.error(error);
-				setTimeout(()=>this.startRefreshToken(),5*60*1000); 
+				setTimeout(() => this.startRefreshToken(), 5 * 60 * 1000);
 			});
 	}
 	getCodeChallenge() {
