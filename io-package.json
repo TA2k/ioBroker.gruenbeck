@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.13",
+        "version": "0.0.14",
         "news": {
+            "0.0.14": {
+                "de": "Add Refresh for SDxx devices"
+            },
             "0.0.13": {
                 "de": "Add Support for SDxx devices"
             },

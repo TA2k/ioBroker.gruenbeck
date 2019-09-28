@@ -106,9 +106,13 @@ class Gruenbeck extends utils.Adapter {
 			this.login().then(() => this.getMgDevices().then(() => {
 				this.parseMgInfos();
 				this.connectMgWebSocket();
+				this.refreshSD();
 				allInterval = setInterval(() => {
 					this.parseMgInfos();
 				}, 1 * 60 * 60 * 1000); //1hour
+				actualInterval = setInterval(() => {
+					this.refreshSD();
+				},  30 * 1000); //30sec
 			}));
 		} else {
 			this.log.warn("[START] No IP-address set");
@@ -246,6 +250,30 @@ class Gruenbeck extends utils.Adapter {
 					this.log.error(error);
 				});
 		});
+	}
+	refreshSD() {
+		return new Promise((resolve, reject) => {
+			const axiosConfig = {
+				"headers": {
+					"Host": "prod-eu-gruenbeck-api.azurewebsites.net",
+					"Origin": "file://",
+					"Accept": "application/json, text/plain, */*",
+					"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+					"Authorization": "Bearer " + accessToken,
+					"Accept-Language": "de-de",
+					"cache-control": "no-cache"
+				}
+			};
+			axios.post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/"+mgDeviceId+"/realtime/refresh",{}, axiosConfig).then((response) => {
+				if (response.status < 400) {
+					resolve();
+				} else {
+					reject();
+				}
+			});
+
+		});
+
 	}
 	getMgDevices() {
 		return new Promise((resolve, reject) => {
@@ -397,7 +425,7 @@ class Gruenbeck extends utils.Adapter {
 							ws.on("message", (data) => {
 								this.log.debug(data);
 								try {
-									const message = JSON.parse(data.replace("",""));
+									const message = JSON.parse(data.replace("", ""));
 									if (message.arguments) {
 										message.arguments.forEach(argument => {
 											for (const key in argument) {
