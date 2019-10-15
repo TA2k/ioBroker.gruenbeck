@@ -112,7 +112,7 @@ class Gruenbeck extends utils.Adapter {
 				}, 1 * 60 * 60 * 1000); //1hour
 				actualInterval = setInterval(() => {
 					this.refreshSD();
-				},  30 * 1000); //30sec
+				},  this.config.mgInterval * 1000); //30sec
 			}));
 		} else {
 			this.log.warn("[START] No IP-address set");
