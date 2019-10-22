@@ -41,6 +41,8 @@ const queueArray = [];
 const parameterQueueArray = [];
 let blockConnection = false;
 
+let ws = "";
+
 let refreshToken = "";
 let accessToken = "";
 let wsAccessToken = "";
@@ -404,7 +406,7 @@ class Gruenbeck extends utils.Adapter {
 						try {
 							wsConnectionId = response.data.connectionId;
 
-							const ws = new WebSocket("wss://prod-eu-gruenbeck-signalr.service.signalr.net/client/?hub=gruenbeck&id=" + wsConnectionId + "&access_token=" + wsAccessToken);
+							ws = new WebSocket("wss://prod-eu-gruenbeck-signalr.service.signalr.net/client/?hub=gruenbeck&id=" + wsConnectionId + "&access_token=" + wsAccessToken);
 
 							ws.on("open", () => {
 								this.log.debug("WS connected");
