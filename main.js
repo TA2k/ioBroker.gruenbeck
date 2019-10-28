@@ -612,7 +612,7 @@ class Gruenbeck extends utils.Adapter {
 			clearInterval(impulsInterval);
 			clearInterval(clockInterval);
 			clearInterval(clockInterval);
-
+			ws.close()
 			//xhr.abort()
 			this.log.debug("Stopping gruenbeck");
 			this.setState("info.connection", false, true);
