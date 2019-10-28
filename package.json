@@ -1,28 +1,28 @@
 {
-  "_from": "iobroker.gruenbeck@0.0.11",
-  "_id": "iobroker.gruenbeck@0.0.11",
+  "_from": "https://github.com/TA2k/ioBroker.gruenbeck/tarball/master",
+  "_id": "iobroker.gruenbeck@0.0.14",
   "_inBundle": false,
-  "_integrity": "sha512-R4yKlzUoLqjZyyG3y/1sLo9jNknFjZKljyh4OrlIr1my3akOaxSUorfLBMZbZSc8TqwAwu9TABsV+krg5/t9Ow==",
+  "_integrity": "sha512-cF3fbfbO1PwuJKeo0e3FO+VfpTPB/KRRKhNUh4XL3oPUZFSAf15tIS5B5sQl/CO2JR0U7J3rXiIXJplV8UsxDA==",
   "_location": "/iobroker.gruenbeck",
-  "_phantomChildren": {},
+  "_phantomChildren": {
+    "async-limiter": "1.0.1",
+    "follow-redirects": "1.5.10"
+  },
   "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "iobroker.gruenbeck@0.0.11",
-    "name": "iobroker.gruenbeck",
-    "escapedName": "iobroker.gruenbeck",
-    "rawSpec": "0.0.11",
-    "saveSpec": null,
-    "fetchSpec": "0.0.11"
+    "type": "remote",
+    "raw": "https://github.com/TA2k/ioBroker.gruenbeck/tarball/master",
+    "rawSpec": "https://github.com/TA2k/ioBroker.gruenbeck/tarball/master",
+    "saveSpec": "https://github.com/TA2k/ioBroker.gruenbeck/tarball/master",
+    "fetchSpec": "https://github.com/TA2k/ioBroker.gruenbeck/tarball/master"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/iobroker.gruenbeck/-/iobroker.gruenbeck-0.0.11.tgz",
-  "_shasum": "a81b0fcc347e133aa6de4c3c6d61a43a32bf09d8",
-  "_spec": "iobroker.gruenbeck@0.0.11",
-  "_where": "/Users/d057119",
+  "_resolved": "https://github.com/TA2k/ioBroker.gruenbeck/tarball/master",
+  "_shasum": "40820ce13ca6f0104be82c05598b0527df10aa34",
+  "_spec": "https://github.com/TA2k/ioBroker.gruenbeck/tarball/master",
+  "_where": "/usr/local/iobroker/node_modules/iobroker.js-controller",
   "author": {
     "name": "tomboxi",
     "email": "tombox2020@gmail.com"
@@ -91,5 +91,5 @@
     "test:package": "mocha test/package --exit",
     "test:unit": "mocha test/unit --exit"
   },
-  "version": "0.0.14"
+  "version": "0.0.15"
 }

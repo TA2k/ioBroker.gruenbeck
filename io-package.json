@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.14",
+        "version": "0.0.15",
         "news": {
+            "0.0.15": {
+                "de": "Fix combact mode"
+            },
             "0.0.14": {
                 "de": "Add Refresh for SDxx devices"
             },
