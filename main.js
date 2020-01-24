@@ -80,6 +80,10 @@ class Gruenbeck extends utils.Adapter {
 			this.requestData(requestAllCommand);
 			this.setClock();
 			this.setPowerMode();
+			if (this.config.mgInterval && this.config.mgInterval < 360) {
+				this.log.warn("Interval ist zu niedrig. Auf 360sec erhöht um Blocking zu vermeiden.");
+				this.config.mgInterval = 360;
+			}
 			if (!pollingInterval) {
 				//pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
 				pollingInterval = setInterval(() => {
@@ -114,7 +118,7 @@ class Gruenbeck extends utils.Adapter {
 				}, 1 * 60 * 60 * 1000); //1hour
 				actualInterval = setInterval(() => {
 					this.refreshSD();
-				},  this.config.mgInterval * 1000); //30sec
+				},  this.config.mgInterval * 1000); 
 			}));
 		} else {
 			this.log.warn("[START] No IP-address set");
@@ -165,10 +169,10 @@ class Gruenbeck extends utils.Adapter {
 						},
 					};
 					axios.post("https://gruenbeckb2c.b2clogin.com" + tenant + "/SelfAsserted?tx=" + transId + "&p=" + policy, querystring.stringify({
-							request_type: "RESPONSE",
-							logonIdentifier: this.config.mgUser,
-							password: this.config.mgPass,
-						}), axiosConfig)
+						request_type: "RESPONSE",
+						logonIdentifier: this.config.mgUser,
+						password: this.config.mgPass,
+					}), axiosConfig)
 						.then((response) => {
 							const filteredCookies = response.headers["set-cookie"].map(element => {
 								return element.split("; ")[0];
@@ -219,14 +223,14 @@ class Gruenbeck extends utils.Adapter {
 												},
 											};
 											axios.post("https://gruenbeckb2c.b2clogin.com" + tenant + "/oauth2/v2.0/token", querystring.stringify({
-													"client_info": "1",
-													"scope": "https://gruenbeckb2c.onmicrosoft.com/iot/user_impersonation openid profile offline_access",
-													"code": code,
-													"grant_type": "authorization_code",
-													"code_verifier": code_verifier,
-													"redirect_uri": "msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8://auth",
-													"client_id": "5a83cc16-ffb1-42e9-9859-9fbf07f36df8"
-												}), axiosPostConfig)
+												"client_info": "1",
+												"scope": "https://gruenbeckb2c.onmicrosoft.com/iot/user_impersonation openid profile offline_access",
+												"code": code,
+												"grant_type": "authorization_code",
+												"code_verifier": code_verifier,
+												"redirect_uri": "msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8://auth",
+												"client_id": "5a83cc16-ffb1-42e9-9859-9fbf07f36df8"
+											}), axiosPostConfig)
 												.then((response) => {
 													accessToken = response.data.access_token;
 													refreshToken = response.data.refresh_token;
@@ -495,12 +499,12 @@ class Gruenbeck extends utils.Adapter {
 			},
 		};
 		axios.post("https://gruenbeckb2c.b2clogin.com" + tenant + "/oauth2/v2.0/token", querystring.stringify({
-				"client_id": "5a83cc16-ffb1-42e9-9859-9fbf07f36df8",
-				"scope": "https://gruenbeckb2c.onmicrosoft.com/iot/user_impersonation openid profile offline_access",
-				"refresh_token": refreshToken,
-				"client_info": "1",
-				"grant_type": "refresh_token"
-			}), axiosPostConfig)
+			"client_id": "5a83cc16-ffb1-42e9-9859-9fbf07f36df8",
+			"scope": "https://gruenbeckb2c.onmicrosoft.com/iot/user_impersonation openid profile offline_access",
+			"refresh_token": refreshToken,
+			"client_info": "1",
+			"grant_type": "refresh_token"
+		}), axiosPostConfig)
 			.then((response) => {
 				accessToken = response.data.access_token;
 				refreshToken = response.data.refresh_token;
@@ -612,7 +616,7 @@ class Gruenbeck extends utils.Adapter {
 			clearInterval(impulsInterval);
 			clearInterval(clockInterval);
 			clearInterval(clockInterval);
-			ws.close()
+			ws.close();
 			//xhr.abort()
 			this.log.debug("Stopping gruenbeck");
 			this.setState("info.connection", false, true);

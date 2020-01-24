@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.15",
+        "version": "0.0.16",
         "news": {
+            "0.0.16": {
+                "de": "Increase minimum interval to prevent blocking"
+            },
             "0.0.15": {
                 "de": "Fix combact mode"
             },
@@ -112,7 +115,8 @@
         "type": "household",
         "compact": true,
         "materialize": true,
-        "dependencies": [{
+        "dependencies": [
+            {
                 "admin": ">=3.0.0"
             },
             {
@@ -141,7 +145,8 @@
         "mgInterval": 30
     },
     "objects": [],
-    "instanceObjects": [{
+    "instanceObjects": [
+        {
             "_id": "parameter",
             "type": "channel",
             "common": {
