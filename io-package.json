@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.16",
+        "version": "0.0.17",
         "news": {
-            "0.0.16": {
+            "0.0.17": {
                 "de": "Increase minimum interval to prevent blocking"
             },
             "0.0.15": {

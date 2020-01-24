@@ -80,10 +80,7 @@ class Gruenbeck extends utils.Adapter {
 			this.requestData(requestAllCommand);
 			this.setClock();
 			this.setPowerMode();
-			if (this.config.mgInterval && this.config.mgInterval < 360) {
-				this.log.warn("Interval ist zu niedrig. Auf 360sec erhöht um Blocking zu vermeiden.");
-				this.config.mgInterval = 360;
-			}
+			x;
 			if (!pollingInterval) {
 				//pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
 				pollingInterval = setInterval(() => {
@@ -109,6 +106,10 @@ class Gruenbeck extends utils.Adapter {
 
 			this.subscribeStates("*");
 		} else if (this.config.mgUser && this.config.mgPass) {
+			if (this.config.mgInterval && this.config.mgInterval < 360) {
+				this.log.warn("Interval ist zu niedrig. Auf 360sec erhöht um Blocking zu vermeiden.");
+				this.config.mgInterval = 360;
+			}
 			this.login().then(() => this.getMgDevices().then(() => {
 				this.parseMgInfos();
 				this.connectMgWebSocket();
