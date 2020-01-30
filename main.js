@@ -80,7 +80,7 @@ class Gruenbeck extends utils.Adapter {
 			this.requestData(requestAllCommand);
 			this.setClock();
 			this.setPowerMode();
-			x;
+		
 			if (!pollingInterval) {
 				//pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
 				pollingInterval = setInterval(() => {
