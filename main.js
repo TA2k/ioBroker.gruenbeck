@@ -41,7 +41,7 @@ const queueArray = [];
 const parameterQueueArray = [];
 let blockConnection = false;
 
-let ws = "";
+let ws = null;
 
 let refreshToken = "";
 let accessToken = "";
@@ -419,7 +419,7 @@ class Gruenbeck extends utils.Adapter {
 								this.setObjectNotExists(mgDeviceId + ".Stream", {
 									type: "state",
 									common: {
-										name: "Streaminfromation via myGruenbeck",
+										name: "Streaminformation via myGruenbeck",
 										role: "indicator",
 										type: "mixed",
 										write: false,
@@ -428,7 +428,10 @@ class Gruenbeck extends utils.Adapter {
 									native: {}
 								});
 							});
-
+							ws.on("close", (data) => {
+								this.log.info(data);
+								this.log.info("Websocket closed");
+							});
 							ws.on("message", (data) => {
 								this.log.debug(data);
 								try {
@@ -459,6 +462,10 @@ class Gruenbeck extends utils.Adapter {
 								} catch (error) {
 									this.log.error("Websocket parse error");
 									this.log.error(error);
+									this.log.error(data);
+									ws.close();
+									setTimeout(()=> {this.connectMgWebSocket();},5000);
+
 								}
 							});
 						} catch (error) {
