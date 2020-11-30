@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.18",
+        "version": "0.0.20",
         "news": {
+            "0.0.20": {
+                "de": "Fix SD refresh"
+            },
             "0.0.18": {
                 "de": "Fix starting problem with SC devices"
             },
