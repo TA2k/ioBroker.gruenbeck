@@ -148,7 +148,7 @@
         "power7": false,
         "mgUser": "",
         "mgPass": "",
-        "mgInterval": 30
+        "mgInterval": 360
     },
     "objects": [],
     "instanceObjects": [
