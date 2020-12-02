@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.21",
+        "version": "0.0.22",
         "news": {
+            "0.0.22": {
+                "de": "Add additional SD Data"
+            },
             "0.0.21": {
                 "de": "Fix SD Refresh when App is open"
             },
