@@ -118,7 +118,7 @@ class Gruenbeck extends utils.Adapter {
                         this.parseMgInfos();
                     }, 1 * 60 * 60 * 1000); //1hour
                     actualInterval = setInterval(() => {
-                        this.refreshSD();
+                        this.enterSD();
                     }, this.config.mgInterval * 1000);
                 })
             );
