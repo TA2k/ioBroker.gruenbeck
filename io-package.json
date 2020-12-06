@@ -125,6 +125,8 @@
         "loglevel": "info",
         "mode": "daemon",
         "type": "household",
+        "connectionType": "cloud",
+        "dataSource": "push",
         "compact": true,
         "materialize": true,
         "dependencies": [
