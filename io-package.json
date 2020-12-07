@@ -47,36 +47,6 @@
             },
             "0.0.7": {
                 "de": "* automatisch Uhrzeit * Wasserverbrauchintervall in den Optionen * Schleichwassermesszeitraum in den Optionen"
-            },
-            "0.0.6": {
-                "de": "add Wasserverbrauch l/min \n fix newError State"
-            },
-            "0.0.5": {
-                "de": "Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden. \nAlle 4sek wird jetzt der aktuelle Durchfluss abgerufen."
-            },
-            "0.0.4": {
-                "en": "Bugfixes \nadded Restkapazität Austauscher to refresh value\n added berechneter Salzstand and reset Salzstand\n added Fehlerspeicher reset",
-                "de": "Bugfixes \nadded Restkapazität Austauscher zu den refresh Werten hinzugefügt\n berechneter Salzstand und Salzverbrauch Reset hinzugefügt\n Fehlerspeicher zurücksetzen hinzugefügt."
-            },
-            "0.0.3": {
-                "en": "Add new Error state, add JSON History for Wasserverbrauch",
-                "de": "Neuer State wenn ein neuer Fehler eingelesen wird, JSON hinzugefügt für eine komplette Historie des Wasserverbrauchs"
-            },
-            "0.0.2": {
-                "en": "Remove Warning, Fix Descriptions",
-                "de": "Warnung entfernt und Beschreibung verbessert"
-            },
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版"
             }
         },
         "title": "Grünbeck",
