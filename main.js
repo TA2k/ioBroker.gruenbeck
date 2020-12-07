@@ -113,12 +113,16 @@ class Gruenbeck extends utils.Adapter {
                 this.getMgDevices().then(() => {
                     this.parseMgInfos();
                     this.connectMgWebSocket();
-                    this.enterSD();
+                    this.enterSD().then(() => {
+                        this.refreshSD();
+                    });
                     allInterval = setInterval(() => {
                         this.parseMgInfos();
                     }, 1 * 60 * 60 * 1000); //1hour
                     actualInterval = setInterval(() => {
-                        this.refreshSD();
+                        this.enterSD().then(() => {
+                            this.refreshSD();
+                        });
                     }, this.config.mgInterval * 1000);
                 })
             );
