@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.22",
+        "version": "0.0.23",
         "news": {
+            "0.0.23": {
+                "de": "Fix for multiple devices"
+            },
             "0.0.22": {
                 "de": "Add additional SD Data"
             },
