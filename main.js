@@ -77,8 +77,8 @@ class Gruenbeck extends utils.Adapter {
             this.log.debug("[INFO] Configured polling interval: " + pollingTime);
             this.requestData(requestAllCommand);
             this.setClock();
-			this.setPowerMode();
-			this.userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1"
+            this.setPowerMode();
+            this.userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1";
 
             if (!pollingInterval) {
                 //pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
@@ -113,16 +113,12 @@ class Gruenbeck extends utils.Adapter {
                 this.getMgDevices().then(() => {
                     this.parseMgInfos();
                     this.connectMgWebSocket();
-                    this.enterSD().then(() => {
-                        this.refreshSD();
-                   });
+                    this.enterSD();
                     allInterval = setInterval(() => {
                         this.parseMgInfos();
                     }, 1 * 60 * 60 * 1000); //1hour
                     actualInterval = setInterval(() => {
-                        this.enterSD().then(() => {
-                             this.refreshSD();
-                        });
+                        this.refreshSD();
                     }, this.config.mgInterval * 1000);
                 })
             );
@@ -139,14 +135,15 @@ class Gruenbeck extends utils.Adapter {
                     "Accept-Encoding": "br, gzip, deflate",
                     Connection: "keep-alive",
                     "Accept-Language": "de-de",
-                    "User-Agent": this.userAgent
+                    "User-Agent": this.userAgent,
                 },
             };
             axios
                 .get(
                     "https://gruenbeckb2c.b2clogin.com/a50d35c1-202f-4da7-aa87-76e51a3098c6/b2c_1_signinup/oauth2/v2.0/authorize?" +
                         "x-client-Ver=0.8.0&state=NjkyQjZBQTgtQkM1My00ODBDLTn3MkYtOTZCQ0QyQkQ2NEE5&client_info=1&response_type=code&code_challenge_method=S256&x-app-name=Gr%C3%BCnbeck&x-client-OS=14.2&x-app-ver=1.1.4&scope=https%3A%2F%2Fgruenbeckb2c.onmicrosoft.com%2Fiot%2Fuser_impersonation%20openid%20profile%20offline_access&x-client-SKU=MSAL.iOS&" +
-                        "code_challenge="+codeChallange+
+                        "code_challenge=" +
+                        codeChallange +
                         "&x-client-CPU=64&client-request-id=02467BE4-6026-4C9B-927B-07FB07E05FFF&redirect_uri=msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8%3A%2F%2Fauth&client_id=5a83cc16-ffb1-42e9-9859-9fbf07f36df8&haschrome=1&return-client-request-id=true&x-client-DM=iPhone",
                     axiosInitConfig
                 )
@@ -176,10 +173,11 @@ class Gruenbeck extends utils.Adapter {
                             Accept: "application/json, text/javascript, */*; q=0.01",
                             "X-Requested-With": "XMLHttpRequest",
                             Origin: "https://gruenbeckb2c.b2clogin.com",
-                       																												
-							Referer: "https://gruenbeckb2c.b2clogin.com/a50d35c1-202f-4da7-aa87-76e51a3098c6/b2c_1_signinup/oauth2/v2.0/authorize?x-client-Ver=0.8.0&state=NjkyQjZBQTgtQkM1My00ODBDLTk3MkYtOTZCQ0QyQkQ2NEE5&client_info=1&response_type=code&code_challenge_method=S256&x-app-name=Gr%C3%BCnbeck&x-client-OS=14.2&x-app-ver=1.1.4&scope=https%3A%2F%2Fgruenbeckb2c.onmicrosoft.com%2Fiot%2Fuser_impersonation%20openid%20profile%20offline_access&x-client-SKU=MSAL.iOS&code_challenge=SJ4qbue1p8KeyKbLmMMEOvRgIe01ZEm5olMVHIvCmc0&x-client-CPU=64&client-request-id=02467BE4-6026-4C9B-927B-07FB07E05FFF&redirect_uri=msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8%3A%2F%2Fauth&client_id=5a83cc16-ffb1-42e9-9859-9fbf07f36df8&haschrome=1&return-client-request-id=true&x-client-DM=iPhone",
+
+                            Referer:
+                                "https://gruenbeckb2c.b2clogin.com/a50d35c1-202f-4da7-aa87-76e51a3098c6/b2c_1_signinup/oauth2/v2.0/authorize?x-client-Ver=0.8.0&state=NjkyQjZBQTgtQkM1My00ODBDLTk3MkYtOTZCQ0QyQkQ2NEE5&client_info=1&response_type=code&code_challenge_method=S256&x-app-name=Gr%C3%BCnbeck&x-client-OS=14.2&x-app-ver=1.1.4&scope=https%3A%2F%2Fgruenbeckb2c.onmicrosoft.com%2Fiot%2Fuser_impersonation%20openid%20profile%20offline_access&x-client-SKU=MSAL.iOS&code_challenge=SJ4qbue1p8KeyKbLmMMEOvRgIe01ZEm5olMVHIvCmc0&x-client-CPU=64&client-request-id=02467BE4-6026-4C9B-927B-07FB07E05FFF&redirect_uri=msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8%3A%2F%2Fauth&client_id=5a83cc16-ffb1-42e9-9859-9fbf07f36df8&haschrome=1&return-client-request-id=true&x-client-DM=iPhone",
                             Cookie: cookie,
-                            "User-Agent": this.userAgent
+                            "User-Agent": this.userAgent,
                         },
                     };
                     axios
@@ -206,7 +204,7 @@ class Gruenbeck extends utils.Adapter {
                                     Connection: "keep-alive",
                                     "Accept-Language": "de-de",
                                     Cookie: cookie,
-                                    "User-Agent": this.userAgent
+                                    "User-Agent": this.userAgent,
                                 },
                             };
                             axios
@@ -224,21 +222,21 @@ class Gruenbeck extends utils.Adapter {
                                             const axiosPostConfig = {
                                                 maxRedirects: 0,
                                                 headers: {
-													'Host': 'gruenbeckb2c.b2clogin.com',
-													'x-client-SKU': 'MSAL.iOS',
-													'Accept': 'application/json',
-													'x-client-OS': '14.2',
-													'x-app-name': 'Grünbeck',
-													'x-client-CPU': '64',
-													'x-app-ver': '1.1.4',
-													'Accept-Language': 'de-de',
-													'client-request-id': '02467BE4-6026-4C9B-927B-07FB07E05FFF',
-													'x-ms-PkeyAuth': '1.0',
-													'x-client-Ver': '0.8.0',
-													'x-client-DM': 'iPhone',
-													'User-Agent': 'Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0',
-													'return-client-request-id': 'true'
-												  },
+                                                    Host: "gruenbeckb2c.b2clogin.com",
+                                                    "x-client-SKU": "MSAL.iOS",
+                                                    Accept: "application/json",
+                                                    "x-client-OS": "14.2",
+                                                    "x-app-name": "Grünbeck",
+                                                    "x-client-CPU": "64",
+                                                    "x-app-ver": "1.1.4",
+                                                    "Accept-Language": "de-de",
+                                                    "client-request-id": "02467BE4-6026-4C9B-927B-07FB07E05FFF",
+                                                    "x-ms-PkeyAuth": "1.0",
+                                                    "x-client-Ver": "0.8.0",
+                                                    "x-client-DM": "iPhone",
+                                                    "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                                                    "return-client-request-id": "true",
+                                                },
                                             };
                                             axios
                                                 .post(
@@ -278,6 +276,7 @@ class Gruenbeck extends utils.Adapter {
                 })
                 .catch((error) => {
                     // handle error
+                    this.log.error(error.config.url);
                     this.log.error(error);
                 });
         });
@@ -286,60 +285,81 @@ class Gruenbeck extends utils.Adapter {
         return new Promise((resolve, reject) => {
             const axiosConfig = {
                 headers: {
-					'Host': 'prod-eu-gruenbeck-api.azurewebsites.net',
-					'Accept': 'application/json, text/plain, */*',
-					'User-Agent': 'Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0',
-					'Accept-Language': 'de-de',
-                    Authorization: "Bearer " + accessToken
+                    Host: "prod-eu-gruenbeck-api.azurewebsites.net",
+                    Accept: "application/json, text/plain, */*",
+                    "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                    "Accept-Language": "de-de",
+                    Authorization: "Bearer " + accessToken,
                 },
             };
-            axios.post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/refresh?api-version=2020-04-07", {}, axiosConfig).then((response) => {
-                if (response.status < 400) {
-                    resolve();
-                } else {
-                    reject();
-                }
-            });
+            axios
+                .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/refresh?api-version=2020-04-07", {}, axiosConfig)
+                .then((response) => {
+                    if (response.status < 400) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                })
+                .catch((error) => {
+                    // handle error
+                    this.log.error(error.config.url);
+                    this.log.error(error);
+                });
         });
     }
     enterSD() {
         return new Promise((resolve, reject) => {
             const axiosConfig = {
                 headers: {
-					'Host': 'prod-eu-gruenbeck-api.azurewebsites.net',
-					'Accept': 'application/json, text/plain, */*',
-					'User-Agent': 'Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0',
-					'Accept-Language': 'de-de',
-                    Authorization: "Bearer " + accessToken
+                    Host: "prod-eu-gruenbeck-api.azurewebsites.net",
+                    Accept: "application/json, text/plain, */*",
+                    "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                    "Accept-Language": "de-de",
+                    Authorization: "Bearer " + accessToken,
                 },
             };
-            axios.post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/enter?api-version=2020-04-07", {}, axiosConfig).then((response) => {
-                if (response.status < 400) {
-                    resolve();
-                } else {
-                    reject();
-                }
-            });
+            axios
+                .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/enter?api-version=2020-04-07", {}, axiosConfig)
+                .then((response) => {
+                    if (response.status < 400) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                })
+                .catch((error) => {
+                    // handle error
+                    this.log.error(error.config.url);
+                    this.log.error(error);
+                });
         });
     }
     leaveSD() {
         return new Promise((resolve, reject) => {
             const axiosConfig = {
                 headers: {
-					'Host': 'prod-eu-gruenbeck-api.azurewebsites.net',
-					'Accept': 'application/json, text/plain, */*',
-					'User-Agent': 'Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0',
-					'Accept-Language': 'de-de',
-                    Authorization: "Bearer " + accessToken
+                    Host: "prod-eu-gruenbeck-api.azurewebsites.net",
+                    Accept: "application/json, text/plain, */*",
+                    "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                    "Accept-Language": "de-de",
+                    Authorization: "Bearer " + accessToken,
                 },
             };
-            axios.post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/leave?api-version=2020-04-07", {}, axiosConfig).then((response) => {
-                if (response.status < 400) {
-                    resolve();
-                } else {
-                    reject();
-                }
-            });
+            axios
+                .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/leave?api-version=2020-04-07", {}, axiosConfig)
+                .then((response) => {
+                    if (response.status < 400) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                })
+                .catch((error) => {
+                    // handle error
+                    this.log.error(error.config.url);
+                    this.log.error(error);
+                });
         });
     }
     getMgDevices() {
@@ -357,6 +377,8 @@ class Gruenbeck extends utils.Adapter {
             axios.get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices?api-version=2020-04-07", axiosConfig).then((response) => {
                 if (response.data && response.data.length > 0) {
                     try {
+                        //filter for softliq devices
+                        response.data = response.data.filter((el) => el.id.toLowerCase().indexOf("soft") > -1);
                         const device = response.data[0];
                         mgDeviceId = device.id;
                         this.setObjectNotExists(device.id, {
@@ -395,7 +417,7 @@ class Gruenbeck extends utils.Adapter {
                     "cache-control": "no-cache",
                 },
             };
-            axios.get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId+"?api-version=2020-04-07", axiosConfig).then((response) => {
+            axios.get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "?api-version=2020-04-07", axiosConfig).then((response) => {
                 if (response.data) {
                     try {
                         for (const key in response.data) {
@@ -435,11 +457,11 @@ class Gruenbeck extends utils.Adapter {
                 "Content-Type": "text/plain;charset=UTF-8",
                 Origin: "file://",
                 Accept: "*/*",
-                "User-Agent":"Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
                 Authorization: "Bearer " + accessToken,
                 "Accept-Language": "de-de",
-				"cache-control": "no-cache",
-				"X-Requested-With":"XMLHttpRequest"
+                "cache-control": "no-cache",
+                "X-Requested-With": "XMLHttpRequest",
             },
         };
         axios
@@ -466,17 +488,17 @@ class Gruenbeck extends utils.Adapter {
                                 try {
                                     wsConnectionId = response.data.connectionId;
 
-                                    ws = new WebSocket("wss://prod-eu-gruenbeck-signalr.service.signalr.net/client/?hub=gruenbeck&id=" + wsConnectionId + "&access_token=" + wsAccessToken,{
-										headers:  {
-											'Upgrade': 'websocket',
-											'Host': 'prod-eu-gruenbeck-signalr.service.signalr.net',
-											'Origin': 'null',
-											'Pragma': 'no-cache',
-											'Cache-Control': 'no-cache',
-										
-											'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
-										  },
-									});
+                                    ws = new WebSocket("wss://prod-eu-gruenbeck-signalr.service.signalr.net/client/?hub=gruenbeck&id=" + wsConnectionId + "&access_token=" + wsAccessToken, {
+                                        headers: {
+                                            Upgrade: "websocket",
+                                            Host: "prod-eu-gruenbeck-signalr.service.signalr.net",
+                                            Origin: "null",
+                                            Pragma: "no-cache",
+                                            "Cache-Control": "no-cache",
+
+                                            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+                                        },
+                                    });
 
                                     ws.on("open", () => {
                                         this.log.debug("WS connected");
@@ -556,19 +578,19 @@ class Gruenbeck extends utils.Adapter {
             maxRedirects: 0,
             headers: {
                 Host: "gruenbeckb2c.b2clogin.com",
-				'x-client-SKU': 'MSAL.iOS',
-				'Accept': 'application/json',
-				'x-client-OS': '14.2',
-				'x-app-name': 'Grünbeck',
-				'x-client-CPU': '64',
-				'x-app-ver': '1.1.4',
-				'Accept-Language': 'de-de',
-				'client-request-id': '02467BE4-6026-4C9B-927B-07FB07E05FFF',
-				'x-ms-PkeyAuth': '1.0',
-				'x-client-Ver': '0.8.0',
-				'x-client-DM': 'iPhone',
-				'User-Agent': 'Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0',
-				'return-client-request-id': 'true'
+                "x-client-SKU": "MSAL.iOS",
+                Accept: "application/json",
+                "x-client-OS": "14.2",
+                "x-app-name": "Grünbeck",
+                "x-client-CPU": "64",
+                "x-app-ver": "1.1.4",
+                "Accept-Language": "de-de",
+                "client-request-id": "02467BE4-6026-4C9B-927B-07FB07E05FFF",
+                "x-ms-PkeyAuth": "1.0",
+                "x-client-Ver": "0.8.0",
+                "x-client-DM": "iPhone",
+                "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                "return-client-request-id": "true",
             },
         };
         axios
@@ -684,7 +706,7 @@ class Gruenbeck extends utils.Adapter {
      */
     onUnload(callback) {
         try {
-			this.leaveSD();
+            this.leaveSD();
             clearInterval(pollingInterval);
             clearInterval(actualInterval);
             clearInterval(allInterval);
