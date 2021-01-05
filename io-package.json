@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.24",
+        "version": "0.0.25",
         "news": {
+            "0.0.25": {
+                "de": "Add description for SD states (Delete device under objects to get datapoints with descriptions)"
+            },
             "0.0.24": {
                 "de": "Fix for multiple devices"
             },

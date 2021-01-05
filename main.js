@@ -10,7 +10,7 @@ const utils = require("@iobroker/adapter-core");
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
-
+const descriptions = require("./descriptions");
 const axios = require("axios");
 const querystring = require("querystring");
 const crypto = require("crypto");
@@ -428,7 +428,7 @@ class Gruenbeck extends utils.Adapter {
                             this.setObjectNotExists(mgDeviceId + "." + key, {
                                 type: "state",
                                 common: {
-                                    name: key,
+                                    name: descriptions[key] || key,
                                     type: "mixed",
                                     role: "indicator",
                                     write: false,
@@ -533,7 +533,7 @@ class Gruenbeck extends utils.Adapter {
                                                         this.setObjectNotExists(mgDeviceId + ".Stream." + key, {
                                                             type: "state",
                                                             common: {
-                                                                name: key,
+                                                                name: descriptions[key] || key,
                                                                 type: "mixed",
                                                                 role: "indicator",
                                                                 write: false,
