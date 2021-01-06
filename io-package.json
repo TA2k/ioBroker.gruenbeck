@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.25",
+        "version": "0.0.26",
         "news": {
+            "0.0.26": {
+                "de": "Add salt history, water history and parameters for SD devices"
+            },
             "0.0.25": {
                 "de": "Add description for SD states (Delete device under objects to get datapoints with descriptions)"
             },

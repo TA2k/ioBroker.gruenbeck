@@ -29,6 +29,7 @@ const durchflussCommand = "id=0000&show=D_A_1_1~";
 let pollingInterval;
 let actualInterval;
 let allInterval;
+let dailyInterval;
 let errorInterval;
 let impulsInterval;
 let clockInterval;
@@ -68,6 +69,9 @@ class Gruenbeck extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
+        this.sdVersion = "2020-08-03";
+        this.userAgent = "Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0";
+        this.subscribeStates("*");
         if (this.config.host) {
             this.log.debug("Starting gruenbeck adapter with:" + this.config.host);
             // @ts-ignore
@@ -78,7 +82,6 @@ class Gruenbeck extends utils.Adapter {
             this.requestData(requestAllCommand);
             this.setClock();
             this.setPowerMode();
-            this.userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1";
 
             if (!pollingInterval) {
                 //pollingInterval = setInterval(() => {this.requestData(requestActualsCommand)}, pollingTime); ;
@@ -102,8 +105,6 @@ class Gruenbeck extends utils.Adapter {
                 clockInterval = setInterval(() => this.setClock(), 1 * 60 * 60 * 1000); // 1hour
                 powerModeInterval = setInterval(() => this.setPowerMode(), 1 * 60 * 60 * 1000); // 1hour
             }
-
-            this.subscribeStates("*");
         } else if (this.config.mgUser && this.config.mgPass) {
             if (this.config.mgInterval && this.config.mgInterval < 360) {
                 this.log.warn("Interval ist zu niedrig. Auf 360sec erhöht um Blocking zu vermeiden.");
@@ -112,6 +113,10 @@ class Gruenbeck extends utils.Adapter {
             this.login().then(() =>
                 this.getMgDevices().then(() => {
                     this.parseMgInfos();
+
+                    this.parseMgInfos("parameters");
+                    this.parseMgInfos("measurements/salt");
+                    this.parseMgInfos("measurements/water");
                     this.connectMgWebSocket();
                     this.enterSD().then(() => {
                         this.refreshSD();
@@ -119,6 +124,10 @@ class Gruenbeck extends utils.Adapter {
                     allInterval = setInterval(() => {
                         this.parseMgInfos();
                     }, 1 * 60 * 60 * 1000); //1hour
+                    dailyInterval = setInterval(() => {
+                        this.parseMgInfos("measurements/salt/");
+                        this.parseMgInfos("measurements/water/");
+                    }, 24 * 60 * 60 * 1000); //24hour
                     actualInterval = setInterval(() => {
                         this.enterSD().then(() => {
                             this.refreshSD();
@@ -297,7 +306,7 @@ class Gruenbeck extends utils.Adapter {
                 },
             };
             axios
-                .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/refresh?api-version=2020-04-07", {}, axiosConfig)
+                .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/refresh?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
                     if (response.status < 400) {
                         resolve();
@@ -324,7 +333,7 @@ class Gruenbeck extends utils.Adapter {
                 },
             };
             axios
-                .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/enter?api-version=2020-04-07", {}, axiosConfig)
+                .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/enter?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
                     if (response.status < 400) {
                         resolve();
@@ -351,7 +360,7 @@ class Gruenbeck extends utils.Adapter {
                 },
             };
             axios
-                .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/leave?api-version=2020-04-07", {}, axiosConfig)
+                .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/leave?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
                     if (response.status < 400) {
                         resolve();
@@ -378,39 +387,74 @@ class Gruenbeck extends utils.Adapter {
                     "cache-control": "no-cache",
                 },
             };
-            axios.get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices?api-version=2020-04-07", axiosConfig).then((response) => {
-                if (response.data && response.data.length > 0) {
-                    try {
-                        //filter for softliq devices
-                        response.data = response.data.filter((el) => el.id.toLowerCase().indexOf("soft") > -1);
-                        const device = response.data[0];
-                        mgDeviceId = device.id;
-                        this.setObjectNotExists(device.id, {
-                            type: "state",
-                            common: {
-                                name: device.name,
-                                role: "indicator",
-                                type: "mixed",
-                                write: false,
-                                read: true,
-                            },
-                            native: {},
-                        });
+            axios
+                .get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices?api-version=" + this.sdVersion, axiosConfig)
+                .then((response) => {
+                    if (response.data && response.data.length > 0) {
+                        try {
+                            //filter for softliq devices
+                            response.data = response.data.filter((el) => el.id.toLowerCase().indexOf("soft") > -1);
+                            const device = response.data[0];
+                            mgDeviceId = device.id;
+                            this.setObjectNotExists(device.id, {
+                                type: "state",
+                                common: {
+                                    name: device.name,
+                                    role: "indicator",
+                                    type: "mixed",
+                                    write: false,
+                                    read: true,
+                                },
+                                native: {},
+                            });
 
-                        resolve();
-                    } catch (error) {
-                        this.log.error(error);
-                        this.log.debug(response.data);
+                            resolve();
+                        } catch (error) {
+                            this.log.error(error);
+                            this.log.debug(response.data);
+                            reject();
+                        }
+                    } else {
                         reject();
                     }
-                } else {
-                    reject();
-                }
-            });
+                })
+                .catch((error) => {
+                    this.log.error(error);
+                });
         });
     }
-    parseMgInfos() {
+
+    pushMgParameter(data) {
+        this.log.debug("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/parameters?api-version=" + this.sdVersion);
+        this.log.debug(JSON.stringify(data));
+        var config = {
+            method: "patch",
+            url: "https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/parameters?api-version=" + this.sdVersion,
+            headers: {
+                Host: "prod-eu-gruenbeck-api.azurewebsites.net",
+                "Content-Type": "application/json",
+                Accept: "application/json, text/plain, */*",
+                "Accept-Language": "de-de",
+                "User-Agent": this.userAgent,
+                Authorization: "Bearer " + accessToken,
+            },
+            data: data,
+        };
+
+        axios(config)
+            .then((response) => {
+                this.log.debug(JSON.stringify(response.data));
+                setTimeout(() => {
+                    this.parseMgInfos("parameters");
+                }, 1000 * 15);
+            })
+            .catch((error) => {
+                this.log.error(error);
+            });
+    }
+    parseMgInfos(endpoint) {
         return new Promise((resolve, reject) => {
+            endpoint = endpoint || "";
             const axiosConfig = {
                 headers: {
                     Host: "prod-eu-gruenbeck-api.azurewebsites.net",
@@ -421,37 +465,72 @@ class Gruenbeck extends utils.Adapter {
                     "cache-control": "no-cache",
                 },
             };
-            axios.get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "?api-version=2020-04-07", axiosConfig).then((response) => {
-                if (response.data) {
-                    try {
-                        for (const key in response.data) {
-                            this.setObjectNotExists(mgDeviceId + "." + key, {
-                                type: "state",
-                                common: {
-                                    name: descriptions[key] || key,
-                                    type: "mixed",
-                                    role: "indicator",
-                                    write: false,
-                                    read: true,
-                                },
-                                native: {},
-                            });
-                            if (Array.isArray(response.data[key])) {
-                                this.setState(mgDeviceId + "." + key, JSON.stringify(response.data[key]), true);
-                            } else {
-                                this.setState(mgDeviceId + "." + key, response.data[key], true);
-                            }
+            this.log.debug("GET: " + "https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/" + endpoint + "?api-version=" + this.sdVersion);
+            axios
+                .get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/" + endpoint + "?api-version=" + this.sdVersion, axiosConfig)
+                .then((response) => {
+                    if (response.data) {
+                        if (endpoint) {
+                            endpoint = endpoint.replace("/", ".");
+                            endpoint = endpoint;
                         }
-                        resolve();
-                    } catch (error) {
-                        this.log.error(error);
-                        this.log.debug(response.data);
+                        try {
+                            this.log.debug(JSON.stringify(response.data));
+                            if (Array.isArray(response.data)) {
+                                if (endpoint) {
+                                    endpoint = endpoint.replace("/", ".");
+                                }
+                                this.setObjectNotExists(mgDeviceId + "." + endpoint, {
+                                    type: "state",
+                                    common: {
+                                        name: endpoint,
+                                        type: "string",
+                                        role: "indicator",
+                                        write: false,
+                                        read: true,
+                                    },
+                                    native: {},
+                                });
+                                this.setState(mgDeviceId + "." + endpoint, JSON.stringify(response.data), true);
+                            } else {
+                                if (endpoint) {
+                                    endpoint = endpoint.replace("/", ".");
+                                    endpoint = endpoint + ".";
+                                }
+                                for (const key in response.data) {
+                                    this.setObjectNotExists(mgDeviceId + "." + endpoint + key, {
+                                        type: "state",
+                                        common: {
+                                            name: descriptions[key] || key,
+                                            type: typeof response.data[key],
+                                            role: "indicator",
+                                            write: endpoint ? true : false,
+                                            read: true,
+                                        },
+                                        native: {},
+                                    });
+                                    if (Array.isArray(response.data[key])) {
+                                        this.setState(mgDeviceId + "." + endpoint + key, JSON.stringify(response.data[key]), true);
+                                    } else {
+                                        if (typeof response.data[key] === "object") {
+                                            response.data[key] = JSON.stringify(response.data[key]);
+                                        }
+                                        this.setState(mgDeviceId + "." + endpoint + key, response.data[key], true);
+                                    }
+                                }
+                            }
+                            resolve();
+                        } catch (error) {
+                            this.log.error(error);
+                            reject();
+                        }
+                    } else {
                         reject();
                     }
-                } else {
-                    reject();
-                }
-            });
+                })
+                .catch((error) => {
+                    this.log.error(error);
+                });
         });
     }
 
@@ -714,6 +793,7 @@ class Gruenbeck extends utils.Adapter {
             clearInterval(pollingInterval);
             clearInterval(actualInterval);
             clearInterval(allInterval);
+            clearInterval(dailyInterval);
             clearInterval(errorInterval);
             clearInterval(impulsInterval);
             clearInterval(clockInterval);
@@ -749,6 +829,14 @@ class Gruenbeck extends utils.Adapter {
      * @param {ioBroker.State | null | undefined} state
      */
     onStateChange(id, state) {
+        if (id.indexOf(".parameters.") !== -1 && state.ack === false) {
+            const action = id.split(".").slice(-1);
+            let data = {};
+            data[action] = state.val;
+            this.pushMgParameter(data);
+            return;
+        }
+
         if (state) {
             const adapterPrefix = this.name + "." + this.instance;
 
@@ -928,9 +1016,6 @@ class Gruenbeck extends utils.Adapter {
             } else if (id.indexOf("parameter") != -1 && state.ack === false) {
                 this.setParameter(id, state.val);
             }
-        } else {
-            // The state was deleted
-            this.log.debug(`state ${id} deleted`);
         }
     }
 
