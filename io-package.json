@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.26",
+        "version": "0.0.27",
         "news": {
-            "0.0.26": {
+            "0.0.27": {
                 "de": "Add salt history, water history and parameters for SD devices"
             },
             "0.0.25": {
