@@ -789,7 +789,9 @@ class Gruenbeck extends utils.Adapter {
      */
     onUnload(callback) {
         try {
-            this.leaveSD();
+            if (mgDeviceId) {
+                this.leaveSD();
+            }
             clearInterval(pollingInterval);
             clearInterval(actualInterval);
             clearInterval(allInterval);
