@@ -161,7 +161,7 @@ class Gruenbeck extends utils.Adapter {
                     axiosInitConfig
                 )
                 .then((response) => {
-                    this.log.debug(JSON.stringify(response));
+                    this.log.debug(JSON.stringify(response.data));
                     // handle success
                     let start, end;
                     start = response.data.indexOf("csrf") + 7;
@@ -290,8 +290,8 @@ class Gruenbeck extends utils.Adapter {
                 })
                 .catch((error) => {
                     // handle error
-                    this.log.error(error.config.url);
                     this.log.error(error);
+                    this.log.error(JSON.stringify(error));
                 });
         });
     }
@@ -309,7 +309,7 @@ class Gruenbeck extends utils.Adapter {
             axios
                 .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/refresh?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
-                    this.log.debug(JSON.stringify(response));
+                    this.log.debug(JSON.stringify(response.data));
                     if (response.status < 400) {
                         resolve();
                     } else {
@@ -337,7 +337,7 @@ class Gruenbeck extends utils.Adapter {
             axios
                 .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/enter?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
-                    this.log.debug(JSON.stringify(response));
+                    this.log.debug(JSON.stringify(response.data));
                     if (response.status < 400) {
                         resolve();
                     } else {
@@ -365,7 +365,7 @@ class Gruenbeck extends utils.Adapter {
             axios
                 .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/leave?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
-                    this.log.debug(JSON.stringify(response));
+                    this.log.debug(JSON.stringify(response.data));
                     if (response.status < 400) {
                         resolve();
                     } else {
@@ -397,7 +397,7 @@ class Gruenbeck extends utils.Adapter {
                     if (response.data && response.data.length > 0) {
                         try {
                             //filter for softliq devices
-                            this.log.debug(JSON.stringify(response));
+                            this.log.debug(JSON.stringify(response.data));
                             response.data = response.data.filter((el) => el.id.toLowerCase().indexOf("soft") > -1);
                             const device = response.data[0];
                             mgDeviceId = device.id;
@@ -432,7 +432,7 @@ class Gruenbeck extends utils.Adapter {
     pushMgParameter(data) {
         this.log.debug("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/parameters?api-version=" + this.sdVersion);
         this.log.debug(JSON.stringify(data));
-        var config = {
+        const config = {
             method: "patch",
             url: "https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/parameters?api-version=" + this.sdVersion,
             headers: {
@@ -555,7 +555,7 @@ class Gruenbeck extends utils.Adapter {
         axios
             .get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/realtime/negotiate", axiosConfig)
             .then((response) => {
-                this.log.debug(JSON.stringify(response));
+                this.log.debug(JSON.stringify(response.data));
                 if (response.data) {
                     wsUrl = response.data.url;
                     wsAccessToken = response.data.accessToken;
@@ -573,7 +573,7 @@ class Gruenbeck extends utils.Adapter {
                     axios
                         .post("https://prod-eu-gruenbeck-signalr.service.signalr.net/client/negotiate?hub=gruenbeck", {}, axiosPostConfig)
                         .then((response) => {
-                            this.log.debug(JSON.stringify(response));
+                            this.log.debug(JSON.stringify(response.data));
                             if (response.data) {
                                 try {
                                     wsConnectionId = response.data.connectionId;
@@ -843,7 +843,7 @@ class Gruenbeck extends utils.Adapter {
     onStateChange(id, state) {
         if (id.indexOf(".parameters.") !== -1 && state.ack === false) {
             const action = id.split(".").slice(-1);
-            let data = {};
+            const data = {};
             data[action] = state.val;
             this.pushMgParameter(data);
             return;
