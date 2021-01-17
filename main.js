@@ -154,13 +154,14 @@ class Gruenbeck extends utils.Adapter {
             axios
                 .get(
                     "https://gruenbeckb2c.b2clogin.com/a50d35c1-202f-4da7-aa87-76e51a3098c6/b2c_1_signinup/oauth2/v2.0/authorize?" +
-                        "x-client-Ver=0.8.0&state=NjkyQjZBQTgtQkM1My00ODBDLTn3MkYtOTZCQ0QyQkQ2NEE5&client_info=1&response_type=code&code_challenge_method=S256&x-app-name=Gr%C3%BCnbeck&x-client-OS=14.2&x-app-ver=1.1.4&scope=https%3A%2F%2Fgruenbeckb2c.onmicrosoft.com%2Fiot%2Fuser_impersonation%20openid%20profile%20offline_access&x-client-SKU=MSAL.iOS&" +
+                        "x-client-Ver=0.8.0&state=NjkyQjZBQTgtQkM1My00ODBDLTn3MkYtOTZCQ0QyQkQ2NEE5&client_info=1&response_type=code&code_challenge_method=S256&x-app-name=Gr%C3%BCnbeck&x-client-OS=14.3&x-app-ver=1.2.0&scope=https%3A%2F%2Fgruenbeckb2c.onmicrosoft.com%2Fiot%2Fuser_impersonation%20openid%20profile%20offline_access&x-client-SKU=MSAL.iOS&" +
                         "code_challenge=" +
                         codeChallange +
-                        "&x-client-CPU=64&client-request-id=02467BE4-6026-4C9B-927B-07FB07E05FFF&redirect_uri=msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8%3A%2F%2Fauth&client_id=5a83cc16-ffb1-42e9-9859-9fbf07f36df8&haschrome=1&return-client-request-id=true&x-client-DM=iPhone",
+                        "&x-client-CPU=64&client-request-id=F2929DED-2C9D-49F5-A0F4-31215427667C&redirect_uri=msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8%3A%2F%2Fauth&client_id=5a83cc16-ffb1-42e9-9859-9fbf07f36df8&haschrome=1&return-client-request-id=true&x-client-DM=iPhone",
                     axiosInitConfig
                 )
                 .then((response) => {
+                    this.log.debug("Login step 1");
                     this.log.debug(JSON.stringify(response.data));
                     // handle success
                     let start, end;
@@ -189,11 +190,12 @@ class Gruenbeck extends utils.Adapter {
                             Origin: "https://gruenbeckb2c.b2clogin.com",
 
                             Referer:
-                                "https://gruenbeckb2c.b2clogin.com/a50d35c1-202f-4da7-aa87-76e51a3098c6/b2c_1_signinup/oauth2/v2.0/authorize?x-client-Ver=0.8.0&state=NjkyQjZBQTgtQkM1My00ODBDLTk3MkYtOTZCQ0QyQkQ2NEE5&client_info=1&response_type=code&code_challenge_method=S256&x-app-name=Gr%C3%BCnbeck&x-client-OS=14.2&x-app-ver=1.1.4&scope=https%3A%2F%2Fgruenbeckb2c.onmicrosoft.com%2Fiot%2Fuser_impersonation%20openid%20profile%20offline_access&x-client-SKU=MSAL.iOS&code_challenge=SJ4qbue1p8KeyKbLmMMEOvRgIe01ZEm5olMVHIvCmc0&x-client-CPU=64&client-request-id=02467BE4-6026-4C9B-927B-07FB07E05FFF&redirect_uri=msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8%3A%2F%2Fauth&client_id=5a83cc16-ffb1-42e9-9859-9fbf07f36df8&haschrome=1&return-client-request-id=true&x-client-DM=iPhone",
+                                "https://gruenbeckb2c.b2clogin.com/a50d35c1-202f-4da7-aa87-76e51a3098c6/b2c_1_signinup/oauth2/v2.0/authorize?x-client-Ver=0.8.0&state=NjkyQjZBQTgtQkM1My00ODBDLTk3MkYtOTZCQ0QyQkQ2NEE5&client_info=1&response_type=code&code_challenge_method=S256&x-app-name=Gr%C3%BCnbeck&x-client-OS=14.3&x-app-ver=1.1.4&scope=https%3A%2F%2Fgruenbeckb2c.onmicrosoft.com%2Fiot%2Fuser_impersonation%20openid%20profile%20offline_access&x-client-SKU=MSAL.iOS&code_challenge=SJ4qbue1p8KeyKbLmMMEOvRgIe01ZEm5olMVHIvCmc0&x-client-CPU=64&client-request-id=F2929DED-2C9D-49F5-A0F4-31215427667C&redirect_uri=msal5a83cc16-ffb1-42e9-9859-9fbf07f36df8%3A%2F%2Fauth&client_id=5a83cc16-ffb1-42e9-9859-9fbf07f36df8&haschrome=1&return-client-request-id=true&x-client-DM=iPhone",
                             Cookie: cookie,
                             "User-Agent": this.userAgent,
                         },
                     };
+                    this.log.debug("https://gruenbeckb2c.b2clogin.com" + tenant + "/SelfAsserted?tx=" + transId + "&p=" + policy);
                     axios
                         .post(
                             "https://gruenbeckb2c.b2clogin.com" + tenant + "/SelfAsserted?tx=" + transId + "&p=" + policy,
@@ -205,6 +207,8 @@ class Gruenbeck extends utils.Adapter {
                             axiosConfig
                         )
                         .then((response) => {
+                            this.log.debug("Login step 2");
+                            this.log.debug(JSON.stringify(response.data));
                             const filteredCookies = response.headers["set-cookie"].map((element) => {
                                 return element.split("; ")[0];
                             });
@@ -239,16 +243,16 @@ class Gruenbeck extends utils.Adapter {
                                                     Host: "gruenbeckb2c.b2clogin.com",
                                                     "x-client-SKU": "MSAL.iOS",
                                                     Accept: "application/json",
-                                                    "x-client-OS": "14.2",
+                                                    "x-client-OS": "14.3",
                                                     "x-app-name": "Grünbeck",
                                                     "x-client-CPU": "64",
-                                                    "x-app-ver": "1.1.4",
+                                                    "x-app-ver": "1.2.0",
                                                     "Accept-Language": "de-de",
-                                                    "client-request-id": "02467BE4-6026-4C9B-927B-07FB07E05FFF",
+                                                    "client-request-id": "F2929DED-2C9D-49F5-A0F4-31215427667C",
                                                     "x-ms-PkeyAuth": "1.0",
                                                     "x-client-Ver": "0.8.0",
                                                     "x-client-DM": "iPhone",
-                                                    "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                                                    "User-Agent": "Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0",
                                                     "return-client-request-id": "true",
                                                 },
                                             };
@@ -269,7 +273,7 @@ class Gruenbeck extends utils.Adapter {
                                                 .then((response) => {
                                                     accessToken = response.data.access_token;
                                                     refreshToken = response.data.refresh_token;
-                                                    setInterval(() => this.startRefreshToken(), 50 * 60 * 1000); //50min
+                                                    setInterval(() => this.startRefreshToken(), 5 * 60 * 1000); //50min
                                                     this.setState("info.connection", true, true);
                                                     resolve();
                                                 })
@@ -301,7 +305,7 @@ class Gruenbeck extends utils.Adapter {
                 headers: {
                     Host: "prod-eu-gruenbeck-api.azurewebsites.net",
                     Accept: "application/json, text/plain, */*",
-                    "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                    "User-Agent": "Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0",
                     "Accept-Language": "de-de",
                     Authorization: "Bearer " + accessToken,
                 },
@@ -329,7 +333,7 @@ class Gruenbeck extends utils.Adapter {
                 headers: {
                     Host: "prod-eu-gruenbeck-api.azurewebsites.net",
                     Accept: "application/json, text/plain, */*",
-                    "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                    "User-Agent": "Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0",
                     "Accept-Language": "de-de",
                     Authorization: "Bearer " + accessToken,
                 },
@@ -357,7 +361,7 @@ class Gruenbeck extends utils.Adapter {
                 headers: {
                     Host: "prod-eu-gruenbeck-api.azurewebsites.net",
                     Accept: "application/json, text/plain, */*",
-                    "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                    "User-Agent": "Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0",
                     "Accept-Language": "de-de",
                     Authorization: "Bearer " + accessToken,
                 },
@@ -385,7 +389,7 @@ class Gruenbeck extends utils.Adapter {
                 headers: {
                     Host: "prod-eu-gruenbeck-api.azurewebsites.net",
                     Accept: "application/json, text/plain, */*",
-                    "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                    "User-Agent": "Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0",
                     Authorization: "Bearer " + accessToken,
                     "Accept-Language": "de-de",
                     "cache-control": "no-cache",
@@ -545,7 +549,7 @@ class Gruenbeck extends utils.Adapter {
                 "Content-Type": "text/plain;charset=UTF-8",
                 Origin: "file://",
                 Accept: "*/*",
-                "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                "User-Agent": "Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0",
                 Authorization: "Bearer " + accessToken,
                 "Accept-Language": "de-de",
                 "cache-control": "no-cache",
@@ -564,7 +568,7 @@ class Gruenbeck extends utils.Adapter {
                             "Content-Type": "text/plain;charset=UTF-8",
                             Origin: "file://",
                             Accept: "*/*",
-                            "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                            "User-Agent": "Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0",
                             Authorization: "Bearer " + wsAccessToken,
                             "Accept-Language": "de-de",
                             "X-Requested-With": "XMLHttpRequest",
@@ -671,16 +675,16 @@ class Gruenbeck extends utils.Adapter {
                 Host: "gruenbeckb2c.b2clogin.com",
                 "x-client-SKU": "MSAL.iOS",
                 Accept: "application/json",
-                "x-client-OS": "14.2",
+                "x-client-OS": "14.3",
                 "x-app-name": "Grünbeck",
                 "x-client-CPU": "64",
-                "x-app-ver": "1.1.4",
+                "x-app-ver": "1.2.0",
                 "Accept-Language": "de-de",
-                "client-request-id": "02467BE4-6026-4C9B-927B-07FB07E05FFF",
+                "client-request-id": "F2929DED-2C9D-49F5-A0F4-31215427667C",
                 "x-ms-PkeyAuth": "1.0",
                 "x-client-Ver": "0.8.0",
                 "x-client-DM": "iPhone",
-                "User-Agent": "Gruenbeck/349 CFNetwork/1206 Darwin/20.1.0",
+                "User-Agent": "Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0",
                 "return-client-request-id": "true",
             },
         };
