@@ -161,6 +161,7 @@ class Gruenbeck extends utils.Adapter {
                     axiosInitConfig
                 )
                 .then((response) => {
+                    this.log.debug(JSON.stringify(response));
                     // handle success
                     let start, end;
                     start = response.data.indexOf("csrf") + 7;
@@ -308,6 +309,7 @@ class Gruenbeck extends utils.Adapter {
             axios
                 .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/refresh?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
+                    this.log.debug(JSON.stringify(response));
                     if (response.status < 400) {
                         resolve();
                     } else {
@@ -335,6 +337,7 @@ class Gruenbeck extends utils.Adapter {
             axios
                 .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/enter?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
+                    this.log.debug(JSON.stringify(response));
                     if (response.status < 400) {
                         resolve();
                     } else {
@@ -362,6 +365,7 @@ class Gruenbeck extends utils.Adapter {
             axios
                 .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/leave?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
+                    this.log.debug(JSON.stringify(response));
                     if (response.status < 400) {
                         resolve();
                     } else {
@@ -389,14 +393,15 @@ class Gruenbeck extends utils.Adapter {
             };
             axios
                 .get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices?api-version=" + this.sdVersion, axiosConfig)
-                .then((response) => {
+                .then(async (response) => {
                     if (response.data && response.data.length > 0) {
                         try {
                             //filter for softliq devices
+                            this.log.debug(JSON.stringify(response));
                             response.data = response.data.filter((el) => el.id.toLowerCase().indexOf("soft") > -1);
                             const device = response.data[0];
                             mgDeviceId = device.id;
-                            this.setObjectNotExists(device.id, {
+                            await this.setObjectNotExistsAsync(device.id, {
                                 type: "state",
                                 common: {
                                     name: device.name,
@@ -468,7 +473,7 @@ class Gruenbeck extends utils.Adapter {
             this.log.debug("GET: " + "https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/" + endpoint + "?api-version=" + this.sdVersion);
             axios
                 .get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/" + endpoint + "?api-version=" + this.sdVersion, axiosConfig)
-                .then((response) => {
+                .then(async (response) => {
                     if (response.data) {
                         if (endpoint) {
                             endpoint = endpoint.replace("/", ".");
@@ -480,7 +485,7 @@ class Gruenbeck extends utils.Adapter {
                                 if (endpoint) {
                                     endpoint = endpoint.replace("/", ".");
                                 }
-                                this.setObjectNotExists(mgDeviceId + "." + endpoint, {
+                                await this.setObjectNotExistsAsync(mgDeviceId + "." + endpoint, {
                                     type: "state",
                                     common: {
                                         name: endpoint,
@@ -498,7 +503,7 @@ class Gruenbeck extends utils.Adapter {
                                     endpoint = endpoint + ".";
                                 }
                                 for (const key in response.data) {
-                                    this.setObjectNotExists(mgDeviceId + "." + endpoint + key, {
+                                    await this.setObjectNotExistsAsync(mgDeviceId + "." + endpoint + key, {
                                         type: "state",
                                         common: {
                                             name: descriptions[key] || key,
@@ -550,6 +555,7 @@ class Gruenbeck extends utils.Adapter {
         axios
             .get("https://prod-eu-gruenbeck-api.azurewebsites.net/api/realtime/negotiate", axiosConfig)
             .then((response) => {
+                this.log.debug(JSON.stringify(response));
                 if (response.data) {
                     wsUrl = response.data.url;
                     wsAccessToken = response.data.accessToken;
@@ -567,6 +573,7 @@ class Gruenbeck extends utils.Adapter {
                     axios
                         .post("https://prod-eu-gruenbeck-signalr.service.signalr.net/client/negotiate?hub=gruenbeck", {}, axiosPostConfig)
                         .then((response) => {
+                            this.log.debug(JSON.stringify(response));
                             if (response.data) {
                                 try {
                                     wsConnectionId = response.data.connectionId;
@@ -583,10 +590,10 @@ class Gruenbeck extends utils.Adapter {
                                         },
                                     });
 
-                                    ws.on("open", () => {
+                                    ws.on("open", async () => {
                                         this.log.debug("WS connected");
                                         ws.send('{"protocol":"json","version":1}');
-                                        this.setObjectNotExists(mgDeviceId + ".Stream", {
+                                        await this.setObjectNotExistsAsync(mgDeviceId + ".Stream", {
                                             type: "state",
                                             common: {
                                                 name: "Streaminformation via myGruenbeck",
@@ -607,13 +614,13 @@ class Gruenbeck extends utils.Adapter {
                                         try {
                                             const message = JSON.parse(data.replace("", ""));
                                             if (message.arguments) {
-                                                message.arguments.forEach((argument) => {
+                                                message.arguments.forEach(async (argument) => {
                                                     for (const key in argument) {
-                                                        this.setObjectNotExists(mgDeviceId + ".Stream." + key, {
+                                                        await this.setObjectNotExistsAsync(mgDeviceId + ".Stream." + key, {
                                                             type: "state",
                                                             common: {
                                                                 name: descriptions[key] || key,
-                                                                type: "mixed",
+                                                                type: typeof argument[key],
                                                                 role: "indicator",
                                                                 write: false,
                                                                 read: true,
@@ -657,6 +664,7 @@ class Gruenbeck extends utils.Adapter {
             });
     }
     startRefreshToken() {
+        this.log.debug("Start Refresh Token");
         const axiosPostConfig = {
             maxRedirects: 0,
             headers: {
@@ -689,6 +697,8 @@ class Gruenbeck extends utils.Adapter {
                 axiosPostConfig
             )
             .then((response) => {
+                this.log.debug("Refresh Token succesfull");
+                this.log.debug(JSON.stringify(response.data));
                 accessToken = response.data.access_token;
                 refreshToken = response.data.refresh_token;
             })
@@ -1131,7 +1141,7 @@ class Gruenbeck extends utils.Adapter {
         }
     }
 
-    parseData(response) {
+    async parseData(response) {
         this.setState("info.connection", true, true);
         if (!response) {
             return;
@@ -1156,7 +1166,17 @@ class Gruenbeck extends utils.Adapter {
             if (value.indexOf(":") === -1 && (value.match(/\./g) || []).length <= 1) {
                 value = isNaN(parseFloat(value)) === true ? value : parseFloat(value);
             }
-
+            await this.setObjectNotExistsAsync(prefix + nodeName, {
+                type: "state",
+                common: {
+                    name: nodeName,
+                    role: "indicator",
+                    type: typeof value,
+                    write: true,
+                    read: true,
+                },
+                native: {},
+            });
             this.setState(prefix + nodeName, value, true);
         }
     }
