@@ -118,9 +118,15 @@ class Gruenbeck extends utils.Adapter {
                     this.parseMgInfos("measurements/salt");
                     this.parseMgInfos("measurements/water");
                     this.connectMgWebSocket();
-                    this.enterSD().then(() => {
-                        this.refreshSD();
-                    });
+                    this.enterSD()
+                        .then(() => {
+                            this.refreshSD().catch(() => {
+                                this.log.error("Failed refresh SD");
+                            });
+                        })
+                        .catch(() => {
+                            this.log.error("Failed enter SD");
+                        });
                     allInterval = setInterval(() => {
                         this.parseMgInfos();
                     }, 1 * 60 * 60 * 1000); //1hour
@@ -129,9 +135,16 @@ class Gruenbeck extends utils.Adapter {
                         this.parseMgInfos("measurements/water/");
                     }, 24 * 60 * 60 * 1000); //24hour
                     actualInterval = setInterval(() => {
-                        this.enterSD().then(() => {
-                            this.refreshSD();
-                        });
+                        this.log.debug("Start refresh");
+                        this.enterSD()
+                            .then(() => {
+                                this.refreshSD().catch(() => {
+                                    this.log.error("Failed refresh SD");
+                                });
+                            })
+                            .catch(() => {
+                                this.log.error("Failed enter SD");
+                            });
                     }, this.config.mgInterval * 1000);
                 })
             );
@@ -301,6 +314,7 @@ class Gruenbeck extends utils.Adapter {
     }
     refreshSD() {
         return new Promise((resolve, reject) => {
+            this.log.debug("refreshSD");
             const axiosConfig = {
                 headers: {
                     Host: "prod-eu-gruenbeck-api.azurewebsites.net",
@@ -313,6 +327,7 @@ class Gruenbeck extends utils.Adapter {
             axios
                 .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/refresh?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
+                    this.log.debug("refreshSD response:");
                     this.log.debug(JSON.stringify(response.data));
                     if (response.status < 400) {
                         resolve();
@@ -324,11 +339,13 @@ class Gruenbeck extends utils.Adapter {
                     // handle error
                     this.log.error(error.config.url);
                     this.log.error(error);
+                    reject();
                 });
         });
     }
     enterSD() {
         return new Promise((resolve, reject) => {
+            this.log.debug("EnterSD");
             const axiosConfig = {
                 headers: {
                     Host: "prod-eu-gruenbeck-api.azurewebsites.net",
@@ -341,6 +358,7 @@ class Gruenbeck extends utils.Adapter {
             axios
                 .post("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/realtime/enter?api-version=" + this.sdVersion, {}, axiosConfig)
                 .then((response) => {
+                    this.log.debug("enterSD response");
                     this.log.debug(JSON.stringify(response.data));
                     if (response.status < 400) {
                         resolve();
@@ -352,6 +370,7 @@ class Gruenbeck extends utils.Adapter {
                     // handle error
                     this.log.error(error.config.url);
                     this.log.error(error);
+                    reject();
                 });
         });
     }
@@ -380,6 +399,7 @@ class Gruenbeck extends utils.Adapter {
                     // handle error
                     this.log.error(error.config.url);
                     this.log.error(error);
+                    reject();
                 });
         });
     }
