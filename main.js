@@ -144,6 +144,10 @@ class Gruenbeck extends utils.Adapter {
                             })
                             .catch(() => {
                                 this.log.error("Failed enter SD");
+                                this.log.info("Relogin");
+                                this.login().then(() => {
+                                    this.connectMgWebSocket();
+                                });
                             });
                     }, this.config.mgInterval * 1000);
                 })
