@@ -36,6 +36,7 @@ let clockInterval;
 let powerModeInterval;
 let currentCommand = "";
 let blockTimeout;
+let heartBeatTimeout = null;
 const queueArray = [];
 const parameterQueueArray = [];
 let blockConnection = false;
@@ -115,8 +116,12 @@ class Gruenbeck extends utils.Adapter {
                     this.parseMgInfos();
 
                     this.parseMgInfos("parameters");
-                    this.parseMgInfos("measurements/salt");
-                    this.parseMgInfos("measurements/water");
+                    this.parseMgInfos("measurements/salt").catch(() => {
+                        this.log.error("Failed to get salt");
+                    });
+                    this.parseMgInfos("measurements/water").catch(() => {
+                        this.log.error("Failed to get water");
+                    });
                     this.connectMgWebSocket();
                     this.enterSD()
                         .then(() => {
@@ -131,8 +136,12 @@ class Gruenbeck extends utils.Adapter {
                         this.parseMgInfos();
                     }, 1 * 60 * 60 * 1000); //1hour
                     dailyInterval = setInterval(() => {
-                        this.parseMgInfos("measurements/salt/");
-                        this.parseMgInfos("measurements/water/");
+                        this.parseMgInfos("measurements/salt/").catch(() => {
+                            this.log.error("Failed to get salt");
+                        });
+                        this.parseMgInfos("measurements/water/").catch(() => {
+                            this.log.error("Failed to get water");
+                        });
                     }, 24 * 60 * 60 * 1000); //24hour
                     actualInterval = setInterval(() => {
                         this.log.debug("Start refresh");
@@ -365,6 +374,10 @@ class Gruenbeck extends utils.Adapter {
                     this.log.debug("enterSD response");
                     this.log.debug(JSON.stringify(response.data));
                     if (response.status < 400) {
+                        heartBeatTimeout = setTimeout(() => {
+                            this.log.error("No Data since 2min start login");
+                            this.login();
+                        }, 2 * 60 * 1000);
                         resolve();
                     } else {
                         reject();
@@ -639,6 +652,8 @@ class Gruenbeck extends utils.Adapter {
                                     });
                                     ws.on("message", (data) => {
                                         this.log.debug(data);
+
+                                        clearTimeout(heartBeatTimeout);
                                         try {
                                             const message = JSON.parse(data.replace("", ""));
                                             if (message.arguments) {
