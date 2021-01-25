@@ -155,6 +155,7 @@ class Gruenbeck extends utils.Adapter {
                                 this.log.error("Failed enter SD");
                                 this.log.info("Relogin");
                                 this.login().then(() => {
+                                    this.log.debug("Reconnect");
                                     this.connectMgWebSocket();
                                 });
                             });
@@ -376,7 +377,10 @@ class Gruenbeck extends utils.Adapter {
                     if (response.status < 400) {
                         heartBeatTimeout = setTimeout(() => {
                             this.log.error("No Data since 2min start login");
-                            this.login();
+                            this.login().then(() => {
+                                this.log.debug("Reconnect");
+                                this.connectMgWebSocket();
+                            });
                         }, 2 * 60 * 1000);
                         resolve();
                     } else {
