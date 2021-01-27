@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.27",
+        "version": "0.0.28",
         "news": {
+            "0.0.28": {
+                "de": "Fix reconnect for SD"
+            },
             "0.0.27": {
                 "de": "Add salt history, water history and parameters for SD devices"
             },
