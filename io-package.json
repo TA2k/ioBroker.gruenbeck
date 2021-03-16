@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.28",
+        "version": "0.0.29",
         "news": {
+            "0.0.29": {
+                "de": "Fix login"
+            },
             "0.0.28": {
                 "de": "Fix reconnect for SD"
             },
