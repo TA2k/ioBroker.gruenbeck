@@ -439,8 +439,8 @@
             "type": "state",
             "common": {
                 "name": "Led blinkt bei Salz-Vorwarnung (nur SC23)",
-                "type": "number",
-                "role": "number",
+                "type": "mixed",
+                "role": "mixed",
                 "read": true,
                 "write": true,
                 "def": false,
@@ -454,8 +454,8 @@
             "type": "state",
             "common": {
                 "name": "LED Funktion (nur SC23)",
-                "type": "number",
-                "role": "number",
+                "type": "mixed",
+                "role": "mixed",
                 "states": {
                     "0": "deaktiviert",
                     "1": "bei Störung",
@@ -1019,8 +1019,8 @@
             "type": "state",
             "common": {
                 "name": "Letzte Regeneration",
-                "type": "string",
-                "role": "string",
+                "type": "number",
+                "role": "number",
                 "read": true,
                 "write": false,
                 "def": false,
