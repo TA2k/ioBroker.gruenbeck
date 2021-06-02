@@ -916,7 +916,7 @@ class Gruenbeck extends utils.Adapter {
                     } else {
                         const Erhoehungswert = Verschnitthaerte / (Rohwasserhaerte - Verschnitthaerte) + 1;
                         const wasserVerbrauch = ((state.val * Erhoehungswert * 1000) / 60).toFixed(2);
-                        this.setState("calculated.aktuellerWasserverbrauch", wasserVerbrauch, true);
+                        this.setState("calculated.aktuellerWasserverbrauch", parseFloat(wasserVerbrauch), true);
                     }
                 });
                 const d = new Date();
@@ -972,12 +972,12 @@ class Gruenbeck extends utils.Adapter {
 
             if (id === adapterPrefix + ".info.D_Y_2_1" && state.lc === state.ts) {
                 /*Formel Grünbeck bei Kapazitätszahl 8 m³x°dH und einem Härteunterschied von Rohwasser zu Brauchwasser 
-				von 12 °dH  : 0,0285 kg x 12 °dH x 100 m³ = 34,2 kg Regeneriersalz
-				Bei der min. Kapazitätszahl 6 m³x°dH entspricht der Salzverbrauch 0.025 kg
-				Bei der max. Kapazitätszahl 14 m³x°dH entspricht der Salzverbrauch 0.039 kg
-				Es wird von einem liniaren Salzverbrauch von 0.00175 kg pro m³x°dH ausgegangen.
-				(((Kapazitätszahl-6)*0.00175)+0.025)x Rohwasserhärte x (Wasserverbrauch/1000)
-				*/
+                von 12 °dH  : 0,0285 kg x 12 °dH x 100 m³ = 34,2 kg Regeneriersalz
+                Bei der min. Kapazitätszahl 6 m³x°dH entspricht der Salzverbrauch 0.025 kg
+                Bei der max. Kapazitätszahl 14 m³x°dH entspricht der Salzverbrauch 0.039 kg
+                Es wird von einem liniaren Salzverbrauch von 0.00175 kg pro m³x°dH ausgegangen.
+                (((Kapazitätszahl-6)*0.00175)+0.025)x Rohwasserhärte x (Wasserverbrauch/1000)
+                */
                 this.getStates("*", (err, states) => {
                     if (err) {
                         this.log.error(err);
@@ -988,13 +988,13 @@ class Gruenbeck extends utils.Adapter {
 
                         const SalzverbrauchAlt = states[adapterPrefix + ".calculated.Salzverbrauch"] ? states[adapterPrefix + ".calculated.Salzverbrauch"].val : 0;
                         const SalzverbrauchNeu = (((KapZahl - 6) * 0.00175 + 0.025) * Rohwasserhaerte * (Wasserverbrauch / 1000)).toFixed(3);
-                        const Salzverbrauch = (parseFloat(SalzverbrauchNeu) + parseFloat(SalzverbrauchAlt)).toFixed(3);
+                        const Salzverbrauch = parseFloat((parseFloat(SalzverbrauchNeu) + parseFloat(SalzverbrauchAlt)).toFixed(3));
 
                         let SalzverbrauchGesamt;
                         if (states[adapterPrefix + ".calculated.SalzverbrauchGesamt"] && states[adapterPrefix + ".calculated.SalzverbrauchGesamt"].val > 0) {
                             SalzverbrauchGesamt = (parseFloat(states[adapterPrefix + ".calculated.SalzverbrauchGesamt"].val) + parseFloat(SalzverbrauchNeu)).toFixed(3);
                         } else {
-                            SalzverbrauchGesamt = SalzverbrauchNeu;
+                            SalzverbrauchGesamt = parseFloat(SalzverbrauchNeu);
 
                             this.setState("calculated.DatumSalzverbrauch", this.getCurrentDate());
                         }
@@ -1005,8 +1005,8 @@ class Gruenbeck extends utils.Adapter {
                         this.setState("calculated.Salzstand", parseInt(((salzMax - Salzverbrauch) * 100) / salzMax));
 
                         /* Formel: Verschnitthärte / (Rohwasserhärte-Verschnitthärte)= ErhÃ¶hungswert
-					 Beispiel: 5 °dH Verschnitthärte / ( 21° dH Rohwasserhärte- 5° dH Verschnitthärte)= 0.3125 ErhÃ¶hungswert
-						0°dH Wasserverbrauch 400l x 1.3125 ErhÃ¶ungswert = 525l Wasser 5°dH */
+                     Beispiel: 5 °dH Verschnitthärte / ( 21° dH Rohwasserhärte- 5° dH Verschnitthärte)= 0.3125 ErhÃ¶hungswert
+                        0°dH Wasserverbrauch 400l x 1.3125 ErhÃ¶ungswert = 525l Wasser 5°dH */
                         const Verschnitthaerte = this.config.verschnitthaerte || 5;
                         let GesamtverbrauchAlt;
                         if (states[adapterPrefix + ".calculated.Wasserzaehler"] && states[adapterPrefix + ".calculated.Wasserzaehler"].val > 0) {
@@ -1029,7 +1029,7 @@ class Gruenbeck extends utils.Adapter {
                             for (var i = 1; i <= 14; i++) {
                                 akkWasser = states[adapterPrefix + ".info.D_Y_2_" + i].val;
                                 VerWasser = akkWasser * Erhoehungswert;
-                                this.setState("calculated.Verschnittwasser_" + i, VerWasser.toFixed(0));
+                                this.setState("calculated.Verschnittwasser_" + i, parseFloat(VerWasser.toFixed(0)));
                             }
                         }
                         //calc json history
