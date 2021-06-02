@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.29",
+        "version": "0.0.30",
         "news": {
+            "0.0.30": {
+                "de": "Fix jscontroller 3.3"
+            },
             "0.0.29": {
                 "de": "Fix login"
             },
