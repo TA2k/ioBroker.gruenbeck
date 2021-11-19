@@ -136,10 +136,10 @@ class Gruenbeck extends utils.Adapter {
                         this.parseMgInfos();
                     }, 1 * 60 * 60 * 1000); //1hour
                     dailyInterval = setInterval(() => {
-                        this.parseMgInfos("measurements/salt/").catch(() => {
+                        this.parseMgInfos("measurements/salt").catch(() => {
                             this.log.error("Failed to get salt");
                         });
-                        this.parseMgInfos("measurements/water/").catch(() => {
+                        this.parseMgInfos("measurements/water").catch(() => {
                             this.log.error("Failed to get water");
                         });
                     }, 24 * 60 * 60 * 1000); //24hour

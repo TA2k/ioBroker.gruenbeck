@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.30",
+        "version": "0.0.31",
         "news": {
+            "0.0.31": {
+                "de": "Fix salt and water error for sd devices"
+            },
             "0.0.30": {
                 "de": "Fix jscontroller 3.3"
             },
@@ -117,6 +120,11 @@
         "dataSource": "push",
         "compact": true,
         "materialize": true,
+        "plugins": {
+            "sentry": {
+                "dsn": "https://70dd5964cb0f4fc9839628a82014ba75@sentry.iobroker.net/67"
+            }
+        },
         "dependencies": [
             {
                 "admin": ">=3.0.0"
