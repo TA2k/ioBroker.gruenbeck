@@ -628,7 +628,6 @@ class Gruenbeck extends utils.Adapter {
                                             Origin: "null",
                                             Pragma: "no-cache",
                                             "Cache-Control": "no-cache",
-
                                             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
                                         },
                                     });
@@ -639,7 +638,7 @@ class Gruenbeck extends utils.Adapter {
                                         await this.setObjectNotExistsAsync(mgDeviceId + ".Stream", {
                                             type: "state",
                                             common: {
-                                                name: "Streaminformation via myGruenbeck",
+                                                name: "Streaminformation via myGruenbeck SDxx",
                                                 role: "indicator",
                                                 type: "mixed",
                                                 write: false,
@@ -996,13 +995,13 @@ class Gruenbeck extends utils.Adapter {
                         } else {
                             SalzverbrauchGesamt = parseFloat(SalzverbrauchNeu);
 
-                            this.setState("calculated.DatumSalzverbrauch", this.getCurrentDate());
+                            this.setState("calculated.DatumSalzverbrauch", this.getCurrentDate(), true);
                         }
 
-                        this.setState("calculated.Salzverbrauch", Salzverbrauch);
-                        this.setState("calculated.SalzverbrauchGesamt", SalzverbrauchGesamt);
+                        this.setState("calculated.Salzverbrauch", Salzverbrauch, true);
+                        this.setState("calculated.SalzverbrauchGesamt", SalzverbrauchGesamt, true);
                         const salzMax = this.config.salzkg || 35;
-                        this.setState("calculated.Salzstand", parseInt(((salzMax - Salzverbrauch) * 100) / salzMax));
+                        this.setState("calculated.Salzstand", parseInt(((salzMax - Salzverbrauch) * 100) / salzMax), true);
 
                         /* Formel: Verschnitthärte / (Rohwasserhärte-Verschnitthärte)= ErhÃ¶hungswert
                      Beispiel: 5 °dH Verschnitthärte / ( 21° dH Rohwasserhärte- 5° dH Verschnitthärte)= 0.3125 ErhÃ¶hungswert
@@ -1013,7 +1012,7 @@ class Gruenbeck extends utils.Adapter {
                             GesamtverbrauchAlt = states[adapterPrefix + ".calculated.Wasserzaehler"].val;
                         } else {
                             GesamtverbrauchAlt = 0;
-                            this.setState("calculated.DatumWasserzaehler", this.getCurrentDate());
+                            this.setState("calculated.DatumWasserzaehler", this.getCurrentDate(), true);
                         }
 
                         if (Rohwasserhaerte - Verschnitthaerte <= 0) {
@@ -1022,14 +1021,14 @@ class Gruenbeck extends utils.Adapter {
                             const Erhoehungswert = Verschnitthaerte / (Rohwasserhaerte - Verschnitthaerte) + 1;
                             const GesamtverbrauchNeu = Wasserverbrauch * Erhoehungswert;
                             const Gesamtverbrauch = ((GesamtverbrauchAlt * 1000 + GesamtverbrauchNeu) / 1000).toFixed(3);
-                            this.setState("calculated.Wasserzaehler", parseFloat(Gesamtverbrauch));
+                            this.setState("calculated.Wasserzaehler", parseFloat(Gesamtverbrauch), true);
                             this.log.debug("neuer Zählerstand Wasser= " + Gesamtverbrauch);
                             let akkWasser = 0;
                             let VerWasser = 0;
                             for (var i = 1; i <= 14; i++) {
                                 akkWasser = states[adapterPrefix + ".info.D_Y_2_" + i].val;
                                 VerWasser = akkWasser * Erhoehungswert;
-                                this.setState("calculated.Verschnittwasser_" + i, parseFloat(VerWasser.toFixed(0)));
+                                this.setState("calculated.Verschnittwasser_" + i, parseFloat(VerWasser.toFixed(0)), true);
                             }
                         }
                         //calc json history

@@ -1,70 +1,70 @@
 {
-  "author": {
-    "name": "tomboxi",
-    "email": "tombox2020@gmail.com"
-  },
-  "bugs": {
-    "url": "https://github.com/TA2k/ioBroker.gruenbeck/issues"
-  },
-  "bundleDependencies": false,
-  "dependencies": {
-    "@iobroker/adapter-core": "^1.0.3",
-    "axios": "^0.24.0",
-    "crypto": "^1.0.1",
-    "querystring": "^0.2.0",
-    "regex": "^0.1.1",
-    "ws": "^7.1.2",
-    "xmldom": "^0.1.31",
-    "xmlhttprequest-ts": "^1.0.1"
-  },
-  "deprecated": false,
-  "description": "An ioBroker adapter for Grünbeck Wasseraufbereitung SC18, SC23, SD18, SD23 devices.",
-  "devDependencies": {
-    "@iobroker/testing": "^2.5.2",
-    "@types/chai": "^4.2.22",
-    "@types/chai-as-promised": "^7.1.4",
-    "@types/gulp": "^4.0.9",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^14.17.19",
-    "@types/proxyquire": "^1.3.28",
-    "@types/sinon": "^10.0.4",
-    "@types/sinon-chai": "^3.2.5",
-    "chai": "^4.3.4",
-    "chai-as-promised": "^7.1.1",
-    "eslint": "^7.32.0",
-    "mocha": "^9.1.2",
-    "proxyquire": "^2.1.3",
-    "sinon": "^11.1.2",
-    "sinon-chai": "^3.7.0",
-    "typescript": "~4.4.3"
-  },
-  "homepage": "https://github.com/TA2k/ioBroker.gruenbeck",
-  "keywords": [
-    "gruenbeck",
-    "grünbeck",
-    "wasseraufbereitung",
-    "softliQ",
-    "SC18",
-    "SC23",
-    "SD18",
-    "SD23",
-    "SD21"
-  ],
-  "license": "MIT",
-  "main": "main.js",
-  "name": "iobroker.gruenbeck",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TA2k/ioBroker.gruenbeck.git"
-  },
-  "scripts": {
-    "lint": "npm run lint:js",
-    "lint:js": "eslint",
-    "test": "npm run test:js && npm run test:package",
-    "test:integration": "mocha test/integration --exit",
-    "test:js": "mocha --opts test/mocha.custom.opts",
-    "test:package": "mocha test/package --exit",
-    "test:unit": "mocha test/unit --exit"
-  },
-  "version": "0.0.31"
+    "author": {
+        "name": "tomboxi",
+        "email": "tombox2020@gmail.com"
+    },
+    "bugs": {
+        "url": "https://github.com/TA2k/ioBroker.gruenbeck/issues"
+    },
+    "bundleDependencies": false,
+    "dependencies": {
+        "@iobroker/adapter-core": "^1.0.3",
+        "axios": "^0.24.0",
+        "crypto": "^1.0.1",
+        "querystring": "^0.2.0",
+        "regex": "^0.1.1",
+        "ws": "^7.1.2",
+        "xmldom": "^0.1.31",
+        "xmlhttprequest-ts": "^1.0.1"
+    },
+    "deprecated": false,
+    "description": "An ioBroker adapter for Grünbeck Wasseraufbereitung SC18, SC23, SD18, SD23 devices.",
+    "devDependencies": {
+        "@iobroker/testing": "^2.5.2",
+        "@types/chai": "^4.2.22",
+        "@types/chai-as-promised": "^7.1.4",
+        "@types/gulp": "^4.0.9",
+        "@types/mocha": "^9.0.0",
+        "@types/node": "^14.17.19",
+        "@types/proxyquire": "^1.3.28",
+        "@types/sinon": "^10.0.4",
+        "@types/sinon-chai": "^3.2.5",
+        "chai": "^4.3.4",
+        "chai-as-promised": "^7.1.1",
+        "eslint": "^7.32.0",
+        "mocha": "^9.1.2",
+        "proxyquire": "^2.1.3",
+        "sinon": "^11.1.2",
+        "sinon-chai": "^3.7.0",
+        "typescript": "~4.4.3"
+    },
+    "homepage": "https://github.com/TA2k/ioBroker.gruenbeck",
+    "keywords": [
+        "gruenbeck",
+        "grünbeck",
+        "wasseraufbereitung",
+        "softliQ",
+        "SC18",
+        "SC23",
+        "SD18",
+        "SD23",
+        "SD21"
+    ],
+    "license": "MIT",
+    "main": "main.js",
+    "name": "iobroker.gruenbeck",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TA2k/ioBroker.gruenbeck.git"
+    },
+    "scripts": {
+        "lint": "npm run lint:js",
+        "lint:js": "eslint",
+        "test": "npm run test:js && npm run test:package",
+        "test:integration": "mocha test/integration --exit",
+        "test:js": "mocha --opts test/mocha.custom.opts",
+        "test:package": "mocha test/package --exit",
+        "test:unit": "mocha test/unit --exit"
+    },
+    "version": "0.0.32"
 }

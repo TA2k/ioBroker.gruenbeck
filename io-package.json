@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.31",
+        "version": "0.0.32",
         "news": {
+            "0.0.32": {
+                "de": "Fix js.controller warnings"
+            },
             "0.0.31": {
                 "de": "Fix salt and water error for sd devices"
             },
@@ -411,7 +414,7 @@
             "_id": "info",
             "type": "channel",
             "common": {
-                "name": "info"
+                "name": "info only SC devices"
             },
             "native": {}
         },
@@ -730,8 +733,8 @@
             "type": "state",
             "common": {
                 "name": "error 01",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": true,
                 "def": false,
@@ -745,8 +748,8 @@
             "type": "state",
             "common": {
                 "name": "error 02",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -760,8 +763,8 @@
             "type": "state",
             "common": {
                 "name": "error 03",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -775,8 +778,8 @@
             "type": "state",
             "common": {
                 "name": "error 04",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -790,8 +793,8 @@
             "type": "state",
             "common": {
                 "name": "error 05",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -805,8 +808,8 @@
             "type": "state",
             "common": {
                 "name": "error 06",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -820,8 +823,8 @@
             "type": "state",
             "common": {
                 "name": "error 07",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -835,8 +838,8 @@
             "type": "state",
             "common": {
                 "name": "error 08",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -850,8 +853,8 @@
             "type": "state",
             "common": {
                 "name": "error 09",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -865,8 +868,8 @@
             "type": "state",
             "common": {
                 "name": "error 10",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -880,8 +883,8 @@
             "type": "state",
             "common": {
                 "name": "error 11",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -895,8 +898,8 @@
             "type": "state",
             "common": {
                 "name": "error 12",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -910,8 +913,8 @@
             "type": "state",
             "common": {
                 "name": "error 13",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -925,8 +928,8 @@
             "type": "state",
             "common": {
                 "name": "error 14",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -940,8 +943,8 @@
             "type": "state",
             "common": {
                 "name": "error 15",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -955,8 +958,8 @@
             "type": "state",
             "common": {
                 "name": "error 16",
-                "type": "number",
-                "role": "number",
+                "type": "string",
+                "role": "string",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -1059,7 +1062,7 @@
             "_id": "calculated",
             "type": "channel",
             "common": {
-                "name": "calculated"
+                "name": "calculated only SCxx devices"
             },
             "native": {}
         },
