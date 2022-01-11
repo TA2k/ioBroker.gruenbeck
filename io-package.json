@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.32",
+        "version": "0.0.33",
         "news": {
-            "0.0.32": {
+            "0.0.33": {
                 "de": "Fix js.controller warnings"
             },
             "0.0.31": {
@@ -733,8 +733,8 @@
             "type": "state",
             "common": {
                 "name": "error 01",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": true,
                 "def": false,
@@ -748,8 +748,8 @@
             "type": "state",
             "common": {
                 "name": "error 02",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -763,8 +763,8 @@
             "type": "state",
             "common": {
                 "name": "error 03",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -778,8 +778,8 @@
             "type": "state",
             "common": {
                 "name": "error 04",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -793,8 +793,8 @@
             "type": "state",
             "common": {
                 "name": "error 05",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -808,8 +808,8 @@
             "type": "state",
             "common": {
                 "name": "error 06",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -823,8 +823,8 @@
             "type": "state",
             "common": {
                 "name": "error 07",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -838,8 +838,8 @@
             "type": "state",
             "common": {
                 "name": "error 08",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -853,8 +853,8 @@
             "type": "state",
             "common": {
                 "name": "error 09",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -868,8 +868,8 @@
             "type": "state",
             "common": {
                 "name": "error 10",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -883,8 +883,8 @@
             "type": "state",
             "common": {
                 "name": "error 11",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -898,8 +898,8 @@
             "type": "state",
             "common": {
                 "name": "error 12",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -913,8 +913,8 @@
             "type": "state",
             "common": {
                 "name": "error 13",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -928,8 +928,8 @@
             "type": "state",
             "common": {
                 "name": "error 14",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -943,8 +943,8 @@
             "type": "state",
             "common": {
                 "name": "error 15",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
@@ -958,8 +958,8 @@
             "type": "state",
             "common": {
                 "name": "error 16",
-                "type": "string",
-                "role": "string",
+                "type": "mixed",
+                "role": "state",
                 "read": true,
                 "write": false,
                 "def": false,
