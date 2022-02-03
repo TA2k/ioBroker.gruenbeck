@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.33",
+        "version": "0.0.34",
         "news": {
+            "0.0.34": {
+                "de": "Fix js.controller 4"
+            },
             "0.0.33": {
                 "de": "Fix js.controller warnings"
             },
@@ -427,7 +430,6 @@
                 "role": "value.days",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Tage bis zur nächsten Wartung",
                 "unit": "Tage"
             },
@@ -442,7 +444,6 @@
                 "role": "value.days",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Salzreichweite (nur SC23)",
                 "unit": "Tage"
             },
@@ -457,7 +458,6 @@
                 "role": "mixed",
                 "read": true,
                 "write": true,
-                "def": false,
                 "desc": "Led blinkt bei Salz-Vorwarnung (nur SC23)",
                 "unit": ""
             },
@@ -515,7 +515,6 @@
                 "role": "string",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Inbetriebnahme-Datum",
                 "unit": ""
             },
@@ -530,7 +529,6 @@
                 "role": "string",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Software-Version",
                 "unit": ""
             },
@@ -565,7 +563,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Aktuelle Restkapazität Weichwasser",
                 "unit": "%"
             },
@@ -580,7 +577,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Regeneration aktiv",
                 "unit": ""
             },
@@ -603,7 +599,6 @@
                 "role": "string",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "IP-Adresse WLAN",
                 "unit": ""
             },
@@ -618,7 +613,6 @@
                 "role": "string",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Default Gateway WLAN",
                 "unit": ""
             },
@@ -633,7 +627,6 @@
                 "role": "string",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Primary DNS WLAN",
                 "unit": ""
             },
@@ -648,7 +641,6 @@
                 "role": "string",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Secondary DNS WLAN",
                 "unit": ""
             },
@@ -681,7 +673,6 @@
                 "role": "string",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "IP-Adresse Access Point",
                 "unit": ""
             },
@@ -696,7 +687,6 @@
                 "role": "string",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "SSID Access Point",
                 "unit": ""
             },
@@ -737,7 +727,6 @@
                 "role": "state",
                 "read": true,
                 "write": true,
-                "def": false,
                 "desc": "error 01",
                 "unit": ""
             },
@@ -752,7 +741,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 02",
                 "unit": ""
             },
@@ -767,7 +755,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 03",
                 "unit": ""
             },
@@ -782,7 +769,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 04",
                 "unit": ""
             },
@@ -797,7 +783,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 05",
                 "unit": ""
             },
@@ -812,7 +797,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 06",
                 "unit": ""
             },
@@ -827,7 +811,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 07",
                 "unit": ""
             },
@@ -842,7 +825,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 08",
                 "unit": ""
             },
@@ -857,7 +839,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 09",
                 "unit": ""
             },
@@ -872,7 +853,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 10",
                 "unit": ""
             },
@@ -887,7 +867,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 11",
                 "unit": ""
             },
@@ -902,7 +881,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 12",
                 "unit": ""
             },
@@ -917,7 +895,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 13",
                 "unit": ""
             },
@@ -932,7 +909,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 14",
                 "unit": ""
             },
@@ -947,7 +923,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 15",
                 "unit": ""
             },
@@ -962,7 +937,6 @@
                 "role": "state",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "error 16",
                 "unit": ""
             },
@@ -977,7 +951,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Aktueller Durchfluss",
                 "unit": "m³/h"
             },
@@ -992,7 +965,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Restkapazität",
                 "unit": "m³*°dH"
             },
@@ -1007,7 +979,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Kapazitätszahl'",
                 "unit": "m³*°dH"
             },
@@ -1022,7 +993,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Restzeit/-menge Reg.Schritt",
                 "unit": "l/min"
             },
@@ -1037,7 +1007,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Letzte Regeneration",
                 "unit": "h"
             },
@@ -1052,7 +1021,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Letzte Regeneration übrig",
                 "unit": "%"
             },
@@ -1142,7 +1110,6 @@
                 "role": "number",
                 "read": true,
                 "write": true,
-                "def": false,
                 "desc": "aktueller Wasserverbrauch",
                 "unit": "l/min"
             },
@@ -1157,7 +1124,6 @@
                 "role": "number",
                 "read": true,
                 "write": true,
-                "def": false,
                 "desc": "Salzverbrauch",
                 "unit": "kg"
             },
@@ -1172,7 +1138,6 @@
                 "role": "number",
                 "read": true,
                 "write": true,
-                "def": false,
                 "desc": "berechneter Salzstand",
                 "unit": "%"
             },
@@ -1187,7 +1152,6 @@
                 "role": "number",
                 "read": true,
                 "write": true,
-                "def": false,
                 "desc": "Salzverbrauch gesamt",
                 "unit": "kg"
             },
@@ -1202,7 +1166,6 @@
                 "role": "string",
                 "read": true,
                 "write": true,
-                "def": false,
                 "desc": "Start Datum Gesamtsalzverbrauch",
                 "unit": ""
             },
@@ -1217,7 +1180,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 01 Tag",
                 "unit": "Liter"
             },
@@ -1232,7 +1194,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 01 Tag",
                 "unit": "Liter"
             },
@@ -1247,7 +1208,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 01 Tag vor aktueller",
                 "unit": ""
             },
@@ -1262,7 +1222,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 02 Tagen",
                 "unit": "Liter"
             },
@@ -1277,7 +1236,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 02 Tagen",
                 "unit": "Liter"
             },
@@ -1292,7 +1250,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 02 Tage vor aktueller",
                 "unit": ""
             },
@@ -1307,7 +1264,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 03 Tagen",
                 "unit": "Liter"
             },
@@ -1322,7 +1278,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 03 Tagen",
                 "unit": "Liter"
             },
@@ -1337,7 +1292,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 03 Tage vor aktueller",
                 "unit": ""
             },
@@ -1352,7 +1306,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 04 Tagen",
                 "unit": "Liter"
             },
@@ -1367,7 +1320,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 04 Tagen",
                 "unit": "Liter"
             },
@@ -1382,7 +1334,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 04 Tage vor aktueller",
                 "unit": ""
             },
@@ -1397,7 +1348,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 05 Tagen",
                 "unit": "Liter"
             },
@@ -1412,7 +1362,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 05 Tagen",
                 "unit": "Liter"
             },
@@ -1427,7 +1376,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 05 Tage vor aktueller",
                 "unit": ""
             },
@@ -1442,7 +1390,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 06 Tagen",
                 "unit": "Liter"
             },
@@ -1457,7 +1404,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 06 Tagen",
                 "unit": "Liter"
             },
@@ -1472,7 +1418,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 06 Tage vor aktueller",
                 "unit": ""
             },
@@ -1487,7 +1432,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 07 Tagen",
                 "unit": "Liter"
             },
@@ -1502,7 +1446,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 07 Tagen",
                 "unit": "Liter"
             },
@@ -1517,7 +1460,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 07 Tage vor aktueller",
                 "unit": ""
             },
@@ -1532,7 +1474,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 08 Tagen",
                 "unit": "Liter"
             },
@@ -1547,7 +1488,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 08 Tagen",
                 "unit": "Liter"
             },
@@ -1562,7 +1502,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 08 Tage vor aktueller",
                 "unit": ""
             },
@@ -1577,7 +1516,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 09 Tagen",
                 "unit": "Liter"
             },
@@ -1592,7 +1530,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 09 Tagen",
                 "unit": "Liter"
             },
@@ -1607,7 +1544,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 09 Tage vor aktueller",
                 "unit": ""
             },
@@ -1622,7 +1558,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 10 Tagen",
                 "unit": "Liter"
             },
@@ -1637,7 +1572,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 10 Tagen",
                 "unit": "Liter"
             },
@@ -1652,7 +1586,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 10 Tage vor aktueller",
                 "unit": ""
             },
@@ -1667,7 +1600,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 11 Tagen",
                 "unit": "Liter"
             },
@@ -1682,7 +1614,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 11 Tagen",
                 "unit": "Liter"
             },
@@ -1697,7 +1628,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 11 Tage vor aktueller",
                 "unit": ""
             },
@@ -1712,7 +1642,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 12 Tagen",
                 "unit": "Liter"
             },
@@ -1727,7 +1656,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 12 Tagen",
                 "unit": "Liter"
             },
@@ -1742,7 +1670,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 12 Tage vor aktueller",
                 "unit": ""
             },
@@ -1757,7 +1684,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 13 Tagen",
                 "unit": "Liter"
             },
@@ -1772,7 +1698,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 13 Tagen",
                 "unit": "Liter"
             },
@@ -1787,7 +1712,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 13 Tage vor aktueller",
                 "unit": ""
             },
@@ -1802,7 +1726,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserverbrauch vor 14 Tagen",
                 "unit": "Liter"
             },
@@ -1817,7 +1740,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verschnittwasserverbrauch vor 14 Tagen",
                 "unit": "Liter"
             },
@@ -1832,7 +1754,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeit letzte Regenereation 14 Tage vor aktueller",
                 "unit": ""
             },
@@ -1847,7 +1768,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zähler Regenerationen",
                 "unit": ""
             },
@@ -1862,7 +1782,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zähler Weichwassermenge",
                 "unit": "m³"
             },
@@ -1877,7 +1796,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Durchfluss Spitzenwert",
                 "unit": "m³/h"
             },
@@ -1892,7 +1810,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Zeitzähler Nenndurchfluss überschrittten",
                 "unit": "h"
             },
@@ -1907,7 +1824,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Schrittanzeige Regenerationsventil",
                 "unit": "Steps"
             },
@@ -1922,7 +1838,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Verbrauchskapazitätszahl",
                 "unit": "m³*°dH"
             },
@@ -1937,7 +1852,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Durchschnittsverbrauch letzten 03 Tage",
                 "unit": "m³"
             },
@@ -1952,7 +1866,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserzähler Weichwasser Impulsrate",
                 "unit": "l/mp"
             },
@@ -1967,7 +1880,6 @@
                 "role": "number",
                 "read": true,
                 "write": false,
-                "def": false,
                 "desc": "Wasserzähler Weichwasser Impulsrate",
                 "unit": "l/mp"
             },
@@ -1982,7 +1894,6 @@
                 "role": "number",
                 "read": true,
                 "write": true,
-                "def": false,
                 "desc": "Gesamtwasserverbrauch",
                 "unit": "m³"
             },
@@ -1997,7 +1908,6 @@
                 "role": "string",
                 "read": true,
                 "write": true,
-                "def": false,
                 "desc": "Start Datum Gesamtwasserverbrauch",
                 "unit": ""
             },

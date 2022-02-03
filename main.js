@@ -942,7 +942,7 @@ class Gruenbeck extends utils.Adapter {
                             let currentErrorJSON = [];
                             if (errorState) {
                                 try {
-                                    currentErrorJSON = JSON.parse(errorState.val);
+                                    currentErrorJSON = JSON.parse(errorState.val) || [];
                                 } catch (error) {
                                     currentErrorJSON = [];
                                 }
@@ -1058,7 +1058,7 @@ class Gruenbeck extends utils.Adapter {
                         for (const k in newWaterLog) {
                             let shared = false;
                             for (const j in currentWaterLog)
-                                if (currentWaterLog[j].date == newWaterLog[k].date) {
+                                if (!newWaterLog[k] || currentWaterLog[j].date == newWaterLog[k].date) {
                                     shared = true;
                                     break;
                                 }
