@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.35",
+        "version": "0.0.40",
         "news": {
-            "0.0.35": {
+            "0.0.40": {
                 "de": "Add regeneration Befehl für SD"
             },
             "0.0.34": {

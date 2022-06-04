@@ -72,10 +72,10 @@ class Gruenbeck extends utils.Adapter {
      */
     async onReady() {
         this.sdVersion = "2020-08-03";
-        this.userAgent = "ioBroker 35";
+        this.userAgent = "ioBroker 40";
         this.subscribeStates("*");
         if (this.config.host) {
-            this.log.info("Starting gruenbeck adapter with:" + this.config.host);
+            this.log.info("Connecting to SC Device with:" + this.config.host);
             // @ts-ignore
             const pollingTime = this.config.pollInterval * 1000 || 30000;
             // @ts-ignore
@@ -108,6 +108,7 @@ class Gruenbeck extends utils.Adapter {
                 powerModeInterval = setInterval(() => this.setPowerMode(), 1 * 60 * 60 * 1000); // 1hour
             }
         } else if (this.config.mgUser && this.config.mgPass) {
+            this.log.info("Connection to SD Device with:" + this.config.mgUser);
             if (this.config.mgInterval && this.config.mgInterval < 360) {
                 this.log.warn("Interval ist zu niedrig. Auf 360sec erhöht um Blocking zu vermeiden.");
                 this.config.mgInterval = 360;
