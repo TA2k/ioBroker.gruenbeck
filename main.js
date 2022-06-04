@@ -72,7 +72,7 @@ class Gruenbeck extends utils.Adapter {
      */
     async onReady() {
         this.sdVersion = "2020-08-03";
-        this.userAgent = "ioBroker 40";
+        this.userAgent = "ioBroker 41";
         this.subscribeStates("*");
         if (this.config.host) {
             this.log.info("Connecting to SC Device with:" + this.config.host);
@@ -539,7 +539,7 @@ class Gruenbeck extends utils.Adapter {
                                 if (endpoint) {
                                     endpoint = endpoint.replace("/", ".");
                                 }
-                                await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint, {
+                                await this.setObjectNotExistsAsync((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + "." + endpoint, {
                                     type: "state",
                                     common: {
                                         name: endpoint,
@@ -550,14 +550,14 @@ class Gruenbeck extends utils.Adapter {
                                     },
                                     native: {},
                                 });
-                                this.setState(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint, JSON.stringify(response.data), true);
+                                this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + "." + endpoint, JSON.stringify(response.data), true);
                             } else {
                                 if (endpoint) {
                                     endpoint = endpoint.replace("/", ".");
                                     endpoint = endpoint + ".";
                                 }
                                 for (const key in response.data) {
-                                    await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint + key, {
+                                    await this.setObjectNotExistsAsync((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + "." + endpoint + key, {
                                         type: "state",
                                         common: {
                                             name: descriptions[key] || key,
@@ -569,7 +569,7 @@ class Gruenbeck extends utils.Adapter {
                                         native: {},
                                     });
                                     if (endpoint === "parameters.") {
-                                        await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint + "regenerate", {
+                                        await this.setObjectNotExistsAsync((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + "." + endpoint + "regenerate", {
                                             type: "state",
                                             common: {
                                                 name: "Regeneration starten",
@@ -583,12 +583,12 @@ class Gruenbeck extends utils.Adapter {
                                         });
                                     }
                                     if (Array.isArray(response.data[key])) {
-                                        this.setState(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint + key, JSON.stringify(response.data[key]), true);
+                                        this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + "." + endpoint + key, JSON.stringify(response.data[key]), true);
                                     } else {
                                         if (typeof response.data[key] === "object") {
                                             response.data[key] = JSON.stringify(response.data[key]);
                                         }
-                                        this.setState(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint + key, response.data[key], true);
+                                        this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + "." + endpoint + key, response.data[key], true);
                                     }
                                 }
                             }
@@ -660,7 +660,7 @@ class Gruenbeck extends utils.Adapter {
                                     ws.on("open", async () => {
                                         this.log.debug("WS connected");
                                         ws.send('{"protocol":"json","version":1}');
-                                        await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + ".Stream", {
+                                        await this.setObjectNotExistsAsync((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + ".Stream", {
                                             type: "channel",
                                             common: {
                                                 name: "Streaminformation via myGruenbeck SDxx",
@@ -690,7 +690,7 @@ class Gruenbeck extends utils.Adapter {
                                             if (message.arguments) {
                                                 message.arguments.forEach(async (argument) => {
                                                     for (const key in argument) {
-                                                        await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + ".Stream." + key, {
+                                                        await this.setObjectNotExistsAsync((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + ".Stream." + key, {
                                                             type: "state",
                                                             common: {
                                                                 name: descriptions[key] || key,
@@ -702,9 +702,9 @@ class Gruenbeck extends utils.Adapter {
                                                             native: {},
                                                         });
                                                         if (Array.isArray(response.data[key])) {
-                                                            this.setState(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + ".Stream." + key, JSON.stringify(argument[key]), true);
+                                                            this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + ".Stream." + key, JSON.stringify(argument[key]), true);
                                                         } else {
-                                                            this.setState(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + ".Stream." + key, argument[key], true);
+                                                            this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + ".Stream." + key, argument[key], true);
                                                         }
                                                     }
                                                 });

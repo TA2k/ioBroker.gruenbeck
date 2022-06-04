@@ -66,5 +66,5 @@
         "check": "tsc --noEmit -p tsconfig.check.json",
         "lint": "eslint"
     },
-    "version": "0.0.40"
+    "version": "0.0.41"
 }
