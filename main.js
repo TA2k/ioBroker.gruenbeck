@@ -660,13 +660,9 @@ class Gruenbeck extends utils.Adapter {
                                         this.log.debug("WS connected");
                                         ws.send('{"protocol":"json","version":1}');
                                         await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + ".Stream", {
-                                            type: "state",
+                                            type: "channel",
                                             common: {
                                                 name: "Streaminformation via myGruenbeck SDxx",
-                                                role: "indicator",
-                                                type: "mixed",
-                                                write: false,
-                                                read: true,
                                             },
                                             native: {},
                                         });
