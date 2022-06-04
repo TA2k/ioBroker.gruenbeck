@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "gruenbeck",
-        "version": "0.0.34",
+        "version": "0.0.35",
         "news": {
+            "0.0.35": {
+                "de": "Add regeneration Befehl für SD"
+            },
             "0.0.34": {
                 "de": "Fix js.controller 4"
             },
@@ -158,7 +161,8 @@
         "power7": false,
         "mgUser": "",
         "mgPass": "",
-        "mgInterval": 360
+        "mgInterval": 360,
+        "mgReplace": false
     },
     "objects": [],
     "instanceObjects": [
@@ -166,7 +170,7 @@
             "_id": "parameter",
             "type": "channel",
             "common": {
-                "name": "Parameter"
+                "name": "Parameter SC Anlagen"
             },
             "native": {}
         },
@@ -417,7 +421,7 @@
             "_id": "info",
             "type": "channel",
             "common": {
-                "name": "info only SC devices"
+                "name": "Info nur für SC Anlagen"
             },
             "native": {}
         },
@@ -586,7 +590,7 @@
             "_id": "network",
             "type": "channel",
             "common": {
-                "name": "network"
+                "name": "Netzwerk nur für SC Anlagen"
             },
             "native": {}
         },
@@ -714,7 +718,7 @@
             "_id": "error",
             "type": "channel",
             "common": {
-                "name": "error"
+                "name": "Error nur für SC Anlagen"
             },
             "native": {}
         },
@@ -1030,7 +1034,7 @@
             "_id": "calculated",
             "type": "channel",
             "common": {
-                "name": "calculated only SCxx devices"
+                "name": "calculated nur für SC Anlagen"
             },
             "native": {}
         },

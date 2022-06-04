@@ -12,7 +12,7 @@ const utils = require("@iobroker/adapter-core");
 // const fs = require("fs");
 const descriptions = require("./descriptions");
 const axios = require("axios");
-const querystring = require("querystring");
+const qs = require("qs");
 const crypto = require("crypto");
 const WebSocket = require("ws");
 const { XMLHttpRequest } = require("xmlhttprequest-ts");
@@ -49,6 +49,7 @@ let wsAccessToken = "";
 let wsUrl = "";
 let wsConnectionId = "";
 let mgDeviceId = "";
+let mgDeviceIdEscaped;
 let tenant = "";
 class Gruenbeck extends utils.Adapter {
     /**
@@ -71,15 +72,15 @@ class Gruenbeck extends utils.Adapter {
      */
     async onReady() {
         this.sdVersion = "2020-08-03";
-        this.userAgent = "Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0";
+        this.userAgent = "ioBroker 35";
         this.subscribeStates("*");
         if (this.config.host) {
-            this.log.debug("Starting gruenbeck adapter with:" + this.config.host);
+            this.log.info("Starting gruenbeck adapter with:" + this.config.host);
             // @ts-ignore
             const pollingTime = this.config.pollInterval * 1000 || 30000;
             // @ts-ignore
             const pollingDurchflussTime = this.config.pollWasserverbrauchInterval * 1000 || 7000;
-            this.log.debug("[INFO] Configured polling interval: " + pollingTime);
+            this.log.info("[INFO] Configured polling interval: " + pollingTime);
             this.requestData(requestAllCommand);
             this.setClock();
             this.setPowerMode();
@@ -188,7 +189,7 @@ class Gruenbeck extends utils.Adapter {
                     axiosInitConfig
                 )
                 .then((response) => {
-                    this.log.debug("Login step 1");
+                    this.log.info("Login step 1");
                     this.log.debug(JSON.stringify(response.data));
                     // handle success
                     let start, end;
@@ -224,7 +225,7 @@ class Gruenbeck extends utils.Adapter {
                     axios
                         .post(
                             "https://gruenbeckb2c.b2clogin.com" + tenant + "/SelfAsserted?tx=" + transId + "&p=" + policy,
-                            querystring.stringify({
+                            qs.stringify({
                                 request_type: "RESPONSE",
                                 signInName: this.config.mgUser,
                                 password: this.config.mgPass,
@@ -232,7 +233,7 @@ class Gruenbeck extends utils.Adapter {
                             axiosConfig
                         )
                         .then((response) => {
-                            this.log.debug("Login step 2");
+                            this.log.info("Login step 2");
                             this.log.debug(JSON.stringify(response.data));
                             const filteredCookies = response.headers["set-cookie"].map((element) => {
                                 return element.split("; ")[0];
@@ -284,7 +285,7 @@ class Gruenbeck extends utils.Adapter {
                                             axios
                                                 .post(
                                                     "https://gruenbeckb2c.b2clogin.com" + tenant + "/oauth2/v2.0/token",
-                                                    querystring.stringify({
+                                                    qs.stringify({
                                                         client_info: "1",
                                                         scope: "https://gruenbeckb2c.onmicrosoft.com/iot/user_impersonation openid profile offline_access",
                                                         code: code,
@@ -298,6 +299,7 @@ class Gruenbeck extends utils.Adapter {
                                                 .then((response) => {
                                                     accessToken = response.data.access_token;
                                                     refreshToken = response.data.refresh_token;
+                                                    this.log.info("Login successful");
                                                     setInterval(() => this.startRefreshToken(), 50 * 60 * 1000); //50min
                                                     this.setState("info.connection", true, true);
                                                     resolve();
@@ -349,8 +351,8 @@ class Gruenbeck extends utils.Adapter {
                 })
                 .catch((error) => {
                     // handle error
-                    this.log.error(error.config.url);
                     this.log.error(error);
+                    error.config && this.log.error(error.config.url);
                     reject();
                 });
         });
@@ -441,17 +443,20 @@ class Gruenbeck extends utils.Adapter {
                         try {
                             //filter for softliq devices
                             this.log.debug(JSON.stringify(response.data));
+                            this.log.info("Found " + response.data.length + " devices");
                             response.data = response.data.filter((el) => el.id.toLowerCase().indexOf("soft") > -1);
+                            this.log.info("Filtered to " + response.data.length + " devices");
                             const device = response.data[0];
                             mgDeviceId = device.id;
-                            await this.setObjectNotExistsAsync(device.id, {
-                                type: "state",
+                            this.log.info("Using device " + mgDeviceId);
+                            const name = device.name;
+                            if (this.config.mgReplace) {
+                                mgDeviceIdEscaped = mgDeviceId.replace("/", "");
+                            }
+                            await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId, {
+                                type: "device",
                                 common: {
-                                    name: device.name,
-                                    role: "indicator",
-                                    type: "mixed",
-                                    write: false,
-                                    read: true,
+                                    name: name,
                                 },
                                 native: {},
                             });
@@ -459,7 +464,6 @@ class Gruenbeck extends utils.Adapter {
                             resolve();
                         } catch (error) {
                             this.log.error(error);
-                            this.log.debug(response.data);
                             reject();
                         }
                     } else {
@@ -468,16 +472,18 @@ class Gruenbeck extends utils.Adapter {
                 })
                 .catch((error) => {
                     this.log.error(error);
+                    error.response && this.log.error(JSON.stringify(error.response.data));
                 });
         });
     }
 
-    pushMgParameter(data) {
-        this.log.debug("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/parameters?api-version=" + this.sdVersion);
+    pushMgParameter(data, action) {
+        action = action || "parameters";
+        this.log.debug("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/" + action + "?api-version=" + this.sdVersion);
         this.log.debug(JSON.stringify(data));
         const config = {
             method: "patch",
-            url: "https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/parameters?api-version=" + this.sdVersion,
+            url: "https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/" + action + "?api-version=" + this.sdVersion,
             headers: {
                 Host: "prod-eu-gruenbeck-api.azurewebsites.net",
                 "Content-Type": "application/json",
@@ -520,7 +526,6 @@ class Gruenbeck extends utils.Adapter {
                     if (response.data) {
                         if (endpoint) {
                             endpoint = endpoint.replace("/", ".");
-                            endpoint = endpoint;
                         }
                         try {
                             this.log.debug(JSON.stringify(response.data));
@@ -528,7 +533,7 @@ class Gruenbeck extends utils.Adapter {
                                 if (endpoint) {
                                     endpoint = endpoint.replace("/", ".");
                                 }
-                                await this.setObjectNotExistsAsync(mgDeviceId + "." + endpoint, {
+                                await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint, {
                                     type: "state",
                                     common: {
                                         name: endpoint,
@@ -539,14 +544,14 @@ class Gruenbeck extends utils.Adapter {
                                     },
                                     native: {},
                                 });
-                                this.setState(mgDeviceId + "." + endpoint, JSON.stringify(response.data), true);
+                                this.setState(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint, JSON.stringify(response.data), true);
                             } else {
                                 if (endpoint) {
                                     endpoint = endpoint.replace("/", ".");
                                     endpoint = endpoint + ".";
                                 }
                                 for (const key in response.data) {
-                                    await this.setObjectNotExistsAsync(mgDeviceId + "." + endpoint + key, {
+                                    await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint + key, {
                                         type: "state",
                                         common: {
                                             name: descriptions[key] || key,
@@ -557,13 +562,27 @@ class Gruenbeck extends utils.Adapter {
                                         },
                                         native: {},
                                     });
+                                    if (endpoint === "parameters.") {
+                                        await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint + "regenerate", {
+                                            type: "state",
+                                            common: {
+                                                name: "Regeneration starten",
+                                                type: "boolean",
+                                                role: "indicator",
+                                                write: true,
+                                                read: true,
+                                                def: false,
+                                            },
+                                            native: {},
+                                        });
+                                    }
                                     if (Array.isArray(response.data[key])) {
-                                        this.setState(mgDeviceId + "." + endpoint + key, JSON.stringify(response.data[key]), true);
+                                        this.setState(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint + key, JSON.stringify(response.data[key]), true);
                                     } else {
                                         if (typeof response.data[key] === "object") {
                                             response.data[key] = JSON.stringify(response.data[key]);
                                         }
-                                        this.setState(mgDeviceId + "." + endpoint + key, response.data[key], true);
+                                        this.setState(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + "." + endpoint + key, response.data[key], true);
                                     }
                                 }
                             }
@@ -635,7 +654,7 @@ class Gruenbeck extends utils.Adapter {
                                     ws.on("open", async () => {
                                         this.log.debug("WS connected");
                                         ws.send('{"protocol":"json","version":1}');
-                                        await this.setObjectNotExistsAsync(mgDeviceId + ".Stream", {
+                                        await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + ".Stream", {
                                             type: "state",
                                             common: {
                                                 name: "Streaminformation via myGruenbeck SDxx",
@@ -651,6 +670,14 @@ class Gruenbeck extends utils.Adapter {
                                         this.log.info(data);
                                         this.log.info("Websocket closed");
                                     });
+                                    ws.on("error", (error) => {
+                                        this.log.error(error);
+                                        this.log.info("Reconnect in 5 seconds");
+                                        ws.close();
+                                        setTimeout(() => {
+                                            this.connectMgWebSocket();
+                                        }, 5000);
+                                    });
                                     ws.on("message", (data) => {
                                         this.log.debug(data);
 
@@ -660,7 +687,7 @@ class Gruenbeck extends utils.Adapter {
                                             if (message.arguments) {
                                                 message.arguments.forEach(async (argument) => {
                                                     for (const key in argument) {
-                                                        await this.setObjectNotExistsAsync(mgDeviceId + ".Stream." + key, {
+                                                        await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + ".Stream." + key, {
                                                             type: "state",
                                                             common: {
                                                                 name: descriptions[key] || key,
@@ -672,9 +699,9 @@ class Gruenbeck extends utils.Adapter {
                                                             native: {},
                                                         });
                                                         if (Array.isArray(response.data[key])) {
-                                                            this.setState(mgDeviceId + ".Stream." + key, JSON.stringify(argument[key]), true);
+                                                            this.setState(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + ".Stream." + key, JSON.stringify(argument[key]), true);
                                                         } else {
-                                                            this.setState(mgDeviceId + ".Stream." + key, argument[key], true);
+                                                            this.setState(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId + ".Stream." + key, argument[key], true);
                                                         }
                                                     }
                                                 });
@@ -731,7 +758,7 @@ class Gruenbeck extends utils.Adapter {
         axios
             .post(
                 "https://gruenbeckb2c.b2clogin.com" + tenant + "/oauth2/v2.0/token",
-                querystring.stringify({
+                qs.stringify({
                     client_id: "5a83cc16-ffb1-42e9-9859-9fbf07f36df8",
                     scope: "https://gruenbeckb2c.onmicrosoft.com/iot/user_impersonation openid profile offline_access",
                     refresh_token: refreshToken,
@@ -888,8 +915,12 @@ class Gruenbeck extends utils.Adapter {
         if (id.indexOf(".parameters.") !== -1 && state.ack === false) {
             const action = id.split(".").slice(-1);
             const data = {};
-            data[action] = state.val;
-            this.pushMgParameter(data);
+            if (action === ["regenerate"]) {
+                this.pushMgParameter(data, "regenerate");
+            } else {
+                data[action] = state.val;
+                this.pushMgParameter(data);
+            }
             return;
         }
 
@@ -970,7 +1001,7 @@ class Gruenbeck extends utils.Adapter {
             }
 
             if (id === adapterPrefix + ".info.D_Y_2_1" && state.lc === state.ts) {
-                /*Formel Grünbeck bei Kapazitätszahl 8 m³x°dH und einem Härteunterschied von Rohwasser zu Brauchwasser 
+                /*Formel Grünbeck bei Kapazitätszahl 8 m³x°dH und einem Härteunterschied von Rohwasser zu Brauchwasser
                 von 12 °dH  : 0,0285 kg x 12 °dH x 100 m³ = 34,2 kg Regeneriersalz
                 Bei der min. Kapazitätszahl 6 m³x°dH entspricht der Salzverbrauch 0.025 kg
                 Bei der max. Kapazitätszahl 14 m³x°dH entspricht der Salzverbrauch 0.039 kg
@@ -1026,9 +1057,11 @@ class Gruenbeck extends utils.Adapter {
                             let akkWasser = 0;
                             let VerWasser = 0;
                             for (var i = 1; i <= 14; i++) {
-                                akkWasser = states[adapterPrefix + ".info.D_Y_2_" + i].val;
-                                VerWasser = akkWasser * Erhoehungswert;
-                                this.setState("calculated.Verschnittwasser_" + i, parseFloat(VerWasser.toFixed(0)), true);
+                                if (states[adapterPrefix + ".info.D_Y_2_" + i]) {
+                                    akkWasser = states[adapterPrefix + ".info.D_Y_2_" + i].val;
+                                    VerWasser = akkWasser * Erhoehungswert;
+                                    this.setState("calculated.Verschnittwasser_" + i, parseFloat(VerWasser.toFixed(0)), true);
+                                }
                             }
                         }
                         //calc json history
@@ -1191,6 +1224,10 @@ class Gruenbeck extends utils.Adapter {
             return;
         }
         const children = response.childNodes[0].childNodes;
+        if (!children) {
+            this.log.warn("No data received");
+            return;
+        }
         for (let i = 0; i < children.length; i++) {
             const nodeName = children[i].nodeName;
             if (nodeName === "code") {
