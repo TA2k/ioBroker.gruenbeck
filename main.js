@@ -478,11 +478,16 @@ class Gruenbeck extends utils.Adapter {
     }
 
     pushMgParameter(data, action) {
-        action = action || "parameters";
+        let method = "PATCH";
+        if (action) {
+            method = "POST";
+        } else {
+            action = "parameters";
+        }
         this.log.debug("https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/" + action + "?api-version=" + this.sdVersion);
         this.log.debug(JSON.stringify(data));
         const config = {
-            method: "patch",
+            method: method,
             url: "https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/" + mgDeviceId + "/" + action + "?api-version=" + this.sdVersion,
             headers: {
                 Host: "prod-eu-gruenbeck-api.azurewebsites.net",
@@ -678,7 +683,8 @@ class Gruenbeck extends utils.Adapter {
                                             this.connectMgWebSocket();
                                         }, 5000);
                                     });
-                                    ws.on("message", (data) => {
+                                    ws.on("message", (data, isBinary) => {
+                                        data = isBinary ? data : data.toString();
                                         this.log.debug(data);
 
                                         clearTimeout(heartBeatTimeout);
@@ -913,9 +919,9 @@ class Gruenbeck extends utils.Adapter {
      */
     onStateChange(id, state) {
         if (id.indexOf(".parameters.") !== -1 && state.ack === false) {
-            const action = id.split(".").slice(-1);
+            const action = id.split(".").slice(-1)[0];
             const data = {};
-            if (action === ["regenerate"]) {
+            if (action === "regenerate") {
                 this.pushMgParameter(data, "regenerate");
             } else {
                 data[action] = state.val;
