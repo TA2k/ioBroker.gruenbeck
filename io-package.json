@@ -41,39 +41,6 @@
             },
             "0.0.20": {
                 "de": "Fix SD refresh"
-            },
-            "0.0.18": {
-                "de": "Fix starting problem with SC devices"
-            },
-            "0.0.17": {
-                "de": "Increase minimum interval to prevent blocking"
-            },
-            "0.0.15": {
-                "de": "Fix combact mode"
-            },
-            "0.0.14": {
-                "de": "Add Refresh for SDxx devices"
-            },
-            "0.0.13": {
-                "de": "Add Support for SDxx devices"
-            },
-            "0.0.12": {
-                "de": "* Fix Versioning"
-            },
-            "0.0.11": {
-                "de": "* Fixed IP parsing"
-            },
-            "0.0.10": {
-                "de": "* Prevent multiple acutal commands interval \n*Unload all intervals at unload"
-            },
-            "0.0.9": {
-                "de": "* Fix Info Power State Zeitplan * Fix Uhrzeit parsing"
-            },
-            "0.0.8": {
-                "de": "* Fix Info Values nicht als Zahlen geschrieben * Salzmenge als Option * PowerMode Zeitplan in den Option"
-            },
-            "0.0.7": {
-                "de": "* automatisch Uhrzeit * Wasserverbrauchintervall in den Optionen * Schleichwassermesszeitraum in den Optionen"
             }
         },
         "title": "Grünbeck",
