@@ -1175,6 +1175,7 @@ class Gruenbeck extends utils.Adapter {
                     "Cache-Control": "no-cache",
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
+                timeout: (this.config.pollInterval - 1 > 1 ? this.config.pollInterval - 1 : 1) * 1000,
                 data: currentCommand,
             })
                 .then((response) => {
