@@ -1182,6 +1182,13 @@ class Gruenbeck extends utils.Adapter {
                     if (response.data) {
                         this.parseData(domParser.parseFromString(response.data, "text/xml"));
                         this.setState("info.connection", true, true);
+                    } else {
+                        this.log.debug("Device returns empty repsonse. Resend request.");
+                        if (currentCommand.indexOf("edit=") != -1) {
+                            parameterQueueArray.push(currentCommand);
+                        } else {
+                            queueArray.push(currentCommand);
+                        }
                     }
                 })
                 .catch((error) => {
