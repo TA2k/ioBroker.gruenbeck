@@ -15,7 +15,6 @@ const axios = require("axios");
 const qs = require("qs");
 const crypto = require("crypto");
 const WebSocket = require("ws");
-const { XMLHttpRequest } = require("xmlhttprequest-ts");
 const DOMParser = require("xmldom").DOMParser;
 const domParser = new DOMParser();
 const requestAllCommand =
@@ -1152,11 +1151,10 @@ class Gruenbeck extends utils.Adapter {
             parameterQueueArray.push("edit=" + idOnly + ">" + val + "&id=0000" + code + "&show=" + idOnly + "~");
         }
     }
-    requestData(sParSend) {
+    async requestData(sParSend) {
         if (blockConnection) {
             return;
         }
-        const xhr = new XMLHttpRequest();
         currentCommand = sParSend;
         if (parameterQueueArray.length != 0) {
             currentCommand = parameterQueueArray.pop();
@@ -1164,58 +1162,45 @@ class Gruenbeck extends utils.Adapter {
             currentCommand = queueArray.pop();
         }
         this.log.debug(currentCommand);
-        try {
-            this.log.debug("sendRequest ");
-            xhr.open("POST", "http://" + this.config.host + "/mux_http", true);
-            xhr.setRequestHeader("Content-type", "application/json");
-            xhr.timeout = (this.config.pollInterval - 1 > 1 ? this.config.pollInterval - 1 : 1) * 1000;
-            xhr.send(currentCommand);
-            xhr.ontimeout = (error) => {
-                //xhr.abort();
-                this.log.debug(error.message);
-                this.setState("info.connection", false, true);
-            };
-            xhr.onload = () => {
-                this.log.debug("onload");
-                this.log.debug(xhr.responseText);
-                blockConnection = false;
-                if (xhr.responseText) {
-                    this.parseData(domParser.parseFromString(xhr.responseText, "text/xml"));
-                }
-            };
-            xhr.onreadystatechange = () => {
-                this.log.debug("statechange: " + xhr.readyState + " " + xhr.responseText.length);
-                if (xhr.readyState === 4) {
-                    if (xhr.responseText.length === 0 || xhr.responseText.indexOf("Error: ") != -1) {
-                        if (xhr.responseText.length === 0) {
-                            this.log.debug("Device returns empty repsonse. Resend request.");
-                            if (currentCommand.indexOf("edit=") != -1) {
-                                parameterQueueArray.push(currentCommand);
-                            } else {
-                                queueArray.push(currentCommand);
-                            }
 
-                            return;
-                        }
-                        this.log.info("Device cannot handle new connections this is normal. Adapter pause all requests for 1min");
-                        blockConnection = true;
-                        this.log.debug(xhr.responseText);
-                        clearTimeout(blockTimeout);
-                        blockTimeout = setTimeout(() => {
-                            blockConnection = false;
-                            this.log.debug("Resume connections.");
-                            if (currentCommand.indexOf("edit=") != -1) {
-                                parameterQueueArray.push(currentCommand);
-                            } else {
-                                queueArray.push(currentCommand);
-                            }
-                        }, 60 * 1000);
-                        this.setState("info.connection", false, true);
+        try {
+            await axios({
+                method: "post",
+                url: "http://" + this.config.host + "/mux_http",
+                headers: {
+                    "User-Agent": "Gruenbeck/379 CFNetwork/1240.0.4 Darwin/20.6.0",
+                    Accept: "text/html",
+                    "Accept-Language": "de-de",
+                    Authorization: "Basic YWRtaW46UEFTU1dPUkQ",
+                    "Cache-Control": "no-cache",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                data: currentCommand,
+            })
+                .then((response) => {
+                    this.log.debug(response.data);
+                    if (response.data) {
+                        this.parseData(domParser.parseFromString(response.data, "text/xml"));
+                        this.setState("info.connection", true, true);
                     }
-                }
-            };
+                })
+                .catch((error) => {
+                    this.log.debug(error);
+                    this.setState("info.connection", false, true);
+                    this.log.info("Device cannot handle new connections this is normal. Adapter pause all requests for 1min");
+                    blockConnection = true;
+                    clearTimeout(blockTimeout);
+                    blockTimeout = setTimeout(() => {
+                        blockConnection = false;
+                        this.log.debug("Resume connections.");
+                        if (currentCommand.indexOf("edit=") != -1) {
+                            parameterQueueArray.push(currentCommand);
+                        } else {
+                            queueArray.push(currentCommand);
+                        }
+                    }, 60 * 1000);
+                });
         } catch (error) {
-            xhr.abort();
             this.log.error(error);
             this.setState("info.connection", false, true);
         }
