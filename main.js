@@ -79,8 +79,9 @@ class Gruenbeck extends utils.Adapter {
             const pollingTime = this.config.pollInterval * 1000 || 30000;
             // @ts-ignore
             const pollingDurchflussTime = this.config.pollWasserverbrauchInterval * 1000 || 7000;
-            this.log.info("[INFO] Configured polling interval: " + pollingTime);
+            this.log.info("[INFO] Configured polling interval: " + pollingTime / 1000 + "s");
             this.requestData(requestAllCommand);
+            await this.sleep((this.config.pollInterval + 1) * 1000);
             this.setClock();
             this.setPowerMode();
 
@@ -1256,6 +1257,9 @@ class Gruenbeck extends utils.Adapter {
             });
             this.setState(prefix + nodeName, value, true);
         }
+    }
+    sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 }
 
