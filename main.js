@@ -1168,6 +1168,7 @@ class Gruenbeck extends utils.Adapter {
             await axios({
                 method: "post",
                 url: "http://" + this.config.host + "/mux_http",
+                insecureHTTPParser: true,
                 headers: {
                     "User-Agent": "Gruenbeck/379 CFNetwork/1240.0.4 Darwin/20.6.0",
                     Accept: "text/html",
