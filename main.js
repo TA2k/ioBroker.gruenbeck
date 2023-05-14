@@ -735,8 +735,8 @@ class Gruenbeck extends utils.Adapter {
 
                     clearTimeout(heartBeatTimeout);
                     try {
-                      const dateSplited = data.split('�{"type":6}')[0];
-                      const message = JSON.parse(dateSplited.replace("", ""));
+                      const dataCleaned = data.replace('�{"type":6}�', "").replace("", "");
+                      const message = JSON.parse(dataCleaned);
                       if (message.arguments) {
                         message.arguments.forEach(async (argument) => {
                           for (const key in argument) {
@@ -767,6 +767,7 @@ class Gruenbeck extends utils.Adapter {
                       this.log.error("Websocket parse error");
                       this.log.error(error);
                       this.log.error(data);
+                      this.log.error(dataCleaned);
                       ws.close();
                       setTimeout(() => {
                         this.connectMgWebSocket();
