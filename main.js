@@ -733,9 +733,9 @@ class Gruenbeck extends utils.Adapter {
                     data = isBinary ? data : data.toString();
                     this.log.debug(data);
 
+                    const dataCleaned = data.replace('�{"type":6}�', "").replace("", "");
                     clearTimeout(heartBeatTimeout);
                     try {
-                      const dataCleaned = data.replace('�{"type":6}�', "").replace("", "");
                       const message = JSON.parse(dataCleaned);
                       if (message.arguments) {
                         message.arguments.forEach(async (argument) => {
@@ -767,7 +767,7 @@ class Gruenbeck extends utils.Adapter {
                       this.log.error("Websocket parse error");
                       this.log.error(error);
                       this.log.error(data);
-                      this.log.error(dataCleaned);
+                      dataCleaned && this.log.error(dataCleaned);
                       ws.close();
                       setTimeout(() => {
                         this.connectMgWebSocket();
