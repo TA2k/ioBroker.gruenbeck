@@ -4,7 +4,7 @@
     "version": "0.0.42",
     "news": {
       "0.0.42": {
-        "de": "Fix für SC Anlagen mit akuteller Node Version"
+        "de": "Fix für SC Anlagen mit aktueller Node Version"
       },
       "0.0.41": {
         "de": "Add regeneration Befehl für SD"
