@@ -733,7 +733,7 @@ class Gruenbeck extends utils.Adapter {
                     data = isBinary ? data : data.toString();
                     this.log.debug(data);
 
-                    const dataCleaned = data.replace('�{"type":6}�', "").replace("", "");
+                    const dataCleaned = data.replace('{"type":6}', "").replace("", "");
                     clearTimeout(heartBeatTimeout);
                     try {
                       const message = JSON.parse(dataCleaned);
