@@ -732,36 +732,39 @@ class Gruenbeck extends utils.Adapter {
                   ws.on("message", (data, isBinary) => {
                     data = isBinary ? data : data.toString();
                     this.log.debug(data);
-
-                    const dataCleaned = data.replace('{"type":6}', "").replace("", "");
+                    let dataCleaned;
                     clearTimeout(heartBeatTimeout);
                     try {
-                      const message = JSON.parse(dataCleaned);
-                      if (message.arguments) {
-                        message.arguments.forEach(async (argument) => {
-                          for (const key in argument) {
-                            await this.setObjectNotExistsAsync((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + ".Stream." + key, {
-                              type: "state",
-                              common: {
-                                name: descriptions[key] || key,
-                                type: typeof argument[key],
-                                role: "indicator",
-                                write: false,
-                                read: true,
-                              },
-                              native: {},
-                            });
-                            if (Array.isArray(response.data[key])) {
-                              this.setState(
-                                (mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + ".Stream." + key,
-                                JSON.stringify(argument[key]),
-                                true,
-                              );
-                            } else {
-                              this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + ".Stream." + key, argument[key], true);
+                      const dataSplit = data.split("");
+                      for (const dataElement of dataSplit) {
+                        dataCleaned = dataElement;
+                        const message = JSON.parse(dataCleaned);
+                        if (message.arguments) {
+                          message.arguments.forEach(async (argument) => {
+                            for (const key in argument) {
+                              await this.setObjectNotExistsAsync((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + ".Stream." + key, {
+                                type: "state",
+                                common: {
+                                  name: descriptions[key] || key,
+                                  type: typeof argument[key],
+                                  role: "indicator",
+                                  write: false,
+                                  read: true,
+                                },
+                                native: {},
+                              });
+                              if (Array.isArray(response.data[key])) {
+                                this.setState(
+                                  (mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + ".Stream." + key,
+                                  JSON.stringify(argument[key]),
+                                  true,
+                                );
+                              } else {
+                                this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + ".Stream." + key, argument[key], true);
+                              }
                             }
-                          }
-                        });
+                          });
+                        }
                       }
                     } catch (error) {
                       this.log.error("Websocket parse error");
