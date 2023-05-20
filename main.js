@@ -736,8 +736,10 @@ class Gruenbeck extends utils.Adapter {
                     clearTimeout(heartBeatTimeout);
                     try {
                       const dataSplit = data.split("");
-                      this.log.info(JSON.stringify(dataSplit));
                       for (const dataElement of dataSplit) {
+                        if (!dataElement) {
+                          continue;
+                        }
                         dataCleaned = dataElement;
                         this.log.info("element: " + dataCleaned);
                         const message = JSON.parse(dataCleaned);
