@@ -741,7 +741,7 @@ class Gruenbeck extends utils.Adapter {
                           continue;
                         }
                         dataCleaned = dataElement;
-                        this.log.info("element: " + dataCleaned);
+                        this.log.debug("element: " + dataCleaned);
                         const message = JSON.parse(dataCleaned);
                         if (message.arguments) {
                           message.arguments.forEach(async (argument) => {
