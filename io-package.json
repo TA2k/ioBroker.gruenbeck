@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "gruenbeck",
-    "version": "0.0.42",
+    "version": "0.0.43",
     "news": {
+      "0.0.43": {
+        "en": "add config index for multiple devices",
+        "de": "Index in Einstellungen hingzugefügt für den Fall von mehrere Geräten",
+        "ru": "добавить индекс конфигурации для нескольких устройств",
+        "pt": "adicionar índice de configuração para vários dispositivos",
+        "nl": "config-index voor meerdere apparaten toevoegen",
+        "fr": "ajouter un index de configuration pour plusieurs périphériques",
+        "it": "aggiungere l'indice di configurazione per più dispositivi",
+        "es": "añadir índice de configuración para múltiples dispositivos",
+        "pl": "dodaj indeks konfiguracyjny dla wielu urządzeń",
+        "uk": "додати індекс налаштування для декількох пристроїв",
+        "zh-cn": "为多个设备添加配置索引"
+      },
       "0.0.42": {
         "de": "Fix für SC Anlagen mit aktueller Node Version"
       },
@@ -20,30 +33,6 @@
       },
       "0.0.30": {
         "de": "Fix jscontroller 3.3"
-      },
-      "0.0.29": {
-        "de": "Fix login"
-      },
-      "0.0.28": {
-        "de": "Fix reconnect for SD"
-      },
-      "0.0.27": {
-        "de": "Add salt history, water history and parameters for SD devices"
-      },
-      "0.0.25": {
-        "de": "Add description for SD states (Delete device under objects to get datapoints with descriptions)"
-      },
-      "0.0.24": {
-        "de": "Fix for multiple devices"
-      },
-      "0.0.22": {
-        "de": "Add additional SD Data"
-      },
-      "0.0.21": {
-        "de": "Fix SD Refresh when App is open"
-      },
-      "0.0.20": {
-        "de": "Fix SD refresh"
       }
     },
     "title": "Grünbeck",
@@ -120,7 +109,8 @@
     "mgUser": "",
     "mgPass": "",
     "mgInterval": 360,
-    "mgReplace": false
+    "mgReplace": false,
+    "mgIndex": 0
   },
   "objects": [],
   "instanceObjects": [
