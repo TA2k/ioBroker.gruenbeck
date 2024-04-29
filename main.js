@@ -728,10 +728,14 @@ class Gruenbeck extends utils.Adapter {
                   ws.on('error', (error) => {
                     this.log.error(error);
                     this.log.info('Reconnect in 5 seconds');
-                    ws.close();
-                    setTimeout(() => {
-                      this.connectMgWebSocket();
-                    }, 5000);
+                    try {
+                      ws.close();
+                      setTimeout(() => {
+                        this.connectMgWebSocket();
+                      }, 5000);
+                    } catch (error) {
+                      this.log.error(error);
+                    }
                   });
                   ws.on('message', (data, isBinary) => {
                     data = isBinary ? data : data.toString();
@@ -779,10 +783,14 @@ class Gruenbeck extends utils.Adapter {
                       this.log.error(error);
                       this.log.error(data);
                       dataCleaned && this.log.error(dataCleaned);
-                      ws.close();
-                      setTimeout(() => {
-                        this.connectMgWebSocket();
-                      }, 5000);
+                      try {
+                        ws.close();
+                        setTimeout(() => {
+                          this.connectMgWebSocket();
+                        }, 5000);
+                      } catch (error) {
+                        this.log.error(error);
+                      }
                     }
                   });
                 } catch (error) {
@@ -959,7 +967,11 @@ class Gruenbeck extends utils.Adapter {
       clearInterval(clockInterval);
       clearInterval(clockInterval);
       clearInterval(powerModeInterval);
-      ws.close();
+      try {
+        ws.close();
+      } catch (error) {
+        this.log.error(error);
+      }
       //xhr.abort()
       this.log.debug('Stopping gruenbeck');
       this.setState('info.connection', false, true);
