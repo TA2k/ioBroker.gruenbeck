@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "gruenbeck",
-    "version": "0.0.43",
+    "version": "0.0.44",
     "news": {
+      "0.0.44": {
+        "en": "add SE support",
+        "de": "SE Support hinzugefügt",
+        "ru": "добавить поддержку SE",
+        "pt": "adicionar suporte SE",
+        "nl": "sE-ondersteuning toevoegen",
+        "fr": "ajouter le support SE",
+        "it": "aggiungi supporto SE",
+        "es": "añadir soporte SE",
+        "pl": "dodaj wsparcie SE",
+        "uk": "додати SE підтримки",
+        "zh-cn": "添加 SE 支持"
+      },
       "0.0.43": {
         "en": "add config index for multiple devices",
         "de": "Index in Einstellungen hingzugefügt für den Fall von mehrere Geräten",
@@ -30,9 +43,6 @@
       },
       "0.0.31": {
         "de": "Fix salt and water error for sd devices"
-      },
-      "0.0.30": {
-        "de": "Fix jscontroller 3.3"
       }
     },
     "title": "Grünbeck",

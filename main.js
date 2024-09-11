@@ -70,6 +70,8 @@ class Gruenbeck extends utils.Adapter {
    */
   async onReady() {
     this.sdVersion = '2020-08-03';
+    this.seVersion = '2024-05-02';
+    this.sdVersion = this.seVersion;
     this.userAgent = 'ioBroker 41';
 
     this.subscribeStates('*');
@@ -113,57 +115,55 @@ class Gruenbeck extends utils.Adapter {
         this.log.warn('Interval ist zu niedrig. Auf 360sec erhöht um Blocking zu vermeiden.');
         this.config.mgInterval = 360;
       }
-      this.login().then(() =>
-        this.getMgDevices().then(() => {
-          this.parseMgInfos();
+      await this.login();
+      await this.getMgDevices();
+      this.parseMgInfos();
 
-          this.parseMgInfos('parameters');
-          this.parseMgInfos('measurements/salt').catch(() => {
-            this.log.error('Failed to get salt');
+      this.parseMgInfos('parameters');
+      this.parseMgInfos('measurements/salt').catch(() => {
+        this.log.error('Failed to get salt');
+      });
+      this.parseMgInfos('measurements/water').catch(() => {
+        this.log.error('Failed to get water');
+      });
+      this.connectMgWebSocket();
+      this.enterSD()
+        .then(() => {
+          this.refreshSD().catch(() => {
+            this.log.error('Failed refresh SD');
           });
-          this.parseMgInfos('measurements/water').catch(() => {
-            this.log.error('Failed to get water');
+        })
+        .catch(() => {
+          this.log.error('Failed enter SD');
+        });
+      allInterval = setInterval(() => {
+        this.parseMgInfos();
+      }, 1 * 60 * 60 * 1000); //1hour
+      dailyInterval = setInterval(() => {
+        this.parseMgInfos('measurements/salt').catch(() => {
+          this.log.error('Failed to get salt');
+        });
+        this.parseMgInfos('measurements/water').catch(() => {
+          this.log.error('Failed to get water');
+        });
+      }, 24 * 60 * 60 * 1000); //24hour
+      actualInterval = setInterval(() => {
+        this.log.debug('Start refresh');
+        this.enterSD()
+          .then(() => {
+            this.refreshSD().catch(() => {
+              this.log.error('Failed refresh SD');
+            });
+          })
+          .catch(() => {
+            this.log.error('Failed enter SD');
+            this.log.info('Relogin');
+            this.login().then(() => {
+              this.log.debug('Reconnect');
+              this.connectMgWebSocket();
+            });
           });
-          this.connectMgWebSocket();
-          this.enterSD()
-            .then(() => {
-              this.refreshSD().catch(() => {
-                this.log.error('Failed refresh SD');
-              });
-            })
-            .catch(() => {
-              this.log.error('Failed enter SD');
-            });
-          allInterval = setInterval(() => {
-            this.parseMgInfos();
-          }, 1 * 60 * 60 * 1000); //1hour
-          dailyInterval = setInterval(() => {
-            this.parseMgInfos('measurements/salt').catch(() => {
-              this.log.error('Failed to get salt');
-            });
-            this.parseMgInfos('measurements/water').catch(() => {
-              this.log.error('Failed to get water');
-            });
-          }, 24 * 60 * 60 * 1000); //24hour
-          actualInterval = setInterval(() => {
-            this.log.debug('Start refresh');
-            this.enterSD()
-              .then(() => {
-                this.refreshSD().catch(() => {
-                  this.log.error('Failed refresh SD');
-                });
-              })
-              .catch(() => {
-                this.log.error('Failed enter SD');
-                this.log.info('Relogin');
-                this.login().then(() => {
-                  this.log.debug('Reconnect');
-                  this.connectMgWebSocket();
-                });
-              });
-          }, this.config.mgInterval * 1000);
-        }),
-      );
+      }, this.config.mgInterval * 1000);
     } else {
       this.log.warn('[START] No IP-address set');
     }
@@ -447,61 +447,56 @@ class Gruenbeck extends utils.Adapter {
         });
     });
   }
-  getMgDevices() {
-    return new Promise((resolve, reject) => {
-      const axiosConfig = {
-        headers: {
-          Host: 'prod-eu-gruenbeck-api.azurewebsites.net',
-          Accept: 'application/json, text/plain, */*',
-          'User-Agent': 'Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0',
-          Authorization: 'Bearer ' + accessToken,
-          'Accept-Language': 'de-de',
-          'cache-control': 'no-cache',
-        },
-      };
-      axios
-        .get('https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices?api-version=' + this.sdVersion, axiosConfig)
-        .then(async (response) => {
-          if (response.data && response.data.length > 0) {
-            try {
-              //filter for softliq devices
-              this.log.debug(JSON.stringify(response.data));
-              this.log.info('Found ' + response.data.length + ' devices');
-              response.data = response.data.filter((el) => el.id.toLowerCase().indexOf('soft') > -1);
-              this.log.info('Filtered to ' + response.data.length + ' devices');
-              let device = response.data[0];
-              if (this.config.mgIndex) {
-                this.log.info("Found config index: '" + this.config.mgIndex + "'");
-                device = response.data[this.config.mgIndex];
-              }
-              mgDeviceId = device.id;
-              this.log.info('Using device ' + mgDeviceId);
-              const name = device.name;
-              if (this.config.mgReplace) {
-                mgDeviceIdEscaped = mgDeviceId.replace('/', '');
-              }
-              await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId, {
-                type: 'device',
-                common: {
-                  name: name,
-                },
-                native: {},
-              });
-
-              resolve();
-            } catch (error) {
-              this.log.error(error);
-              reject();
+  async getMgDevices() {
+    const axiosConfig = {
+      headers: {
+        Host: 'prod-eu-gruenbeck-api.azurewebsites.net',
+        Accept: 'application/json, text/plain, */*',
+        'User-Agent': 'Gruenbeck/354 CFNetwork/1209 Darwin/20.2.0',
+        Authorization: 'Bearer ' + accessToken,
+        'Accept-Language': 'de-de',
+        'cache-control': 'no-cache',
+      },
+    };
+    await axios
+      .get('https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices?api-version=' + this.sdVersion, axiosConfig)
+      .then(async (response) => {
+        if (response.data && response.data.length > 0) {
+          try {
+            //filter for softliq devices
+            this.log.debug(JSON.stringify(response.data));
+            this.log.info('Found ' + response.data.length + ' devices');
+            response.data = response.data.filter((el) => el.id.toLowerCase().indexOf('soft') > -1);
+            this.log.info('Filtered to ' + response.data.length + ' devices');
+            let device = response.data[0];
+            if (this.config.mgIndex) {
+              this.log.info("Found config index: '" + this.config.mgIndex + "'");
+              device = response.data[this.config.mgIndex];
             }
-          } else {
-            reject();
+            mgDeviceId = device.id;
+            this.log.info('Using device ' + mgDeviceId);
+            const name = device.name;
+            if (this.config.mgReplace) {
+              mgDeviceIdEscaped = mgDeviceId.replace('/', '');
+            }
+            await this.setObjectNotExistsAsync(mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId, {
+              type: 'device',
+              common: {
+                name: name,
+              },
+              native: {},
+            });
+          } catch (error) {
+            this.log.error(error);
           }
-        })
-        .catch((error) => {
-          this.log.error(error);
-          error.response && this.log.error(JSON.stringify(error.response.data));
-        });
-    });
+        } else {
+          this.log.warn('No devices found');
+        }
+      })
+      .catch((error) => {
+        this.log.error(error);
+        error.response && this.log.error(JSON.stringify(error.response.data));
+      });
   }
 
   pushMgParameter(data, action) {
