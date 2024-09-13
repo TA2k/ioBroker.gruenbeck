@@ -3,9 +3,9 @@
     "name": "gruenbeck",
     "version": "0.0.44",
     "news": {
-      "0.0.44": {
-        "en": "add SE support",
-        "de": "SE Support hinzugefügt",
+      "0.0.45": {
+        "en": "add SE support and cleanup states",
+        "de": "SE Support hinzugefügt und States aufgeräumt",
         "ru": "добавить поддержку SE",
         "pt": "adicionar suporte SE",
         "nl": "sE-ondersteuning toevoegen",
