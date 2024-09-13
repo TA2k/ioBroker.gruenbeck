@@ -486,6 +486,13 @@ class Gruenbeck extends utils.Adapter {
               },
               native: {},
             });
+            //delete sc data points
+            this.log.debug('Delete SC data points');
+            await this.delObjectAsync('info', { recursive: true });
+            await this.delObjectAsync('error', { recursive: true });
+            await this.delObjectAsync('calculated', { recursive: true });
+            await this.delObjectAsync('parameter', { recursive: true });
+            await this.delObjectAsync('network', { recursive: true });
           } catch (error) {
             this.log.error(error);
           }
@@ -711,7 +718,7 @@ class Gruenbeck extends utils.Adapter {
                     await this.setObjectNotExistsAsync((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + '.Stream', {
                       type: 'channel',
                       common: {
-                        name: 'Streaminformation via myGruenbeck SDxx',
+                        name: 'Streaminformation via myGruenbeck SD/SE',
                       },
                       native: {},
                     });
