@@ -979,6 +979,7 @@ class Gruenbeck extends utils.Adapter {
       this.setState('info.connection', false, true);
       callback();
     } catch (e) {
+      this.log.error(e);
       callback();
     }
   }
@@ -1078,6 +1079,7 @@ class Gruenbeck extends utils.Adapter {
                 try {
                   currentErrorJSON = JSON.parse(errorState.val) || [];
                 } catch (error) {
+                  this.log.debug(error);
                   currentErrorJSON = [];
                 }
               }
@@ -1192,7 +1194,8 @@ class Gruenbeck extends utils.Adapter {
             if (currentWaterLogState) {
               try {
                 currentWaterLog = JSON.parse(currentWaterLogState.val);
-              } catch (erro) {
+              } catch (error) {
+                this.log.debug(error);
                 currentWaterLog = [];
               }
             }
