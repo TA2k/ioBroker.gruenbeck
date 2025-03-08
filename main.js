@@ -111,10 +111,10 @@ class Gruenbeck extends utils.Adapter {
       }
     } else if (this.config.mgUser && this.config.mgPass) {
       this.log.info('Connection to SD Device with:' + this.config.mgUser);
-      if (this.config.mgInterval && this.config.mgInterval < 360) {
-        this.log.warn('Interval ist zu niedrig. Auf 360sec erhöht um Blocking zu vermeiden.');
-        this.config.mgInterval = 360;
-      }
+      // if (this.config.mgInterval && this.config.mgInterval < 360) {
+      //   this.log.warn('Interval ist zu niedrig. Auf 360sec erhöht um Blocking zu vermeiden.');
+      //   this.config.mgInterval = 360;
+      // }
       await this.login();
       await this.getMgDevices();
       this.parseMgInfos();
