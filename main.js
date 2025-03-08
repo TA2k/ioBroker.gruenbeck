@@ -168,7 +168,7 @@ class Gruenbeck extends utils.Adapter {
       this.updateInterval = this.setInterval(() => {
         this.log.debug('Start update');
         this.sdUpdate();
-      }, this.config.mgInterval * 1000);
+      }, this.config.mgUpdateInterval * 1000);
     } else {
       this.log.warn('[START] No IP-address set');
     }
@@ -344,9 +344,9 @@ class Gruenbeck extends utils.Adapter {
   }
   async sdUpdate() {
     await axios({
-      method: 'post',
+      method: 'get',
       maxBodyLength: Infinity,
-      url: 'https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/softliQ.SE/' + mgDeviceId + '/update?api-version=' + this.sdVersion,
+      url: 'https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/' + mgDeviceId + '/update?api-version=' + this.sdVersion,
       headers: {
         'Accept-Language': 'de-DE,de;q=0.5',
         Authorization: 'Bearer ' + accessToken,
