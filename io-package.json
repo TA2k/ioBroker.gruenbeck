@@ -119,6 +119,7 @@
     "mgUser": "",
     "mgPass": "",
     "mgInterval": 360,
+    "mgUpdateInterval": 60,
     "mgReplace": false,
     "mgIndex": 0
   },

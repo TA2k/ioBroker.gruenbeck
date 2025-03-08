@@ -136,6 +136,7 @@ class Gruenbeck extends utils.Adapter {
         .catch(() => {
           this.log.error('Failed enter SD');
         });
+      this.sdUpdate();
       allInterval = setInterval(() => {
         this.parseMgInfos();
       }, 1 * 60 * 60 * 1000); //1hour
@@ -163,6 +164,10 @@ class Gruenbeck extends utils.Adapter {
               this.connectMgWebSocket();
             });
           });
+      }, this.config.mgInterval * 1000);
+      this.updateInterval = this.setInterval(() => {
+        this.log.debug('Start update');
+        this.sdUpdate();
       }, this.config.mgInterval * 1000);
     } else {
       this.log.warn('[START] No IP-address set');
@@ -337,6 +342,50 @@ class Gruenbeck extends utils.Adapter {
         });
     });
   }
+  async sdUpdate() {
+    await axios({
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/softliQ.SE/' + mgDeviceId + '/update?api-version=' + this.sdVersion,
+      headers: {
+        'Accept-Language': 'de-DE,de;q=0.5',
+        Authorization: 'Bearer ' + accessToken,
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 13; Pixel 4a Build/TQ3A.230805.001.S2)',
+        Host: 'prod-eu-gruenbeck-api.azurewebsites.net',
+        Connection: 'Keep-Alive',
+      },
+    })
+      .then(async (response) => {
+        this.log.debug('sdUpdate response');
+        this.log.debug(JSON.stringify(response.data));
+        const argument = response.data;
+        for (const key in argument) {
+          await this.setObjectNotExistsAsync((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + '.Stream.' + key, {
+            type: 'state',
+            common: {
+              name: descriptions[key] || key,
+              type: typeof argument[key],
+              role: 'indicator',
+              write: false,
+              read: true,
+            },
+            native: {},
+          });
+          if (Array.isArray(response.data[key])) {
+            this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + '.Stream.' + key, JSON.stringify(argument[key]), true);
+          } else {
+            this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + '.Stream.' + key, argument[key], true);
+          }
+        }
+      })
+      .catch((error) => {
+        // handle error
+        this.log.error(error);
+        this.log.error(error.config.url);
+      });
+  }
   refreshSD() {
     return new Promise((resolve, reject) => {
       this.log.debug('refreshSD');
@@ -355,9 +404,28 @@ class Gruenbeck extends utils.Adapter {
           {},
           axiosConfig,
         )
-        .then((response) => {
+        .then(async (response) => {
           this.log.debug('refreshSD response:');
           this.log.debug(JSON.stringify(response.data));
+          const argument = response.data;
+          for (const key in argument) {
+            await this.setObjectNotExistsAsync((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + '.Stream.' + key, {
+              type: 'state',
+              common: {
+                name: descriptions[key] || key,
+                type: typeof argument[key],
+                role: 'indicator',
+                write: false,
+                read: true,
+              },
+              native: {},
+            });
+            if (Array.isArray(response.data[key])) {
+              this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + '.Stream.' + key, JSON.stringify(argument[key]), true);
+            } else {
+              this.setState((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + '.Stream.' + key, argument[key], true);
+            }
+          }
           if (response.status < 400) {
             resolve();
           } else {
