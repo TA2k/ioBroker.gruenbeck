@@ -126,16 +126,16 @@ class Gruenbeck extends utils.Adapter {
       this.parseMgInfos('measurements/water').catch(() => {
         this.log.error('Failed to get water');
       });
-      this.connectMgWebSocket();
-      this.enterSD()
-        .then(() => {
-          this.refreshSD().catch(() => {
-            this.log.error('Failed refresh SD');
-          });
-        })
-        .catch(() => {
-          this.log.error('Failed enter SD');
-        });
+      // this.connectMgWebSocket();
+      // this.enterSD()
+      //   .then(() => {
+      //     this.refreshSD().catch(() => {
+      //       this.log.error('Failed refresh SD');
+      //     });
+      //   })
+      //   .catch(() => {
+      //     this.log.error('Failed enter SD');
+      //   });
       this.sdUpdate();
       allInterval = setInterval(() => {
         this.parseMgInfos();
@@ -148,23 +148,23 @@ class Gruenbeck extends utils.Adapter {
           this.log.error('Failed to get water');
         });
       }, 24 * 60 * 60 * 1000); //24hour
-      actualInterval = setInterval(() => {
-        this.log.debug('Start refresh');
-        this.enterSD()
-          .then(() => {
-            this.refreshSD().catch(() => {
-              this.log.error('Failed refresh SD');
-            });
-          })
-          .catch(() => {
-            this.log.error('Failed enter SD');
-            this.log.info('Relogin');
-            this.login().then(() => {
-              this.log.debug('Reconnect');
-              this.connectMgWebSocket();
-            });
-          });
-      }, this.config.mgInterval * 1000);
+      // actualInterval = setInterval(() => {
+      //   this.log.debug('Start refresh');
+      //   this.enterSD()
+      //     .then(() => {
+      //       this.refreshSD().catch(() => {
+      //         this.log.error('Failed refresh SD');
+      //       });
+      //     })
+      //     .catch(() => {
+      //       this.log.error('Failed enter SD');
+      //       this.log.info('Relogin');
+      //       this.login().then(() => {
+      //         this.log.debug('Reconnect');
+      //         this.connectMgWebSocket();
+      //       });
+      //     });
+      // }, this.config.mgInterval * 1000);
       this.updateInterval = this.setInterval(() => {
         this.log.debug('Start update');
         this.sdUpdate();
