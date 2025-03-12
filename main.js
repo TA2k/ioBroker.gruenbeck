@@ -126,7 +126,7 @@ class Gruenbeck extends utils.Adapter {
       this.parseMgInfos('measurements/water').catch(() => {
         this.log.error('Failed to get water');
       });
-      // this.connectMgWebSocket();
+      this.connectMgWebSocket();
       this.enterSD()
         .then(() => {
           this.refreshSD().catch(() => {
@@ -724,6 +724,8 @@ class Gruenbeck extends utils.Adapter {
   }
 
   connectMgWebSocket() {
+    this.log.debug('Websocket disabled');
+    return;
     const axiosConfig = {
       headers: {
         'Content-Type': 'text/plain;charset=UTF-8',
