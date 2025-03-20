@@ -49,6 +49,8 @@ let wsConnectionId = '';
 let mgDeviceId = '';
 let mgDeviceIdEscaped;
 let tenant = '';
+
+let lastUpdateDate = new Date().toUTCString();
 class Gruenbeck extends utils.Adapter {
   /**
    * @param {Partial<ioBroker.AdapterOptions>} [options={}]
@@ -352,12 +354,16 @@ class Gruenbeck extends utils.Adapter {
         Authorization: 'Bearer ' + accessToken,
         Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 13; Pixel 4a Build/TQ3A.230805.001.S2)',
+        'User-Agent':
+          'Mozilla/5.0 (Linux; Android 13; Pixel 4a Build/TQ3A.230805.001.S2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/131.0.6778.260 Mobile Safari/537.36',
         Host: 'prod-eu-gruenbeck-api.azurewebsites.net',
         Connection: 'Keep-Alive',
+        Referer: 'http://localhost/',
+        'If-Modified-Since': lastUpdateDate,
       },
     })
       .then(async (response) => {
+        lastUpdateDate = new Date().toUTCString();
         this.log.debug('sdUpdate response');
         this.log.debug(JSON.stringify(response.data));
         const argument = response.data;
@@ -462,13 +468,13 @@ class Gruenbeck extends utils.Adapter {
           this.log.debug('enterSD response');
           this.log.debug(JSON.stringify(response.data));
           if (response.status < 400) {
-            heartBeatTimeout = setTimeout(() => {
-              this.log.error('No Data since 2min start login');
-              this.login().then(() => {
-                this.log.debug('Reconnect');
-                this.connectMgWebSocket();
-              });
-            }, 2 * 60 * 1000);
+            // heartBeatTimeout = setTimeout(() => {
+            //   this.log.error('No Data since 2min start login');
+            //   this.login().then(() => {
+            //     this.log.debug('Reconnect');
+            //     this.connectMgWebSocket();
+            //   });
+            // }, 2 * 60 * 1000);
             resolve();
           } else {
             reject();
@@ -678,21 +684,30 @@ class Gruenbeck extends utils.Adapter {
                     native: {},
                   });
                   if (endpoint === 'parameters.') {
-                    await this.setObjectNotExistsAsync(
-                      (mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + '.' + endpoint + 'regenerate',
-                      {
-                        type: 'state',
-                        common: {
-                          name: 'Regeneration starten',
-                          type: 'boolean',
-                          role: 'indicator',
-                          write: true,
-                          read: true,
-                          def: false,
-                        },
-                        native: {},
+                    await this.extendObject((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + '.' + endpoint + 'regenerate', {
+                      type: 'state',
+                      common: {
+                        name: 'Regeneration starten',
+                        type: 'boolean',
+                        role: 'button',
+                        write: true,
+                        read: true,
+                        def: false,
                       },
-                    );
+                      native: {},
+                    });
+                    await this.extendObject((mgDeviceIdEscaped ? mgDeviceIdEscaped : mgDeviceId) + '.' + endpoint + 'activate-boost-mode', {
+                      type: 'state',
+                      common: {
+                        name: 'Boost starten',
+                        type: 'boolean',
+                        role: 'button',
+                        write: true,
+                        read: true,
+                        def: false,
+                      },
+                      native: {},
+                    });
                   }
                   if (Array.isArray(response.data[key])) {
                     this.setState(
@@ -1080,6 +1095,8 @@ class Gruenbeck extends utils.Adapter {
       const data = {};
       if (action === 'regenerate') {
         this.pushMgParameter(data, 'regenerate');
+      } else if (action === 'activate-boost-mode') {
+        this.pushMgParameter(data, 'activate-boost-mode');
       } else {
         data[action] = state.val;
         this.pushMgParameter(data);
