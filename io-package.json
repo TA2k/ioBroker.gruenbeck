@@ -74,7 +74,6 @@
     "keywords": ["gruenbeck", "grünbeck", "wasseraufbereitung", "softliQ", "SC18", "SC23", "SD18", "SD23", "SD21"],
     "license": "MIT",
     "platform": "Javascript/Node.js",
-    "main": "main.js",
     "icon": "gruenbeck.png",
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/TA2k/ioBroker.gruenbeck/master/admin/gruenbeck.png",
