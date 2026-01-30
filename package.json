@@ -6,28 +6,27 @@
   "bugs": {
     "url": "https://github.com/TA2k/ioBroker.gruenbeck/issues"
   },
-  "bundleDependencies": [],
   "dependencies": {
-    "@iobroker/adapter-core": "^3.2.3",
-    "axios": "^1.8.4",
-    "qs": "^6.14.0",
-    "ws": "^8.18.1",
-    "xmldom": "^0.6.0"
+    "@iobroker/adapter-core": "^3.3.2",
+    "@xmldom/xmldom": "^0.9.8",
+    "axios": "^1.13.4",
+    "qs": "^6.14.1",
+    "ws": "^8.19.0"
   },
   "deprecated": false,
   "description": "An ioBroker adapter for Grünbeck Wasseraufbereitung SC18, SC23, SD18, SD23 devices.",
   "devDependencies": {
-    "@alcalzone/release-script": "^3.8.0",
-    "@alcalzone/release-script-plugin-iobroker": "^3.7.2",
-    "@alcalzone/release-script-plugin-license": "^3.7.0",
-    "@alcalzone/release-script-plugin-manual-review": "^3.7.0",
-    "@eslint/eslintrc": "^3.3.0",
-    "@eslint/js": "^9.22.0",
-    "@iobroker/testing": "^5.0.3",
-    "@types/node": "^22.13.10",
-    "eslint": "^9.22.0",
-    "globals": "^15.15.0",
-    "typescript": "^5.8.2"
+    "@alcalzone/release-script": "^5.0.0",
+    "@alcalzone/release-script-plugin-iobroker": "^4.0.0",
+    "@alcalzone/release-script-plugin-license": "^4.0.0",
+    "@alcalzone/release-script-plugin-manual-review": "^4.0.0",
+    "@eslint/eslintrc": "^3.3.3",
+    "@eslint/js": "^9.39.2",
+    "@iobroker/testing": "^5.2.2",
+    "@types/node": "^25.1.0",
+    "eslint": "^9.39.2",
+    "globals": "^17.2.0",
+    "typescript": "^5.9.3"
   },
   "homepage": "https://github.com/TA2k/ioBroker.gruenbeck",
   "keywords": [

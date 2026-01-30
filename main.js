@@ -15,7 +15,7 @@ const axios = require('axios');
 const qs = require('qs');
 const crypto = require('crypto');
 const WebSocket = require('ws');
-const DOMParser = require('xmldom').DOMParser;
+const { DOMParser } = require('@xmldom/xmldom');
 const domParser = new DOMParser();
 const requestAllCommand =
   'id=0000&code=245&show=D_D_1|D_A_4_1|D_A_4_2|D_A_4_3|D_C_1_1|D_C_2_1|D_C_5_1|D_C_4_1|D_C_4_2|D_C_4_3|D_C_6_1|D_C_7_1|D_A_2_2|D_A_2_3|D_C_3_6_1|D_C_8_1|D_C_8_2|D_C_3_6_2|D_C_3_6_3|D_C_3_6_4|D_C_3_6_5|D_C_3_7_1|D_C_3_7_2|D_C_3_7_3|D_Y_5|D_Y_7|D_Y_6|D_Y_8_11|D_Y_10_1|D_B_1|D_A_1_1|D_A_1_2|D_A_1_3|D_A_2_1|D_A_3_1|D_A_3_2|D_K_1|D_K_2|D_K_3|D_K_4|D_K_7|D_K_8|D_K_9|D_Y_2_1|D_Y_4_1|D_Y_2_2|D_Y_4_2|D_Y_2_3|D_Y_4_3|D_Y_2_4|D_Y_4_4|D_Y_2_5|D_Y_4_5|D_Y_2_6|D_Y_4_6|D_Y_2_7|D_Y_4_7|D_Y_2_8|D_Y_4_8|D_Y_2_9|D_Y_4_9|D_Y_2_10|D_Y_4_10|D_Y_2_11|D_Y_4_11|D_Y_2_12|D_Y_4_12|D_Y_2_13|D_Y_4_13|D_Y_2_14|D_Y_4_14~';
@@ -35,7 +35,7 @@ let clockInterval;
 let powerModeInterval;
 let currentCommand = '';
 let blockTimeout;
-let heartBeatTimeout = null;
+const heartBeatTimeout = null;
 const queueArray = [];
 const parameterQueueArray = [];
 let blockConnection = false;
@@ -741,6 +741,7 @@ class Gruenbeck extends utils.Adapter {
   connectMgWebSocket() {
     this.log.debug('Websocket disabled');
     return;
+    //eslint-disable-next-line
     const axiosConfig = {
       headers: {
         'Content-Type': 'text/plain;charset=UTF-8',
