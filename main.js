@@ -739,8 +739,6 @@ class Gruenbeck extends utils.Adapter {
   }
 
   connectMgWebSocket() {
-    this.log.debug('Websocket disabled');
-    return;
     //eslint-disable-next-line
     const axiosConfig = {
       headers: {
