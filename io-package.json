@@ -72,7 +72,10 @@
     },
     "authors": ["TA2k <tombox@nomail.de>"],
     "keywords": ["gruenbeck", "grünbeck", "wasseraufbereitung", "softliQ", "SC18", "SC23", "SD18", "SD23", "SD21"],
-    "license": "MIT",
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
     "platform": "Javascript/Node.js",
     "main": "main.js",
     "icon": "gruenbeck.png",
