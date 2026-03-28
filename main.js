@@ -9,11 +9,11 @@
 const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
-// const fs = require("fs");
+// const fs = require("node:fs");
 const descriptions = require('./descriptions');
 const axios = require('axios');
 const qs = require('qs');
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 const WebSocket = require('ws');
 const { DOMParser } = require('@xmldom/xmldom');
 const domParser = new DOMParser();
