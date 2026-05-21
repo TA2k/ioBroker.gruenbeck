@@ -20,6 +20,10 @@ SD Daten findet man unter Stream
 
 ## Changelog
 
+
+### **WORK IN PROGRESS**
+- (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
+
 ### 0.0.46 (2024-09-11)
 
 - add SE support and clean up states
