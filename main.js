@@ -129,15 +129,9 @@ class Gruenbeck extends utils.Adapter {
         this.log.error('Failed to get water');
       });
       this.connectMgWebSocket();
-      this.enterSD()
-        .then(() => {
-          this.refreshSD().catch(() => {
-            this.log.error('Failed refresh SD');
-          });
-        })
-        .catch(() => {
-          this.log.error('Failed enter SD');
-        });
+      this.sdCycle().catch(() => {
+        this.log.error('Failed SD cycle');
+      });
       this.sdUpdate();
       allInterval = setInterval(() => {
         this.parseMgInfos();
@@ -152,20 +146,14 @@ class Gruenbeck extends utils.Adapter {
       }, 24 * 60 * 60 * 1000); //24hour
       actualInterval = setInterval(() => {
         this.log.debug('Start refresh');
-        this.enterSD()
-          .then(() => {
-            this.refreshSD().catch(() => {
-              this.log.error('Failed refresh SD');
-            });
-          })
-          .catch(() => {
-            this.log.error('Failed enter SD');
-            this.log.info('Relogin');
-            this.login().then(() => {
-              this.log.debug('Reconnect');
-              this.connectMgWebSocket();
-            });
+        this.sdCycle().catch(() => {
+          this.log.error('Failed SD cycle');
+          this.log.info('Relogin');
+          this.login().then(() => {
+            this.log.debug('Reconnect');
+            this.connectMgWebSocket();
           });
+        });
       }, this.config.mgInterval * 1000);
       this.updateInterval = this.setInterval(() => {
         this.log.debug('Start update');
@@ -487,6 +475,49 @@ class Gruenbeck extends utils.Adapter {
           reject();
         });
     });
+  }
+  /**
+   * Realtime cycle as done by the official myGruenbeck app:
+   * opening the device page calls realtime/enter + realtime/refresh and polls /update,
+   * leaving the page calls realtime/off + realtime/leave.
+   * Calling realtime/enter repeatedly without ever leaving keeps a stale realtime session
+   * and the device stops sending live data (also to the official app), see #61.
+   */
+  async sdCycle() {
+    if (this.sdCycleRunning) {
+      this.log.debug('SD cycle still running, skip');
+      return;
+    }
+    this.sdCycleRunning = true;
+    try {
+      await this.leaveSD().catch(() => this.log.debug('realtime/leave before enter failed'));
+      await this.sleep(2000);
+      await this.enterSD();
+      await this.sleep(5000);
+      await this.refreshSD();
+      await this.sleep(10000);
+      // realtime/refresh only triggers the device, the values are returned by GET /update
+      await this.sdUpdate();
+      await this.sleep(1000);
+      await this.realtimeOffSD().catch(() => this.log.debug('realtime/off failed'));
+      await this.leaveSD().catch(() => this.log.debug('realtime/leave failed'));
+    } finally {
+      this.sdCycleRunning = false;
+    }
+  }
+  async realtimeOffSD() {
+    this.log.debug('realtime/off');
+    await axios.post(
+      'https://prod-eu-gruenbeck-api.azurewebsites.net/api/devices/' + mgDeviceId + '/realtime/off?api-version=' + this.sdVersion,
+      {},
+      {
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Accept-Language': 'de-de',
+          Authorization: 'Bearer ' + accessToken,
+        },
+      },
+    );
   }
   leaveSD() {
     return new Promise((resolve, reject) => {
@@ -1042,6 +1073,7 @@ class Gruenbeck extends utils.Adapter {
   onUnload(callback) {
     try {
       if (mgDeviceId) {
+        this.realtimeOffSD().catch(() => {});
         this.leaveSD();
       }
       clearInterval(pollingInterval);
